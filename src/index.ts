@@ -1,5 +1,6 @@
 import "dotenv/config";
-import routes from "role/routes/role-routes";
+import employeeRoutes from "employee/routes/employee-routes";
+import roleRoutes from "role/routes/role-routes";
 import express from "express";
 import { DateTime } from "luxon";
 
@@ -12,5 +13,6 @@ app.get("/", (req, res) => {
   return res.send("Hello World");
 });
 
-app.use("/role", routes);
+app.use("/role", roleRoutes);
+app.use("/employee", employeeRoutes);
 app.listen(process.env.PORT || 3344);
