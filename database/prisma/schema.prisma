@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "darwin", "darwin-arm64", "linux-musl", "debian-openssl-1.1.x", "darwin"]
+  binaryTargets = ["native", "darwin", "darwin-arm64", "linux-musl", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -12,33 +9,34 @@ datasource db {
 }
 
 model Resident {
-  id                      Int     @id @default(autoincrement())
-  cpf                     String  @unique
-  rg                      String  @unique
-  name                    String
-  contact_phone           String  @unique
-  birthday                String
-  created_at              DateTime @default(now())
-  updated_at              DateTime?
+  id            Int       @id @default(autoincrement())
+  cpf           String    @unique
+  rg            String    @unique
+  name          String
+  contact_phone String    @unique
+  birthday      DateTime
+  created_at    DateTime  @default(now())
+  updated_at    DateTime? @updatedAt
 }
 
 model Employee {
-  id                      Int     @id @default(autoincrement())
-  role                    String
-  email                   String  @unique
-  phone                   String  @unique
-  password                String
+  id       Int    @id @default(autoincrement())
+  role     String
+  email    String @unique
+  phone    String @unique
+  password String
 }
 
 model PharmacologicalName {
-  id                      Int     @id @default(autoincrement())
-  name                    String
+  id        Int       @id @default(autoincrement())
+  name      String
+  Medicines Medicine[]
 }
 
-model Medicines {
-  id                      Int     @id @default(autoincrement())
+model Medicine {
+  id                      Int                 @id @default(autoincrement())
   name                    String
   pharmaceutical_forms    String
   id_pharmacological_name Int
-  pharmacological_name    PharmacologicalName @relation("pharmacological_name", fields:[id_pharmacological_name], references:[id])
+  PharmacologicalName     PharmacologicalName @relation(fields: [id_pharmacological_name], references: [id])
 }
