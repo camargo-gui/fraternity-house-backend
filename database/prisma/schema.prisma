@@ -11,14 +11,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Resident {
   id                      Int     @id @default(autoincrement())
-  full_name               String
-  email                   String @unique
-  phone                   String
-  cpf                     String @unique
-  password                String
-  transaction_password    String
+  cpf                     String  @unique
+  rg                      String  @unique
+  name                    String
+  contact_phone           String  @unique
+  birthday                String
   created_at              DateTime @default(now())
   updated_at              DateTime?
+}
+
+model Employee {
+  id                      Int     @id @default(autoincrement())
+  role                    String
+  email                   String  @unique
+  phone                   String  @unique
+  password                String
+}
+
+model PharmacologicalName {
+  id                      Int     @id @default(autoincrement())
+  name                    String
+}
+
+model Medicines {
+  id                      Int     @id @default(autoincrement())
+  name                    String
+  pharmaceutical_forms    String
+  id_pharmacological_name Int
+  pharmacological_name    PharmacologicalName @relation("pharmacological_name", fields:[id_pharmacological_name], references:[id])
 }
