@@ -1,11 +1,15 @@
 import { prismaClient } from "client/prisma-client";
+import { Password } from "common/entities/password";
 import { EmployeeDTO } from "employee/dto/employee-dto";
 
 export class EmployeeModel {
 
   create = (employee: EmployeeDTO) => {
     return prismaClient.employee.create({
-      data: employee
+      data: {
+        ...employee,
+        password: new Password(employee.password).createHash(),
+      }
     });
   };
 
