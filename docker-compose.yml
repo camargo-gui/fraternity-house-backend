@@ -26,8 +26,10 @@ services:
       - /usr/src/app/node_modules
     ports:
       - 3344:3344
+      - 5555:5555
     expose:
       - 3344
+      - 5555
     networks:
       - fraternity
     links:
