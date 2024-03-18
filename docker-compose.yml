@@ -13,7 +13,7 @@ services:
     environment:
       - POSTGRES_DB=fraternity
       - POSTGRES_USER=fraternity
-      - POSTGRES_PASSWORD=fraternity123
+      - POSTGRES_PASSWORD=fraternity
 
   web:
     container_name: web
@@ -26,6 +26,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - 3344:3344
+    expose:
+      - 3344
     networks:
       - fraternity
     links:
