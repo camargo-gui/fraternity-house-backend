@@ -1,9 +1,10 @@
 import "dotenv/config";
-import residentRoutes from "resident/routes/resident-routes";
 import employeeRoutes from "employee/routes/employee-routes";
-import roleRoutes from "role/routes/role-routes";
 import express from "express";
 import { DateTime } from "luxon";
+import medicineRoutes from "medicine/routes/medicine-routes";
+import residentRoutes from "resident/routes/resident-routes";
+import roleRoutes from "role/routes/role-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -18,4 +19,5 @@ app.get("/", (req, res) => {
 app.use("/resident", residentRoutes);
 app.use("/role", roleRoutes);
 app.use("/employee", employeeRoutes);
+app.use("/medicine", medicineRoutes);
 app.listen(process.env.PORT || 3344);
