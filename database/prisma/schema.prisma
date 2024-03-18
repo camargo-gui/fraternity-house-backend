@@ -39,6 +39,8 @@ model PharmacologicalName {
   id        Int       @id @default(autoincrement())
   name      String
   Medicines Medicine[]
+  created_at    DateTime  @default(now())
+  updated_at    DateTime? @updatedAt
 }
 
 model Medicine {
@@ -47,4 +49,6 @@ model Medicine {
   pharmaceutical_forms    String
   id_pharmacological_name Int
   PharmacologicalName     PharmacologicalName @relation(fields: [id_pharmacological_name], references: [id])
+  created_at    DateTime  @default(now())
+  updated_at    DateTime? @updatedAt
 }
