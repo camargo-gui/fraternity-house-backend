@@ -1,5 +1,5 @@
 import "dotenv/config";
-import routes from "example/routes/example-route";
+import routes from "role/routes/role-routes";
 import express from "express";
 import { DateTime } from "luxon";
 
@@ -11,5 +11,6 @@ app.use(express.json());
 app.get("/", (req, res) => {
   return res.send("Hello World");
 });
-app.use("/example", routes);
+
+app.use("/role", routes);
 app.listen(process.env.PORT || 3344);

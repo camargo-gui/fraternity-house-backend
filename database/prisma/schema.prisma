@@ -19,9 +19,16 @@ model Resident {
   updated_at    DateTime? @updatedAt
 }
 
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String
+  Employee Employee[]
+}
+
 model Employee {
   id       Int    @id @default(autoincrement())
-  role     String
+  role_id  Int    
+  Role     Role   @relation(fields: [role_id], references: [id])
   email    String @unique
   phone    String @unique
   password String
