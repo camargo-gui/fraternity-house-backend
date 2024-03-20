@@ -6,4 +6,6 @@ export interface EmployeeDTO {
   email: string;
   password: string;
   phone: string;
+  created_a?: Date | null;
+  updated_at?: Date | null;
 }

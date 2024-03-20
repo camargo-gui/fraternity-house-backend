@@ -34,6 +34,8 @@ model Employee {
   phone    String
   password String
   name     String
+  created_at    DateTime  @default(now())
+  updated_at    DateTime? @updatedAt
 }
 
 model PharmacologicalName {
