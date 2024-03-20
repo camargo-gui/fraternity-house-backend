@@ -1,11 +1,11 @@
 import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
 import { Router } from "express";
-import { MedicineController } from "medicine/controller/medicine-controller";
-import { ValidateMedicineDataMiddleware } from "medicine/middlewares/validate-medicine-data-middleware";
+import { PharmacologicalNameController } from "pharmacological-name/controller/pharmacological-name-controller";
+import { ValidatePharmacologicalNameDataMiddleware } from "pharmacological-name/middlewares/validate-pharmacological-name-data-middleware";
 
 const routes = Router();
-const controller = new MedicineController();
-const middleware = new ValidateMedicineDataMiddleware();
+const controller = new PharmacologicalNameController();
+const middleware = new ValidatePharmacologicalNameDataMiddleware();
 const authMiddleware = new EmployeeAuthMiddleware();
 
 routes.post("/", authMiddleware.execute, middleware.execute, controller.create);

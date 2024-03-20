@@ -6,6 +6,7 @@ import { DateTime } from "luxon";
 import medicineRoutes from "medicine/routes/medicine-routes";
 import residentRoutes from "resident/routes/resident-routes";
 import roleRoutes from "role/routes/role-routes";
+import pharmacologicalNameRoutes from "pharmacological-name/routes/pharmacological-name-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -22,5 +23,6 @@ app.use("/role", roleRoutes);
 app.use("/employee", employeeRoutes);
 app.use("/medicine", medicineRoutes);
 app.use("/login", loginRoutes);
+app.use("/pharmacological-name", pharmacologicalNameRoutes);
 
 app.listen(process.env.PORT || 3344);

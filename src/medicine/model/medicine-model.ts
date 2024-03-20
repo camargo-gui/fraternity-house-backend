@@ -5,17 +5,42 @@ export class MedicineModel {
   create = (medicine: MedicineDTO) => {
     return prismaClient.medicine.create({
       data: medicine,
+      select: {
+        id: true,
+        name: true,
+        pharmaceutical_forms: true,
+        PharmacologicalName: true,
+        created_at: true,
+        updated_at: true,
+      },
     });
   };
 
   getAll = () => {
-    return prismaClient.medicine.findMany();
+    return prismaClient.medicine.findMany({
+      select: {
+        id: true,
+        name: true,
+        pharmaceutical_forms: true,
+        PharmacologicalName: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
   };
 
   getById = (id: number) => {
     return prismaClient.medicine.findFirst({
       where: {
         id: id,
+      },
+      select: {
+        id: true,
+        name: true,
+        pharmaceutical_forms: true,
+        PharmacologicalName: true,
+        created_at: true,
+        updated_at: true,
       },
     });
   };
@@ -26,6 +51,14 @@ export class MedicineModel {
         id: medicine.id,
       },
       data: medicine,
+      select: {
+        id: true,
+        name: true,
+        pharmaceutical_forms: true,
+        PharmacologicalName: true,
+        created_at: true,
+        updated_at: true,
+      },
     });
   };
 
