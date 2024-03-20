@@ -12,9 +12,9 @@ export class Password {
     return `${salt}:${hash}`; 
   }
 
-  compare(inputPassword: string, storedHash: string): boolean {
+  compare(storedHash: string): boolean {
     const [salt, storedHashValue] = storedHash.split(":"); 
-    const hash = createHash("sha256").update(inputPassword + salt).digest("hex"); 
+    const hash = createHash("sha256").update(this.password + salt).digest("hex"); 
     return hash === storedHashValue; 
   }
 }

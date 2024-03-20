@@ -33,6 +33,7 @@ model Employee {
   email    String @unique
   phone    String
   password String
+  name     String
 }
 
 model PharmacologicalName {

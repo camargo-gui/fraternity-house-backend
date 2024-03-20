@@ -1,4 +1,5 @@
 import "dotenv/config";
+import loginRoutes from "employee/routes/employee-login-routes";
 import employeeRoutes from "employee/routes/employee-routes";
 import express from "express";
 import { DateTime } from "luxon";
@@ -20,4 +21,6 @@ app.use("/resident", residentRoutes);
 app.use("/role", roleRoutes);
 app.use("/employee", employeeRoutes);
 app.use("/medicine", medicineRoutes);
+app.use("/login", loginRoutes);
+
 app.listen(process.env.PORT || 3344);

@@ -6,17 +6,17 @@ export class JWT {
 
 
   constructor() {
-    this.secret = process.env.JWT_SECRET!;
+    this.secret = process.env.SECRET_JWT!;
   }
 
-  generate(id: number): string {
-    const token = sign({ id }, this.secret);
+  generate(id: number, roleId: number): string {
+    const token = sign({ id, roleId }, this.secret, { expiresIn: "1d" });
     return token;
   }
 
   verify(token: string): JwtPayload | undefined {
     try {
-      const payload = verify(token, process.env.SECRET_JWT!) as JwtPayload;
+      const payload = verify(token, this.secret) as JwtPayload;
       return payload;
     } catch {
       return undefined;
