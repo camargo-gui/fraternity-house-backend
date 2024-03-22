@@ -10,12 +10,12 @@ export class EmployeeAuthMiddleware {
     try {
       const { authorization } = req.headers;
       if (!authorization) {
-        return res.status(401).json({ message: "Token is required" });
+        return res.status(401).json({ message: "Token é obrigatório" });
       }
       const token = authorization.split(" ")[1];
       const decoded = this.jwt.verify(token);
       if (!decoded){
-        return res.status(401).json({ message: "Invalid token" });
+        return res.status(401).json({ message: "Token inválido" });
       }
       req.id = decoded.id;
       req.role = decoded.role;

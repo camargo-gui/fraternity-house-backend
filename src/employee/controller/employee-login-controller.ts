@@ -13,15 +13,15 @@ export class EmployeeLoginController {
     try {
       const { cpf, password } = req.body;
       if (!cpf || !password) {
-        return res.status(400).json({ error: "CPF and password are required" });
+        return res.status(400).json({ error: "CPF e Senha são obrigatórios" });
       }
       const employee = await this.model.getByDocument(cpf);
       if (!employee) {
-        return res.status(404).json({ error: "Employee not found" });
+        return res.status(404).json({ error: "Funcionário não encontrado" });
       }
       const validatePassword = new Password(password).compare(employee.password);
       if (!validatePassword) {
-        return res.status(401).json({ error: "Invalid password" });
+        return res.status(401).json({ error: "Senha inválida" });
       }
       else {
         const token = this.jwt.generate(employee.id, employee.role_id);
@@ -30,7 +30,7 @@ export class EmployeeLoginController {
     }
     catch (error) {
       console.log(error);
-      return res.status(500).json({ error: "Internal server error" });
+      return res.status(500).json({ error: "Erro interno" });
     }
   };
 }

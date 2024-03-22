@@ -10,7 +10,7 @@ export class ValidateEmployeeDataMiddleware {
   alreadyExists = async (document: string) => {
     const employee = await this.model.getByDocument(document);
     if (employee) {
-      this.errors.push("Employee already exists");
+      this.errors.push("Usuário já existe");
     }
   };
 
@@ -18,19 +18,19 @@ export class ValidateEmployeeDataMiddleware {
   requiredFields = (employee: any) => {
     console.log(employee);
     if (!employee.document) {
-      this.errors.push("Document is required");
+      this.errors.push("Document é obrigatório");
     }
     if (!employee.name) {
-      this.errors.push("Name is required");
+      this.errors.push("Nome é obrigatório");
     }
     if (!employee.email) {
-      this.errors.push("Email is required");
+      this.errors.push("Email é obrigatório");
     }
     if (!employee.role_id) {
-      this.errors.push("Role is required");
+      this.errors.push("Role é obrigatório");
     }
     if (!employee.phone) {
-      this.errors.push("Phone is required");
+      this.errors.push("Phone é obrigatório");
     }
   };
 
