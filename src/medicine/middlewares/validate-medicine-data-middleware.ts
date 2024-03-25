@@ -6,13 +6,13 @@ export class ValidateMedicineDataMiddleware {
 
   requiredFields = (medicine: MedicineDTO) => {
     if (!medicine.name) {
-      this.errors.push("Name is required");
+      this.errors.push("Nome é obrigatório.\n");
     }
     if (!medicine.pharmaceutical_forms) {
-      this.errors.push("Pharmaceutical forms is required");
+      this.errors.push("Formas famarcêuticas são obrigatórias.\n");
     }
     if (!medicine.id_pharmacological_name) {
-      this.errors.push("Pharmacological name is required");
+      this.errors.push("Nome farmacológico é obrigatório.\n");
     }
   };
 

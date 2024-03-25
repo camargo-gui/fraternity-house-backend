@@ -6,7 +6,7 @@ export class ValidatePharmacologicalNameDataMiddleware {
 
   requiredFields = (pharmacologicalName: PharmalogicalNameDTO) => {
     if (!pharmacologicalName.name) {
-      this.errors.push("Name is required");
+      this.errors.push("Nome é obrigatório.\n");
     }
   };
 

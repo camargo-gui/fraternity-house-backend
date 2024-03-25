@@ -1,6 +1,6 @@
 import { prismaClient } from "client/prisma-client";
 import { Password } from "common/entities/password";
-import { EmployeeDTO } from "employee/dto/employee-dto";
+import { EmployeeDTO } from "employee/DTO/employee-dto";
 
 export class EmployeeModel {
   create = (employee: EmployeeDTO) => {

@@ -1,27 +1,16 @@
 import { Request, Response } from "express";
 import { ResidentModel } from "resident/model/resident-model";
 
-export class ResidentController{
-
+export class ResidentController {
   private model = new ResidentModel();
 
   create = async (req: Request, res: Response) => {
     try {
-      const {   
-        cpf,
-        rg,
-        name,
-        contact_phone,
-        birthday
-      } = req.body;
-
-      if(!cpf || !rg || !name || !contact_phone || !birthday) {
-        return res.status(400).json({error: "Invalid data"});
-      }
+      const { cpf, rg, name, contact_phone, birthday } = req.body;
 
       const residentExists = await this.model.getByCpf(cpf);
-      if(residentExists){
-        return res.status(400).json({error: "Resident already exists"});
+      if (residentExists) {
+        return res.status(400).json({ message: "Morador já existe!" });
       }
 
       await this.model.create({
@@ -29,61 +18,60 @@ export class ResidentController{
         rg,
         name,
         contact_phone,
-        birthday: new Date(birthday)
+        birthday: new Date(birthday),
       });
 
-      return res.status(201).json({error: "Resident created"});
-    }
-    catch(e) {
-      return res.status(500).json({error: "Error to create resident"});
+      return res.status(201).json({ message: "Morador cadastrado!" });
+    } catch (e) {
+      return res.status(500).json({ message: "Erro ao cadastrar morador!" });
     }
   };
 
   update = async (req: Request, res: Response) => {
-    try{      
+    try {
       const resident = req.body;
       await this.model.update(resident);
       return res.status(201).send();
-      
-    }
-    catch(e){
-      return res.status(500).json({error: "Error to update resident"});
+    } catch (e) {
+      return res.status(500).json({ message: "Erro ao atualizar morador" });
     }
   };
 
   delete = async (req: Request, res: Response) => {
-    try { 
-      const { cpf } = req.params;
+    try {
+      const cpf = req.body.cpf;
       await this.model.deleteByCpf(cpf);
       return res.status(201).send();
-    }
-    catch(e) {
-      return res.status(500).json({error: "Error to delete resident"});
+    } catch (e) {
+      return res.status(500).json({ message: "Erro ao excluir morador" });
     }
   };
 
   getAll = async (req: Request, res: Response) => {
-    try{
+    try {
       const residents = await this.model.getAll();
       return res.status(201).send({
-        residents
+        residents,
       });
-    }
-    catch(e){
-      return res.status(500).send({error: "Error to search residents"});
+    } catch (e) {
+      return res.status(500).send({ message: "Erro ao buscar morador" });
     }
   };
 
   getByCpf = async (req: Request, res: Response) => {
-    try{
+    try {
       const { cpf } = req.params;
       const resident = await this.model.getByCpf(cpf);
+
+      if (!resident) {
+        return res.status(404).send({ message: "Morador não encontrado!" });
+      }
+
       return res.status(201).send({
-        resident
+        resident,
       });
-    }
-    catch(e){
-      return res.status(500).send({error: "Error to search resident"});
+    } catch (e) {
+      return res.status(500).send({ message: "Erro ao buscar morador!" });
     }
   };
 }
