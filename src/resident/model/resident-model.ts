@@ -1,6 +1,6 @@
 
 import { prismaClient } from "client/prisma-client";
-import { ResidentDTO } from "resident/DTO/resident-dto";
+import { ResidentDTO } from "resident/dto/resident-dto";
 
 export class ResidentModel{
   create = async (resident: ResidentDTO) => {
