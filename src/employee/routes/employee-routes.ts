@@ -8,6 +8,6 @@ const controller = new EmployeeController();
 const middleware = new ValidateEmployeeDataMiddleware();
 
 routes.post("/", middleware.execute, controller.create);
-routes.get("/", controller.getAll);
+routes.get("/", middleware.execute, controller.getAll);
 
 export default routes;
