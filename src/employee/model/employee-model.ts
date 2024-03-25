@@ -17,7 +17,7 @@ export class EmployeeModel {
         phone: true,
         created_at: true,
         updated_at: true,
-        Role: true,
+        role_id: true,
       },
     });
   };
