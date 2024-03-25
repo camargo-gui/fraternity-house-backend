@@ -9,8 +9,7 @@ export class ValidateResidentMiddlewareNotFound{
   notFound = async (cpf: string) => {
     const resident = await this.model.getByCpf(cpf);
     if (!resident) {
-      console.log("Resident not found");
-      this.errors.push("Resident not found");
+      this.errors.push("Morador não encontrado!");
     }
   };
 

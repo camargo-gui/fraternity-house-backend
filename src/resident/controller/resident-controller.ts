@@ -10,7 +10,7 @@ export class ResidentController {
 
       const residentExists = await this.model.getByCpf(cpf);
       if (residentExists) {
-        return res.status(400).json({ error: "Resident already exists" });
+        return res.status(400).json({ message: "Morador já existe!" });
       }
 
       await this.model.create({
@@ -21,9 +21,9 @@ export class ResidentController {
         birthday: new Date(birthday),
       });
 
-      return res.status(201).json({ message: "Resident created" });
+      return res.status(201).json({ message: "Morador cadastrado!" });
     } catch (e) {
-      return res.status(500).json({ error: "Error to create resident" });
+      return res.status(500).json({ message: "Erro ao cadastrar morador!" });
     }
   };
 
@@ -33,7 +33,7 @@ export class ResidentController {
       await this.model.update(resident);
       return res.status(201).send();
     } catch (e) {
-      return res.status(500).json({ error: "Error to update resident" });
+      return res.status(500).json({ message: "Erro ao atualizar morador" });
     }
   };
 
@@ -43,7 +43,7 @@ export class ResidentController {
       await this.model.deleteByCpf(cpf);
       return res.status(201).send();
     } catch (e) {
-      return res.status(500).json({ error: "Error to delete resident" });
+      return res.status(500).json({ message: "Erro ao excluir morador" });
     }
   };
 
@@ -54,7 +54,7 @@ export class ResidentController {
         residents,
       });
     } catch (e) {
-      return res.status(500).send({ error: "Error to search residents" });
+      return res.status(500).send({ message: "Erro ao buscar morador" });
     }
   };
 
@@ -64,14 +64,14 @@ export class ResidentController {
       const resident = await this.model.getByCpf(cpf);
 
       if (!resident) {
-        return res.status(404).send({ error: "Resident not found" });
+        return res.status(404).send({ message: "Morador não encontrado!" });
       }
 
       return res.status(201).send({
         resident,
       });
     } catch (e) {
-      return res.status(500).send({ error: "Error to search resident" });
+      return res.status(500).send({ message: "Erro ao buscar morador!" });
     }
   };
 }

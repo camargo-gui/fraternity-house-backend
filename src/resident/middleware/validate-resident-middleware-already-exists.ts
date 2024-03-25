@@ -9,7 +9,7 @@ export class ValidateResidentMiddlewareAlreadyExists{
   alreadyExists = async (cpf: string) => {
     const resident = await this.model.getByCpf(cpf);
     if (resident) {
-      this.errors.push("Resident already exists");
+      this.errors.push("Morador já existe!");
     }
   };
 
