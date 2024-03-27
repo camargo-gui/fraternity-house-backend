@@ -1,3 +1,4 @@
+import AwsService from "common/services/aws-service";
 import { Request, Response } from "express";
 import { ResidentModel } from "resident/model/resident-model";
 
@@ -7,10 +8,21 @@ export class ResidentController {
   create = async (req: Request, res: Response) => {
     try {
       const { cpf, rg, name, contact_phone, birthday } = req.body;
+      const image = req.file;
 
       const residentExists = await this.model.getByCpf(cpf);
       if (residentExists) {
         return res.status(400).json({ message: "Morador já existe!" });
+      }
+
+      let resultadoUpload = { Location: "" };
+      if (image) {
+        const awsService = new AwsService();
+        resultadoUpload = await awsService.uploadFile(
+          process.env.BUCKET_NAME ?? "",
+          image?.originalname ?? "",
+          image?.buffer ?? ""
+        );
       }
 
       await this.model.create({
@@ -19,11 +31,12 @@ export class ResidentController {
         name,
         contact_phone,
         birthday: new Date(birthday),
+        url_image: resultadoUpload.Location,
       });
 
       return res.status(201).json({ message: "Morador cadastrado!" });
     } catch (e) {
-      return res.status(500).json({ message: "Erro ao cadastrar morador!" });
+      return res.status(500).json({ message: ["Erro ao cadastrar morador!"] });
     }
   };
 

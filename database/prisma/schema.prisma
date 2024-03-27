@@ -15,6 +15,7 @@ model Resident {
   name          String
   contact_phone String    @unique
   birthday      DateTime
+  url_image     String?
   created_at    DateTime  @default(now())
   updated_at    DateTime? @updatedAt
 }
