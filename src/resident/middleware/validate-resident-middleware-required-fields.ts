@@ -29,7 +29,7 @@ export class ValidateResidentMiddlewareRequiredFields{
       const resident = req.body;
       await this.requiredFields(resident);
       if(this.errors.length > 0){
-        return res.status(400).json({messages: this.errors});
+        return res.status(400).json({message: this.errors});
       }
       next();
     } catch (error) {
