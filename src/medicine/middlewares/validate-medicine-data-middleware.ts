@@ -8,8 +8,8 @@ export class ValidateMedicineDataMiddleware {
     if (!medicine.name) {
       this.errors.push("Nome é obrigatório.\n");
     }
-    if (!medicine.pharmaceutical_forms) {
-      this.errors.push("Formas famarcêuticas são obrigatórias.\n");
+    if (!medicine.id_pharmacological_form) {
+      this.errors.push("Formafamarcêuticas é obrigatória.\n");
     }
     if (!medicine.id_pharmacological_name) {
       this.errors.push("Nome farmacológico é obrigatório.\n");

@@ -58,7 +58,6 @@ model PharmacologicalForm {
 model Medicine {
   id                      Int                 @id @default(autoincrement())
   name                    String
-  pharmaceutical_forms    String
   id_pharmacological_name Int
   PharmacologicalName     PharmacologicalName @relation(fields: [id_pharmacological_name], references: [id])
   id_pharmacological_form Int

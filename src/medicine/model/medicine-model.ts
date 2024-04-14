@@ -8,7 +8,7 @@ export class MedicineModel {
       select: {
         id: true,
         name: true,
-        pharmaceutical_forms: true,
+        PharmacologicalForm: true,
         PharmacologicalName: true,
         created_at: true,
         updated_at: true,
@@ -21,7 +21,7 @@ export class MedicineModel {
       select: {
         id: true,
         name: true,
-        pharmaceutical_forms: true,
+        PharmacologicalForm: true,
         PharmacologicalName: true,
         created_at: true,
         updated_at: true,
@@ -37,7 +37,7 @@ export class MedicineModel {
       select: {
         id: true,
         name: true,
-        pharmaceutical_forms: true,
+        PharmacologicalForm: true,
         PharmacologicalName: true,
         created_at: true,
         updated_at: true,
@@ -54,7 +54,7 @@ export class MedicineModel {
       select: {
         id: true,
         name: true,
-        pharmaceutical_forms: true,
+        PharmacologicalForm: true,
         PharmacologicalName: true,
         created_at: true,
         updated_at: true,
