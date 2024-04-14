@@ -1,7 +1,6 @@
 import AwsService from "common/services/aws-service";
 import { Request, Response } from "express";
 import { ResidentModel } from "resident/model/resident-model";
-import { deleteFolderRecursive } from "util/delete-folder";
 
 export class ResidentController {
   private model = new ResidentModel();
@@ -34,8 +33,6 @@ export class ResidentController {
         birthday: new Date(birthday),
         url_image: resultadoUpload.Location,
       });
-
-      await deleteFolderRecursive("/temp");
 
       return res.status(201).json({ message: "Morador cadastrado!" });
     } catch (e) {
