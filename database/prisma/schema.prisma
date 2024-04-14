@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "darwin", "darwin-arm64", "linux-musl", "debian-openssl-1.1.x"]
 }
 
@@ -21,30 +21,38 @@ model Resident {
 }
 
 model Role {
-  id   Int    @id @default(autoincrement())
-  name String
+  id       Int        @id @default(autoincrement())
+  name     String
   Employee Employee[]
 }
 
 model Employee {
-  id       Int    @id @default(autoincrement())
-  document String @unique
-  role_id  Int    
-  Role     Role   @relation(fields: [role_id], references: [id])
-  email    String @unique
-  phone    String
-  password String
-  name     String
-  created_at    DateTime  @default(now())
-  updated_at    DateTime? @updatedAt
+  id         Int       @id @default(autoincrement())
+  document   String    @unique
+  role_id    Int
+  Role       Role      @relation(fields: [role_id], references: [id])
+  email      String    @unique
+  phone      String
+  password   String
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
 }
 
 model PharmacologicalName {
-  id        Int       @id @default(autoincrement())
-  name      String
-  Medicines Medicine[]
-  created_at    DateTime  @default(now())
-  updated_at    DateTime? @updatedAt
+  id         Int        @id @default(autoincrement())
+  name       String
+  Medicines  Medicine[]
+  created_at DateTime   @default(now())
+  updated_at DateTime?  @updatedAt
+}
+
+model PharmacologicalForm {
+  id         Int        @id @default(autoincrement())
+  name       String
+  Medicines  Medicine[]
+  created_at DateTime   @default(now())
+  updated_at DateTime?  @updatedAt
 }
 
 model Medicine {
@@ -53,6 +61,8 @@ model Medicine {
   pharmaceutical_forms    String
   id_pharmacological_name Int
   PharmacologicalName     PharmacologicalName @relation(fields: [id_pharmacological_name], references: [id])
-  created_at    DateTime  @default(now())
-  updated_at    DateTime? @updatedAt
+  id_pharmacological_form Int
+  PharmacologicalForm     PharmacologicalForm @relation(fields: [id_pharmacological_form], references: [id])
+  created_at              DateTime            @default(now())
+  updated_at              DateTime?           @updatedAt
 }
