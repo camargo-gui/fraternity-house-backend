@@ -16,21 +16,20 @@ export class ValidateEmployeeDataMiddleware {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   requiredFields = (employee: any) => {
-    console.log(employee);
     if (!employee.document) {
-      this.errors.push("Document é obrigatório");
+      this.errors.push("Documento é obrigatório,");
     }
     if (!employee.name) {
-      this.errors.push("Nome é obrigatório");
+      this.errors.push("nome é obrigatório");
     }
     if (!employee.email) {
-      this.errors.push("Email é obrigatório");
+      this.errors.push("email é obrigatório,");
     }
     if (!employee.role_id) {
-      this.errors.push("Role é obrigatório");
+      this.errors.push("cargo é obrigatório,");
     }
     if (!employee.phone) {
-      this.errors.push("Phone é obrigatório");
+      this.errors.push("telefone é obrigatório");
     }
   };
 

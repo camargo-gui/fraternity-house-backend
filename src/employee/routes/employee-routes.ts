@@ -9,5 +9,7 @@ const middleware = new ValidateEmployeeDataMiddleware();
 
 routes.post("/", middleware.execute, controller.create);
 routes.get("/", controller.getAll);
+routes.delete("/:document", controller.delete);
+routes.put("/", controller.update);
 
 export default routes;

@@ -38,8 +38,8 @@ export class EmployeeController {
 
   delete = async (req: Request, res: Response) => {
     try {
-      const id = parseInt(req.params.id);
-      await this.model.delete(id);
+      const document = req.params.document;
+      await this.model.delete(document);
       return res.status(204).send();
     } catch (error) {
       return res.status(500).send();

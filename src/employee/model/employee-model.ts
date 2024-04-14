@@ -82,10 +82,10 @@ export class EmployeeModel {
     });
   };
 
-  delete = (id: number) => {
+  delete = (document: string) => {
     return prismaClient.employee.delete({
       where: {
-        id: id,
+        document: document,
       },
     });
   };
