@@ -1,5 +1,9 @@
 import { prismaClient } from "client/prisma-client";
-import { MedicineDTO } from "medicine/DTO/medicine-dto";
+import {
+  MedicineDTO,
+  MedicineRequestParams,
+  MedicineWhereConditions,
+} from "medicine/DTO/medicine-dto";
 
 export class MedicineModel {
   create = (medicine: MedicineDTO) => {
@@ -16,8 +20,25 @@ export class MedicineModel {
     });
   };
 
-  getAll = () => {
+  getAll = (filters: MedicineRequestParams) => {
+    const conditions: MedicineWhereConditions = {};
+
+    if (filters.name) {
+      conditions.name = { contains: filters.name, mode: "insensitive" };
+    }
+    if (filters.pharmacologicalName) {
+      conditions.PharmacologicalName = {
+        name: { contains: filters.pharmacologicalName, mode: "insensitive" },
+      };
+    }
+    if (filters.pharmacologicalForm) {
+      conditions.PharmacologicalForm = {
+        name: { contains: filters.pharmacologicalForm, mode: "insensitive" },
+      };
+    }
+
     return prismaClient.medicine.findMany({
+      where: conditions,
       select: {
         id: true,
         name: true,

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { MedicineRequestParams } from "medicine/DTO/medicine-dto";
 import { MedicineModel } from "medicine/model/medicine-model";
 
 export class MedicineController {
@@ -16,7 +17,13 @@ export class MedicineController {
 
   public getAll = async (req: Request, res: Response) => {
     try {
-      const medicines = await this.model.getAll();
+      const { name, pharmacologicalName, pharmacologicalForm } = req.query;
+      const filters = {
+        name,
+        pharmacologicalName,
+        pharmacologicalForm,
+      };
+      const medicines = await this.model.getAll(filters as MedicineRequestParams);
       return res.status(200).json({ medicines: medicines });
     } catch (error) {
       return res.status(500).send();
