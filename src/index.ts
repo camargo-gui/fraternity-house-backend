@@ -10,6 +10,8 @@ import residentRoutes from "resident/routes/resident-routes";
 import roleRoutes from "role/routes/role-routes";
 import pharmacologicalFormRoutes from "pharmacological-form/routes/pharmacological-form-routes";
 import medicationSheetRoutes from "medication-sheet/routes/medication-sheet-routes";
+import movimentationRoutes from "movimentation/routes/movimentation-routes";
+import productRoutes from "product/routes/product-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -35,5 +37,7 @@ app.use("/login", loginRoutes);
 app.use("/pharmacological-name", pharmacologicalNameRoutes);
 app.use("/pharmacological-form", pharmacologicalFormRoutes);
 app.use("/medication-sheet", medicationSheetRoutes);
+app.use("/movimentation", movimentationRoutes);
+app.use("/product", productRoutes);
 
 app.listen(process.env.PORT || 3344);

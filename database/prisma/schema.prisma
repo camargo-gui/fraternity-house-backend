@@ -39,6 +39,7 @@ model Employee {
   created_at      DateTime          @default(now())
   updated_at      DateTime?         @updatedAt
   MedicationSheet MedicationSheet[]
+  Movimentations Movimentation[]
 }
 
 model PharmacologicalName {
@@ -94,4 +95,46 @@ model Prescription {
   firstTime           String // "HH:mm"
   createdAt           DateTime        @default(now())
   updatedAt           DateTime?       @updatedAt
+}
+
+model Product {
+  id                    Int                    @id @default(autoincrement())
+  name                  String
+  quantity              Int
+  created_at            DateTime               @default(now())
+  updated_at            DateTime?              @updatedAt
+  measurement           MeasurementType
+  ProductMovimentations ProductMovimentation[]
+}
+
+model Movimentation {
+  id                    Int                    @id @default(autoincrement())
+  type                  MovimentationType
+  created_at            DateTime               @default(now())
+  updated_at            DateTime?              @updatedAt
+  id_employee           Int
+  Employee              Employee               @relation(fields: [id_employee], references: [id])
+  ProductMovimentations ProductMovimentation[]
+}
+
+model ProductMovimentation {
+  id               Int           @id @default(autoincrement())
+  id_product       Int
+  Product          Product       @relation(fields: [id_product], references: [id])
+  id_movimentation Int
+  Movimentation    Movimentation @relation(fields: [id_movimentation], references: [id])
+  quantity         Int
+  created_at       DateTime      @default(now())
+  updated_at       DateTime?     @updatedAt
+}
+
+enum MovimentationType {
+  INPUT
+  OUTPUT
+}
+
+enum MeasurementType {
+  UNITY
+  KG
+  L
 }
