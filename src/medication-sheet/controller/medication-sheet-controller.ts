@@ -15,19 +15,20 @@ export class MedicationSheetController {
     try {
       const medicationSheet = await this.prismaClient.$transaction(
         async (prisma) => {
-          const newMedicationSheet = await this.medicationSheetModel.create(
-            {
-              residentId,
-              createdBy: Number(req.id),
-              observations,
-            },
-            prisma
-          );
+          const newMedicationSheet =
+            await this.medicationSheetModel.getOrCreateSheet(
+              {
+                residentId,
+                createdBy: Number(req.id),
+                observations,
+              },
+              prisma
+            );
 
           for (const prescription of prescriptions) {
             await this.prescriptionModel.create(
               {
-                medicationSheetId: newMedicationSheet.id,
+                medicationSheetId: newMedicationSheet?.id,
                 medicineId: prescription.medicineId,
                 frequency: prescription.frequency,
                 startDate: new Date(prescription.startDate),
@@ -47,7 +48,7 @@ export class MedicationSheetController {
     } catch (error) {
       res.status(500).json({
         message: [
-          "An error occurred while creating the medication sheet with prescriptions.",
+          "An error occurred while creating or updating the medication sheet with prescriptions.",
           error,
         ],
       });

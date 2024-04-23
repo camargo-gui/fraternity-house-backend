@@ -71,7 +71,7 @@ export class MedicationSheetModel {
                 PharmacologicalForm: true,
                 PharmacologicalName: true,
                 name: true,
-              }
+              },
             },
             firstTime: true,
             dosage: true,
@@ -79,10 +79,31 @@ export class MedicationSheetModel {
             startDate: true,
             endDate: true,
           },
-        
         },
         createdAt: true,
       },
     });
   };
+
+  async getOrCreateSheet(
+    { residentId, createdBy, observations }: MedicationSheetDTO,
+    prisma: Prisma.TransactionClient
+  ) {
+    let sheet = await prisma.medicationSheet.findFirst({
+      where: { residentId },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (sheet == null) {
+      sheet = await prisma.medicationSheet.create({
+        data: {
+          residentId,
+          createdBy,
+          observations,
+        },
+      });
+    }
+
+    return sheet;
+  }
 }
