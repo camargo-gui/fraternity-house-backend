@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { Request, Response } from "express";
+import { AuthRequest } from "common/entities/auth-request";
+import { Response } from "express";
 import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
 import { PrescriptionModel } from "medication-sheet/model/prescription-model";
 
@@ -8,8 +9,8 @@ export class MedicationSheetController {
   private prescriptionModel = new PrescriptionModel();
   private prismaClient = new PrismaClient();
 
-  public create = async (req: Request, res: Response) => {
-    const { residentId, createdBy, observations, prescriptions } = req.body;
+  public create = async (req: AuthRequest, res: Response) => {
+    const { residentId, observations, prescriptions } = req.body;
 
     try {
       const medicationSheet = await this.prismaClient.$transaction(
@@ -17,7 +18,7 @@ export class MedicationSheetController {
           const newMedicationSheet = await this.medicationSheetModel.create(
             {
               residentId,
-              createdBy,
+              createdBy: Number(req.id),
               observations,
             },
             prisma
