@@ -11,7 +11,6 @@ export interface MedicationSheetDTO {
 
 export interface MedicationSheetRequestBody {
   residentId: number;
-  createdBy: number;
-  observations: string;
+  observations?: string;
   prescriptions: PrescriptionDTO[];
 }

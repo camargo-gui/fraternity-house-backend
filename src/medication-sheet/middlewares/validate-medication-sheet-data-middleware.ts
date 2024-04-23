@@ -8,12 +8,6 @@ export class ValidateMedicationSheetDataMiddleware {
     if (!medicationSheet.residentId) {
       this.errors.push("Morador é obrigatório.");
     }
-    if (!medicationSheet.createdBy) {
-      this.errors.push("Funcionário responsável é obrigatório.");
-    }
-    if (!medicationSheet.observations) {
-      this.errors.push("Observações são obrigatórias.");
-    }
     if (!medicationSheet.prescriptions) {
       this.errors.push("Prescrições são obrigatórias.");
     }
