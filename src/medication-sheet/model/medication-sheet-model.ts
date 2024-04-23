@@ -67,6 +67,7 @@ export class MedicationSheetModel {
             endDate: true,
           },
         },
+        observations: true,
         createdAt: true,
       },
     });
