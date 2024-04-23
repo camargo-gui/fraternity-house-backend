@@ -9,15 +9,16 @@ datasource db {
 }
 
 model Resident {
-  id            Int       @id @default(autoincrement())
-  cpf           String    @unique
-  rg            String    @unique
-  name          String
-  contact_phone String    @unique
-  birthday      DateTime
-  url_image     String?
-  created_at    DateTime  @default(now())
-  updated_at    DateTime? @updatedAt
+  id              Int               @id @default(autoincrement())
+  cpf             String            @unique
+  rg              String            @unique
+  name            String
+  contact_phone   String            @unique
+  birthday        DateTime
+  url_image       String?
+  created_at      DateTime          @default(now())
+  updated_at      DateTime?         @updatedAt
+  MedicationSheet MedicationSheet[]
 }
 
 model Role {
@@ -27,16 +28,17 @@ model Role {
 }
 
 model Employee {
-  id         Int       @id @default(autoincrement())
-  document   String    @unique
-  role_id    Int
-  Role       Role      @relation(fields: [role_id], references: [id])
-  email      String    @unique
-  phone      String
-  password   String
-  name       String
-  created_at DateTime  @default(now())
-  updated_at DateTime? @updatedAt
+  id              Int               @id @default(autoincrement())
+  document        String            @unique
+  role_id         Int
+  Role            Role              @relation(fields: [role_id], references: [id])
+  email           String            @unique
+  phone           String
+  password        String
+  name            String
+  created_at      DateTime          @default(now())
+  updated_at      DateTime?         @updatedAt
+  MedicationSheet MedicationSheet[]
 }
 
 model PharmacologicalName {
@@ -64,4 +66,32 @@ model Medicine {
   PharmacologicalForm     PharmacologicalForm @relation(fields: [id_pharmacological_form], references: [id])
   created_at              DateTime            @default(now())
   updated_at              DateTime?           @updatedAt
+  Prescription            Prescription[]
+}
+
+model MedicationSheet {
+  id            Int            @id @default(autoincrement())
+  residentId    Int
+  Resident      Resident       @relation(fields: [residentId], references: [id])
+  prescriptions Prescription[]
+  createdBy     Int
+  Employee      Employee       @relation(fields: [createdBy], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime?      @updatedAt
+  observations  String?
+}
+
+model Prescription {
+  id                  Int             @id @default(autoincrement())
+  medicationSheetId   Int
+  MedicationSheet     MedicationSheet @relation(fields: [medicationSheetId], references: [id])
+  medicineId          Int
+  Medicine            Medicine        @relation(fields: [medicineId], references: [id])
+  dosage              String
+  frequency           String
+  startDate           DateTime
+  endDate             DateTime
+  firstTime           String // "HH:mm"
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime?       @updatedAt
 }

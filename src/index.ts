@@ -9,14 +9,17 @@ import pharmacologicalNameRoutes from "pharmacological-name/routes/pharmacologic
 import residentRoutes from "resident/routes/resident-routes";
 import roleRoutes from "role/routes/role-routes";
 import pharmacologicalFormRoutes from "pharmacological-form/routes/pharmacological-form-routes";
+import medicationSheetRoutes from "medication-sheet/routes/medication-sheet-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
 const app = express();
 
-app.use(cors({
-  origin: "*"
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use(express.json());
 
@@ -31,5 +34,6 @@ app.use("/medicine", medicineRoutes);
 app.use("/login", loginRoutes);
 app.use("/pharmacological-name", pharmacologicalNameRoutes);
 app.use("/pharmacological-form", pharmacologicalFormRoutes);
+app.use("/medication-sheet", medicationSheetRoutes);
 
 app.listen(process.env.PORT || 3344);
