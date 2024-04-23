@@ -1,19 +1,21 @@
-import { prismaClient } from "client/prisma-client";
+import { PrismaClient } from "@prisma/client";
 import { PharmalogicalNameDTO } from "pharmacological-name/DTO/pharmacological-name-dto";
 
 export class PharmacologicalNameModel {
+  private prismaClient = new PrismaClient();
+
   create = (pharmacologicalName: PharmalogicalNameDTO) => {
-    return prismaClient.pharmacologicalName.create({
+    return this.prismaClient.pharmacologicalName.create({
       data: pharmacologicalName,
     });
   };
 
   getAll = () => {
-    return prismaClient.pharmacologicalName.findMany();
+    return this.prismaClient.pharmacologicalName.findMany();
   };
 
   getById = (id: number) => {
-    return prismaClient.pharmacologicalName.findFirst({
+    return this.prismaClient.pharmacologicalName.findFirst({
       where: {
         id: id,
       },
@@ -21,7 +23,7 @@ export class PharmacologicalNameModel {
   };
 
   update = (pharmacologicalName: PharmalogicalNameDTO) => {
-    return prismaClient.pharmacologicalName.update({
+    return this.prismaClient.pharmacologicalName.update({
       where: {
         id: pharmacologicalName.id,
       },
@@ -30,7 +32,7 @@ export class PharmacologicalNameModel {
   };
 
   delete = (id: number) => {
-    return prismaClient.medicine.delete({
+    return this.prismaClient.medicine.delete({
       where: {
         id: id,
       },

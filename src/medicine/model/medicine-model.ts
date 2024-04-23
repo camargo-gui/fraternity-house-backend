@@ -1,4 +1,4 @@
-import { prismaClient } from "client/prisma-client";
+import { PrismaClient } from "@prisma/client";
 import {
   MedicineDTO,
   MedicineRequestParams,
@@ -6,8 +6,10 @@ import {
 } from "medicine/DTO/medicine-dto";
 
 export class MedicineModel {
+  private prismaClient = new PrismaClient();
+
   create = (medicine: MedicineDTO) => {
-    return prismaClient.medicine.create({
+    return this.prismaClient.medicine.create({
       data: medicine,
       select: {
         id: true,
@@ -37,7 +39,7 @@ export class MedicineModel {
       };
     }
 
-    return prismaClient.medicine.findMany({
+    return this.prismaClient.medicine.findMany({
       where: conditions,
       select: {
         id: true,
@@ -51,7 +53,7 @@ export class MedicineModel {
   };
 
   getById = (id: number) => {
-    return prismaClient.medicine.findFirst({
+    return this.prismaClient.medicine.findFirst({
       where: {
         id: id,
       },
@@ -67,7 +69,7 @@ export class MedicineModel {
   };
 
   update = (medicine: MedicineDTO) => {
-    return prismaClient.medicine.update({
+    return this.prismaClient.medicine.update({
       where: {
         id: medicine.id,
       },
@@ -84,7 +86,7 @@ export class MedicineModel {
   };
 
   delete = (id: number) => {
-    return prismaClient.medicine.delete({
+    return this.prismaClient.medicine.delete({
       where: {
         id: id,
       },

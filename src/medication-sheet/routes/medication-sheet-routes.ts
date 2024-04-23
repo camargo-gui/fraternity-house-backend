@@ -9,5 +9,6 @@ const middleware = new ValidateMedicationSheetDataMiddleware();
 const authMiddleware = new EmployeeAuthMiddleware();
 
 routes.post("/", authMiddleware.execute, middleware.execute, control.create);
+routes.get("/", authMiddleware.execute, control.getAll);
 
 export default routes;

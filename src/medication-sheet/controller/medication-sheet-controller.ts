@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { AuthRequest } from "common/entities/auth-request";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
 import { PrescriptionModel } from "medication-sheet/model/prescription-model";
 
@@ -48,6 +48,21 @@ export class MedicationSheetController {
       res.status(500).json({
         message: [
           "An error occurred while creating the medication sheet with prescriptions.",
+          error,
+        ],
+      });
+    }
+  };
+
+  getAll = async (req: Request, res: Response) => {
+    try {
+      const medicationSheets = await this.medicationSheetModel.getAll();
+
+      res.status(200).json({ medicationSheets });
+    } catch (error) {
+      res.status(500).json({
+        message: [
+          "An error occurred while fetching all medication sheets.",
           error,
         ],
       });
