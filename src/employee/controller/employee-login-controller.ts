@@ -25,7 +25,7 @@ export class EmployeeLoginController {
       }
       else {
         const token = this.jwt.generate(employee.id, employee.role_id);
-        return res.status(200).json({ token });
+        return res.status(200).json({ token, name: employee.name });
       }
     }
     catch (error) {
