@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { AuthRequest } from "common/entities/auth-request";
 import { Request, Response } from "express";
 import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
-import { PrescriptionModel } from "medication-sheet/model/prescription-model";
+import { PrescriptionModel } from "prescription/model/prescription-model";
 
 export class MedicationSheetController {
   private medicationSheetModel = new MedicationSheetModel();

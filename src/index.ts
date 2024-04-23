@@ -12,6 +12,7 @@ import pharmacologicalFormRoutes from "pharmacological-form/routes/pharmacologic
 import medicationSheetRoutes from "medication-sheet/routes/medication-sheet-routes";
 import movimentationRoutes from "movimentation/routes/movimentation-routes";
 import productRoutes from "product/routes/product-routes";
+import prescriptionRoutes from "prescription/routes/prescription-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -39,5 +40,6 @@ app.use("/pharmacological-form", pharmacologicalFormRoutes);
 app.use("/medication-sheet", medicationSheetRoutes);
 app.use("/movimentation", movimentationRoutes);
 app.use("/product", productRoutes);
+app.use("/prescription", prescriptionRoutes);
 
 app.listen(process.env.PORT || 3344);
