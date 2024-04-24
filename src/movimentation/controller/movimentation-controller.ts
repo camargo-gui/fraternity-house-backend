@@ -65,10 +65,18 @@ export class MovimentationController {
       const movimentations = await this.movimentationModel.getMovimentations();
       const detailedMovimentations = await Promise.all(movimentations.map(async (mov) => {
         const products = await this.productMovimentationModel.getMovimentations(mov.id);
+        const productsNamed = await Promise.all(products.map(async (product) => {
+          const productData = await this.productModel.getById(product.id_product);
+          return {
+            ...product,
+            name: productData?.name,
+            measurement: productData?.measurement
+          };
+        }));
         const employee = await this.employeeModel.getById(mov.id_employee);
         return {
           ...mov,
-          products,
+          products: productsNamed,
           employee_name: employee?.name
         };
       }));
