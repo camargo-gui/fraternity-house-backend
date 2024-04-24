@@ -9,7 +9,7 @@ const controller = new EmployeeController();
 const authMiddleware = new EmployeeAuthMiddleware();
 const valiidateEmployeeMiddleware = new ValidateEmployeeDataMiddleware();
 
-routes.post("/", valiidateEmployeeMiddleware.execute, controller.create);
+routes.post("/", authMiddleware.execute, valiidateEmployeeMiddleware.execute, controller.create);
 routes.get("/", authMiddleware.execute, controller.getAll);
 routes.delete("/:document", authMiddleware.execute, controller.delete);
 routes.put("/", authMiddleware.execute, controller.update);

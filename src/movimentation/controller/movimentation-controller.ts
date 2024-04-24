@@ -1,5 +1,6 @@
 import { prismaClient } from "client/prisma-client";
 import { AuthRequest } from "common/entities/auth-request";
+import { EmployeeModel } from "employee/model/employee-model";
 import { Request, Response } from "express";
 import { MovimentationType } from "movimentation/DTO/movimentation-dto";
 import { MovimentationModel } from "movimentation/model/movimentation-model";
@@ -14,6 +15,8 @@ export class MovimentationController {
   private productModel = new ProductModel();
 
   private productMovimentationModel = new ProductMovimentationModel();
+
+  private employeeModel = new EmployeeModel();
 
   create = async (req: AuthRequest, res: Response) => {
     const type: MovimentationType = req.body.type;
@@ -62,9 +65,11 @@ export class MovimentationController {
       const movimentations = await this.movimentationModel.getMovimentations();
       const detailedMovimentations = await Promise.all(movimentations.map(async (mov) => {
         const products = await this.productMovimentationModel.getMovimentations(mov.id);
+        const employee = await this.employeeModel.getById(mov.id_employee);
         return {
           ...mov,
-          products
+          products,
+          employee_name: employee?.name
         };
       }));
       return res.status(200).send(detailedMovimentations);
