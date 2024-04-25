@@ -8,12 +8,14 @@ export class MedicationSheetModel {
     { residentId, createdBy, observations }: MedicationSheetDTO,
     prisma: Prisma.TransactionClient
   ) {
+    let createMedicationSheet = false;
     let sheet = await prisma.medicationSheet.findFirst({
       where: { residentId },
       orderBy: { createdAt: "desc" },
     });
 
     if (sheet == null) {
+      createMedicationSheet = true;
       sheet = await prisma.medicationSheet.create({
         data: {
           residentId,
@@ -23,7 +25,7 @@ export class MedicationSheetModel {
       });
     }
 
-    return sheet;
+    return {...sheet, medicationWasCreated: createMedicationSheet};
   }
 
   getAll = () => {
