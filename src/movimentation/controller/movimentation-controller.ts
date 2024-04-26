@@ -22,42 +22,41 @@ export class MovimentationController {
     const type: MovimentationType = req.body.type;
     const id_employee = req.id ?? 0;
     const products: ProductDTO[] = req.body.products;
-
-    if(!type || !products || products.length === 0) {
+  
+    if (!type || !products || products.length === 0) {
       return res.status(400).json({ message: ["Campos obrigatórios não preenchidos"] });
     }
-
+  
     try {
       await prismaClient.$transaction(async (prisma) => {
         const movimentation = await this.movimentationModel.create(prisma, {type, id_employee});
-        const promises = products.map(async (product) => {
-          if(!product.id || !product.quantity || product.quantity <= 0) {
-            return res.status(400).json({ message: ["Produto no formato incorreto"] });
+  
+        for (const product of products) {
+          if (!product.id || !product.quantity || product.quantity <= 0) {
+            throw new Error(`Produto no formato incorreto: ${product.id}`);
           }
-
+  
           if (type === MovimentationType.OUTPUT) {
             const currentProduct = await this.productModel.getById(product.id);
             if (!currentProduct || currentProduct.quantity < product.quantity) {
-              return res.status(400).send({message: [`Estoque insuficiente para o produto ID: ${product.id}`]});
+              throw new Error(`Estoque insuficiente para o produto: ${product.name}`);
             }
           }
-
+  
           const createProductMovimentation = this.productMovimentationModel
-            .create(prisma,movimentation.id, product.id, product.quantity);
+            .create(prisma, movimentation.id, product.id, product.quantity);
           const updateProductStock = this.productModel.updateStock(prisma, product.id, product.quantity, type);
   
-          return Promise.all([createProductMovimentation, updateProductStock]);
-        });
-  
-        return await Promise.all(promises);
+          await Promise.all([createProductMovimentation, updateProductStock]);
+        }
       });
   
       return res.status(201).send();
     } catch (error) {
-      console.error("Transaction failed:", error);
-      return res.status(500).send();
+      return res.status(400).send({ message: (error as Error).message });
     }
-  }; 
+  };
+  
   
 
   getMovimentations = async (req: Request, res: Response) => {

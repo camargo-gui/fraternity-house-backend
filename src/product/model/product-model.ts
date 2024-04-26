@@ -34,8 +34,11 @@ export class ProductModel {
       where: {
         quantity:{
           gt: 0
-        }
-      }
+        },
+      },
+      orderBy: {
+        name: "asc"
+      },
     });
   };
 
@@ -48,6 +51,10 @@ export class ProductModel {
   };
 
   getAll = async () => {
-    return this.prismaClient.product.findMany();
+    return this.prismaClient.product.findMany({
+      orderBy: {
+        name: "asc"
+      }
+    });
   };
 }

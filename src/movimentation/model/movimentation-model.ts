@@ -12,6 +12,10 @@ export class MovimentationModel {
   };
 
   getMovimentations = async () => {
-    return this.prismaClient.movimentation.findMany();
+    return this.prismaClient.movimentation.findMany({
+      orderBy: {
+        created_at: "desc"
+      }
+    });
   };
 }
