@@ -23,7 +23,7 @@ export class MovimentationController {
     const id_employee = req.id ?? 0;
     const products: ProductDTO[] = req.body.products;
 
-    if(!type || !products) {
+    if(!type || !products || products.length === 0) {
       return res.status(400).json({ message: ["Campos obrigatórios não preenchidos"] });
     }
 
