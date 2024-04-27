@@ -8,6 +8,7 @@ const control = new PrescriptionController();
 const middleware = new ValidatePrescriptionDataMiddleware();
 const authMiddleware = new EmployeeAuthMiddleware();
 
+routes.post("/", authMiddleware.execute, middleware.execute, control.create);
 routes.put("/", authMiddleware.execute, middleware.execute, control.update);
 routes.delete("/:id", authMiddleware.execute, control.delete);
 

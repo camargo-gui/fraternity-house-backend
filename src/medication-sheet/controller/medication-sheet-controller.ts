@@ -55,6 +55,25 @@ export class MedicationSheetController {
     }
   };
 
+  update = async (req: Request, res: Response) => {
+    const medicationSheetBody = req.body;
+
+    try {
+      const medicationSheet = await this.medicationSheetModel.update(
+        medicationSheetBody
+      );
+
+      res.status(200).json({ medicationSheet });
+    } catch (error) {
+      res.status(500).json({
+        message: [
+          "An error occurred while updating the medication sheet with prescriptions.",
+          error,
+        ],
+      });
+    }
+  };
+
   getAll = async (req: Request, res: Response) => {
     try {
       const medicationSheets = await this.medicationSheetModel.getAll();

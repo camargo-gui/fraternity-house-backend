@@ -8,6 +8,45 @@ export class PrescriptionController {
   private medicationSheetModel = new MedicationSheetModel();
   private prismaClient = new PrismaClient();
 
+  public create = async (req: Request, res: Response) => {
+    const bodyPrescription = req.body;
+
+    try {
+      const prescription = await this.prismaClient.$transaction(
+        async (prisma) => {
+          const medicationSheet =
+            await this.medicationSheetModel.getByResidentId(
+              bodyPrescription.residentId,
+              prisma
+            );
+
+          if (!medicationSheet) {
+            throw new Error("Medication sheet not found.");
+          }
+
+          return this.prescriptionModel.create(
+            {
+              medicationSheetId: medicationSheet.id,
+              medicineId: bodyPrescription.medicineId,
+              dosage: bodyPrescription.dosage,
+              endDate: new Date(bodyPrescription.endDate),
+              startDate: new Date(bodyPrescription.startDate),
+              firstTime: bodyPrescription.firstTime,
+              frequency: bodyPrescription.frequency,
+            },
+            prisma
+          );
+        }
+      );
+
+      res.status(201).json({ prescription });
+    } catch (error) {
+      res.status(500).json({
+        message: ["An error occurred while creating the prescription.", error],
+      });
+    }
+  };
+
   public update = async (req: Request, res: Response) => {
     const bodyPrescription = req.body;
 

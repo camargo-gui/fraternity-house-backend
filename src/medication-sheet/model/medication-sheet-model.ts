@@ -25,8 +25,17 @@ export class MedicationSheetModel {
       });
     }
 
-    return {...sheet, medicationWasCreated: createMedicationSheet};
+    return { ...sheet, medicationWasCreated: createMedicationSheet };
   }
+
+  update = (medicationSheet: MedicationSheetDTO) => {
+    return this.prismaClient.medicationSheet.update({
+      where: { id: medicationSheet.id },
+      data: {
+        observations: medicationSheet.observations,
+      },
+    });
+  };
 
   getAll = () => {
     return this.prismaClient.medicationSheet.findMany({
@@ -71,6 +80,41 @@ export class MedicationSheetModel {
         },
         observations: true,
         createdAt: true,
+      },
+    });
+  };
+
+  getById = (id: number) => {
+    return this.prismaClient.medicationSheet.findUnique({
+      where: { id },
+    });
+  };
+
+  getByResidentId = (residentId: number, prisma: Prisma.TransactionClient) => {
+    return prisma.medicationSheet.findFirst({
+      where: { residentId },
+      select: {
+        id: true,
+        Resident: {
+          select: {
+            id: true,
+            name: true,
+            birthday: true,
+            cpf: true,
+            rg: true,
+            contact_phone: true,
+          },
+        },
+        Employee: {
+          select: {
+            id: true,
+            name: true,
+            document: true,
+            email: true,
+            phone: true,
+            Role: true,
+          },
+        },
       },
     });
   };
