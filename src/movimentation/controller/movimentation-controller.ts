@@ -53,7 +53,7 @@ export class MovimentationController {
   
       return res.status(201).send();
     } catch (error) {
-      return res.status(400).send({ message: (error as Error).message });
+      return res.status(400).send({ message:[(error as Error).message] });
     }
   };
   
