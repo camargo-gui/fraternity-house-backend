@@ -12,9 +12,23 @@ export class MovimentationModel {
   };
 
   getMovimentations = async () => {
-    return this.prismaClient.movimentation.findMany({
-      orderBy: {
-        created_at: "desc"
+    return await this.prismaClient.movimentation.findMany({
+      include: {
+        ProductMovimentations: {
+          include: {
+            Product: {
+              select: {
+                name: true,
+                measurement: true
+              }
+            }
+          }
+        },
+        Employee: {
+          select: {
+            name: true
+          }
+        }
       }
     });
   };

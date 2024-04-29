@@ -62,26 +62,19 @@ export class MovimentationController {
   getMovimentations = async (req: Request, res: Response) => {
     try {
       const movimentations = await this.movimentationModel.getMovimentations();
-      const detailedMovimentations = await Promise.all(movimentations.map(async (mov) => {
-        const products = await this.productMovimentationModel.getMovimentations(mov.id);
-        const productsNamed = await Promise.all(products.map(async (product) => {
-          const productData = await this.productModel.getById(product.id_product);
-          return {
-            ...product,
-            name: productData?.name,
-            measurement: productData?.measurement
-          };
-        }));
-        const employee = await this.employeeModel.getById(mov.id_employee);
-        return {
-          ...mov,
-          products: productsNamed,
-          employee_name: employee?.name
-        };
+      const movimentationsWithDetails = movimentations.map((mov) => ({
+        ...mov,
+        products: mov.ProductMovimentations.map(pm => ({
+          ...pm,
+          name: pm.Product.name,
+          measurement: pm.Product.measurement
+        })),
+        employee_name: mov.Employee.name
       }));
-      return res.status(200).send(detailedMovimentations);
+  
+      return res.status(200).send(movimentationsWithDetails);
     } catch (error) {
-      return res.status(500).send({message: ["Erro ao buscar movimentações"]});
+      return res.status(500).send({ message: ["Erro ao buscar movimentações"] });
     }
   };
 }
