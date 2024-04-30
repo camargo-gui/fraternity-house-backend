@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
 import moment from "moment";
+import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
 import { PrescriptionModel } from "prescription/model/prescription-model";
 
 export class PrescriptionController {
@@ -60,8 +61,8 @@ export class PrescriptionController {
         return res.status(404).json({ message: ["Prescription not found."] });
       }
 
-      if (!this.isValidDates(prescriptionExists)) {
-        return res.status(404).json({
+      if (!this.isValidDates(bodyPrescription as PrescriptionDTO)) {
+        return res.status(400).json({
           message: [
             "As datas de início e término das prescrições devem ser válidas e posteriores à data atual.",
           ],
@@ -117,8 +118,7 @@ export class PrescriptionController {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private isValidDates(prescription: any): boolean {
+  private isValidDates(prescription: PrescriptionDTO): boolean {
     const startDate = moment(prescription.startDate, "YYYY-MM-DD");
     const endDate = moment(prescription.endDate, "YYYY-MM-DD");
     const today = moment().startOf("day");
