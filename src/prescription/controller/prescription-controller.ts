@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
+import moment from "moment";
 import { PrescriptionModel } from "prescription/model/prescription-model";
 
 export class PrescriptionController {
@@ -56,7 +57,15 @@ export class PrescriptionController {
       );
 
       if (!prescriptionExists) {
-        return res.status(404).json({ message: "Prescription not found." });
+        return res.status(404).json({ message: ["Prescription not found."] });
+      }
+
+      if (!this.isValidDates(prescriptionExists)) {
+        return res.status(404).json({
+          message: [
+            "As datas de início e término das prescrições devem ser válidas e posteriores à data atual.",
+          ],
+        });
       }
 
       const updatedPrescription = await this.prescriptionModel.update({
@@ -107,4 +116,19 @@ export class PrescriptionController {
       });
     }
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private isValidDates(prescription: any): boolean {
+    const startDate = moment(prescription.startDate, "YYYY-MM-DD");
+    const endDate = moment(prescription.endDate, "YYYY-MM-DD");
+    const today = moment().startOf("day");
+    if (
+      moment(startDate).isAfter(moment(endDate)) ||
+      moment(startDate).isBefore(today)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
 }

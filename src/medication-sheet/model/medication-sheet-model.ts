@@ -4,29 +4,36 @@ import { MedicationSheetDTO } from "medication-sheet/DTO/medication-sheet-dto";
 export class MedicationSheetModel {
   private prismaClient = new PrismaClient();
 
-  async getOrCreateSheet(
+  create = async (
     { residentId, createdBy, observations }: MedicationSheetDTO,
     prisma: Prisma.TransactionClient
-  ) {
-    let createMedicationSheet = false;
-    let sheet = await prisma.medicationSheet.findFirst({
-      where: { residentId },
-      orderBy: { createdAt: "desc" },
-    });
-
-    if (sheet == null) {
-      createMedicationSheet = true;
-      sheet = await prisma.medicationSheet.create({
-        data: {
-          residentId,
-          createdBy,
-          observations,
+  ) => {
+    return prisma.medicationSheet.create({
+      data: {
+        residentId,
+        createdBy,
+        observations,
+      },
+      include: {
+        Resident: true,
+        Employee: {
+          select: {
+            id: true,
+            name: true,
+            document: true,
+            email: true,
+            phone: true,
+            Role: true,
+          },
         },
-      });
-    }
-
-    return { ...sheet, medicationWasCreated: createMedicationSheet };
-  }
+        prescriptions: {
+          include: {
+            Medicine: true,
+          },
+        },
+      },
+    });
+  };
 
   update = (medicationSheet: MedicationSheetDTO) => {
     return this.prismaClient.medicationSheet.update({
@@ -84,9 +91,28 @@ export class MedicationSheetModel {
     });
   };
 
-  getById = (id: number) => {
-    return this.prismaClient.medicationSheet.findUnique({
-      where: { id },
+  getById = async (residentId: number, prisma: Prisma.TransactionClient) => {
+    return prisma.medicationSheet.findFirst({
+      where: { residentId },
+      orderBy: { createdAt: "desc" },
+      include: {
+        Resident: true,
+        Employee: {
+          select: {
+            id: true,
+            name: true,
+            document: true,
+            email: true,
+            phone: true,
+            Role: true,
+          },
+        },
+        prescriptions: {
+          include: {
+            Medicine: true,
+          },
+        },
+      },
     });
   };
 

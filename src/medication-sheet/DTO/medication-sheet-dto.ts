@@ -1,4 +1,4 @@
-import { PrescriptionDTO } from "medication-sheet/DTO/prescription-dto";
+import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
 
 export interface MedicationSheetDTO {
   id?: number;
