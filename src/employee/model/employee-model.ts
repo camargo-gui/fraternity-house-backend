@@ -60,6 +60,18 @@ export class EmployeeModel {
       where: {
         document: document,
       },
+      select: {
+        id: true,
+        document: true,
+        role_id: true,
+        password: true,
+        name: true,
+        email: true,
+        phone: true,
+        created_at: true,
+        updated_at: true,
+        Role: true,
+      },
     });
   };
 
