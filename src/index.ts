@@ -13,6 +13,7 @@ import medicationSheetRoutes from "medication-sheet/routes/medication-sheet-rout
 import movimentationRoutes from "movimentation/routes/movimentation-routes";
 import productRoutes from "product/routes/product-routes";
 import prescriptionRoutes from "prescription/routes/prescription-routes";
+import resetPasswordRoutes from "employee/routes/employee-reset-password-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -41,5 +42,6 @@ app.use("/medication-sheet", medicationSheetRoutes);
 app.use("/movimentation", movimentationRoutes);
 app.use("/product", productRoutes);
 app.use("/prescription", prescriptionRoutes);
+app.use("/reset-password", resetPasswordRoutes);
 
 app.listen(process.env.PORT || 3344);

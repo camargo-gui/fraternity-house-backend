@@ -94,6 +94,17 @@ export class EmployeeModel {
     });
   };
 
+  updatePassword = (id: number, password: string) => {
+    return prismaClient.employee.update({
+      where: {
+        id: id,
+      },
+      data: {
+        password: new Password(password).createHash(),
+      },
+    });
+  };
+
   delete = (document: string) => {
     return prismaClient.employee.delete({
       where: {
