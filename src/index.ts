@@ -14,6 +14,8 @@ import movimentationRoutes from "movimentation/routes/movimentation-routes";
 import productRoutes from "product/routes/product-routes";
 import prescriptionRoutes from "prescription/routes/prescription-routes";
 import resetPasswordRoutes from "employee/routes/employee-reset-password-routes";
+import screeningRoutes from "screening/routes/screening-routes";
+
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -43,5 +45,6 @@ app.use("/movimentation", movimentationRoutes);
 app.use("/product", productRoutes);
 app.use("/prescription", prescriptionRoutes);
 app.use("/reset-password", resetPasswordRoutes);
+app.use("/screening", screeningRoutes);
 
 app.listen(process.env.PORT || 3344);

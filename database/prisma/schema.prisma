@@ -19,6 +19,7 @@ model Resident {
   created_at      DateTime          @default(now())
   updated_at      DateTime?         @updatedAt
   MedicationSheet MedicationSheet[]
+  Screening       Screening?
 }
 
 model Role {
@@ -39,7 +40,7 @@ model Employee {
   created_at      DateTime          @default(now())
   updated_at      DateTime?         @updatedAt
   MedicationSheet MedicationSheet[]
-  Movimentations Movimentation[]
+  Movimentations  Movimentation[]
 }
 
 model PharmacologicalName {
@@ -83,18 +84,18 @@ model MedicationSheet {
 }
 
 model Prescription {
-  id                  Int             @id @default(autoincrement())
-  medicationSheetId   Int
-  MedicationSheet     MedicationSheet @relation(fields: [medicationSheetId], references: [id])
-  medicineId          Int
-  Medicine            Medicine        @relation(fields: [medicineId], references: [id])
-  dosage              String
-  frequency           String
-  startDate           DateTime
-  endDate             DateTime
-  firstTime           String // "HH:mm"
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime?       @updatedAt
+  id                Int             @id @default(autoincrement())
+  medicationSheetId Int
+  MedicationSheet   MedicationSheet @relation(fields: [medicationSheetId], references: [id])
+  medicineId        Int
+  Medicine          Medicine        @relation(fields: [medicineId], references: [id])
+  dosage            String
+  frequency         String
+  startDate         DateTime
+  endDate           DateTime
+  firstTime         String // "HH:mm"
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime?       @updatedAt
 }
 
 model Product {
@@ -126,6 +127,60 @@ model ProductMovimentation {
   quantity         Int
   created_at       DateTime      @default(now())
   updated_at       DateTime?     @updatedAt
+}
+
+model Screening {
+  id                      Int          @id @default(autoincrement())
+  religion                String
+  smoking                 Boolean
+  entry_date              DateTime
+  father_name             String
+  mother_name             String
+  source_of_income        String
+  income                  Float
+  health_insurance        String
+  funeral_insurance       String
+  number_of_sibling       Int
+  number_of_children      Int
+  number_of_grandchildren Int
+  id_resident             Int          @unique
+  Resident                Resident     @relation(fields: [id_resident], references: [id])
+  Responsible             Responsible?
+  Illnesses               Illnesses[]
+  SpecialNeeds            SpecialNeeds[]
+}
+
+model Responsible {
+  id           Int       @id @default(autoincrement())
+  name         String
+  kinship      String
+  phone        String
+  civil_state  String
+  profession   String
+  address       String
+  number       String
+  city         String
+  state        String
+  neighborhood String
+  zip_code     String
+  id_screening Int       @unique
+  Screening    Screening @relation(fields: [id_screening], references: [id])
+}
+
+model Illnesses {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  screeningId Int 
+  Screening  Screening @relation(fields: [screeningId], references: [id])
+}
+
+model SpecialNeeds {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  screeningId Int
+  Screening   Screening @relation(fields: [screeningId], references: [id])  
 }
 
 enum MovimentationType {
