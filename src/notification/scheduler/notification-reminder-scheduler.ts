@@ -1,95 +1,109 @@
-import { prismaClient } from "client/prisma-client";
+import assert from "assert";
 import EmailService from "common/services/send-email-service";
 import SMSService from "common/services/sms-service";
 import { EmployeeModel } from "employee/model/employee-model";
-import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
-import { MedicineModel } from "medicine/model/medicine-model";
 import moment from "moment";
 import cron from "node-cron";
+import { buildEmailMessageForEmployee } from "notification/email-template/notification-email-template";
 import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
 import { PrescriptionModel } from "prescription/model/prescription-model";
-import { ResidentModel } from "resident/model/resident-model";
+
+type PrescriptionWithRelations = PrescriptionDTO & {
+  MedicationSheet: {
+    createdBy: number;
+    Resident: { name: string };
+    Employee: { name: string; phone: string; email: string };
+  };
+  Medicine: { name: string };
+};
+
+export interface PrescriptionDetail {
+  residentName: string;
+  medicineName: string;
+  dosage: string;
+  time: string;
+  endDate: string;
+}
+
+interface GroupedPrescriptions {
+  [employeeId: string]: PrescriptionDetail[];
+}
 
 const emailService = new EmailService();
 const smsService = new SMSService();
-
-const medicineModel = new MedicineModel();
 const employeeModel = new EmployeeModel();
-const residentModel = new ResidentModel();
-const medicationSheetModel = new MedicationSheetModel();
 const prescriptionModel = new PrescriptionModel();
 
-async function scheduleAllMedicationReminders() {
-  try {
-    const prescriptions = await prescriptionModel.getAll();
-    if (!prescriptions) {
-      console.log("No prescriptions found.");
-      return;
-    }
+const scheduleHourlyMedicationReminders = async () => {
+  cron.schedule("0 * * * *", async () => {
+    const currentTime = moment().subtract(3, "hours");
+    const prescriptionsDueThisHour = await getPrescriptionsDue(currentTime);
 
-    prescriptions.forEach((prescription) => {
-      scheduleMedicationReminders(prescription);
-    });
-  } catch (error) {
-    console.log("Failed to fetch prescriptions:", error);
-  }
-}
-
-function scheduleMedicationReminders(prescription: PrescriptionDTO): void {
-  const { startDate, frequency, dosage, medicineId, endDate, firstTime } =
-    prescription;
-  const firstDoseTime = moment(startDate)
-    .hours(Number(firstTime.substring(0, 2)))
-    .minutes(Number(firstTime.substring(3, 5)));
-  const prescriptionEndDate = moment(endDate);
-
-  const scheduledTime = firstDoseTime;
-
-  while (scheduledTime <= prescriptionEndDate) {
-    const reminderTime = moment(scheduledTime)
-      .subtract(10, "minutes")
-      .add(3, "hours");
-
-    cron.schedule(
-      `${reminderTime.minute()} ${reminderTime.hour()} ${reminderTime.date()} ${
-        reminderTime.month() + 1
-      } *`,
-      async () => {
-        const medicineDetails = await medicineModel.getById(medicineId);
-
-        const medicationSheet = await medicationSheetModel.getById(
-          prescription.medicationSheetId,
-          prismaClient
-        );
-        const employee = await employeeModel.getById(
-          medicationSheet?.createdBy ?? 0
-        );
-        const resident = await residentModel.getById(
-          medicationSheet?.residentId ?? 0
-        );
-
-        if (!medicineDetails || !employee || !resident) {
-          console.log("Failed to get medicine or employee details.");
-          return;
-        }
-
-        const message = `
-        É hora de preparar a medicação ${medicineDetails.name} (${dosage}).\n
-        Morador: ${resident.name}
-        `;
-
-        await emailService.sendEmail(
-          employee.email,
-          "Lembrete de Medicação",
-          `<p>${message}</p>`
-        );
-
-        await smsService.sendSMS(`+55${employee.phone}`, message);
-      }
+    const notificationsByEmployee = groupPrescriptionsByEmployee(
+      prescriptionsDueThisHour
     );
 
-    scheduledTime.add(frequency, "hours");
-  }
-}
+    for (const [employeeId, details] of Object.entries(
+      notificationsByEmployee
+    )) {
+      const employee = await employeeModel.getById(Number(employeeId));
+      const message = buildMessageForEmployee(details);
+      assert(employee, `Employee not found for id ${employeeId}`);
 
-export { scheduleAllMedicationReminders };
+      const emailMessage = buildEmailMessageForEmployee(details, employee.name);
+
+      await smsService.sendSMS(`+55${employee.phone}`, message);
+      await emailService.sendEmail(
+        employee.email,
+        "Lembrete de Medicação",
+        emailMessage
+      );
+    }
+  });
+};
+
+const getPrescriptionsDue = async (currentTime: moment.Moment) => {
+  const startOfHour = currentTime.startOf("hour").get("hour");
+  const endOfHour = currentTime.startOf("hour").add(1, "hour").get("hour");
+
+  const prescriptions = await prescriptionModel.getAll();
+
+  return prescriptions.filter((prescription) => {
+    const firstTime = moment(prescription.firstTime, "HH:mm").get("hour");
+    return firstTime >= startOfHour && firstTime < endOfHour;
+  });
+};
+
+const groupPrescriptionsByEmployee = (
+  prescriptions: PrescriptionWithRelations[]
+): GroupedPrescriptions => {
+  const grouped: GroupedPrescriptions = {};
+  prescriptions.forEach((prescription) => {
+    const createdBy = String(prescription.MedicationSheet.createdBy);
+    if (!grouped[createdBy]) {
+      grouped[createdBy] = [];
+    }
+    grouped[createdBy].push({
+      residentName: prescription.MedicationSheet.Resident.name,
+      medicineName: prescription.Medicine.name,
+      dosage: prescription.dosage,
+      time: prescription.firstTime,
+      endDate: moment(prescription.endDate).format("DD/MM/YYYY"),
+    });
+  });
+  return grouped;
+};
+
+const buildMessageForEmployee = (details: PrescriptionDetail[]) => {
+  let message =
+    details.length > 1
+      ? "Bora preparar os medicamentos:\n"
+      : "Bora preparar o medicamento:\n";
+
+  details.forEach((detail) => {
+    message += `Morador: ${detail.residentName} | Medicamento: ${detail.medicineName} (${detail.dosage}) | hora: ${detail.time}\n\n`;
+  });
+  return message;
+};
+
+export { scheduleHourlyMedicationReminders };

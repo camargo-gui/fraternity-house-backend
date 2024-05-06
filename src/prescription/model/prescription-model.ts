@@ -75,12 +75,35 @@ export class PrescriptionModel {
     return this.prismaClient.prescription.findMany({
       select: {
         id: true,
-        medicineId: true,
-        medicationSheetId: true,
         dosage: true,
         firstTime: true,
         frequency: true,
-        Medicine: true,
+        medicationSheetId: true,
+        medicineId: true,
+        MedicationSheet: {
+          select: {
+            id: true,
+            residentId: true,
+            createdBy: true,
+            Resident: {
+              select: {
+                name: true,
+              },
+            },
+            Employee: {
+              select: {
+                name: true,
+                phone: true,
+                email: true,
+              },
+            },
+          },
+        },
+        Medicine: {
+          select: {
+            name: true,
+          },
+        },
         startDate: true,
         endDate: true,
         createdAt: true,
