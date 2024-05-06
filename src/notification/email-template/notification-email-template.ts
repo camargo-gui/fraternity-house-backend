@@ -40,7 +40,7 @@ export const buildEmailMessageForEmployee = (
   message += `
           </table>
           <p>Por favor, prepare as medicações conforme necessário.</p>
-          <p>Atenciosamente,<br/>Equipe de Saúde</p>
+          <p>Atenciosamente,<br/>Vila da fraternidade</p>
         </body>
       </html>`;
 

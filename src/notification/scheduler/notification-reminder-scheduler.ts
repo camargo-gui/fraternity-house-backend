@@ -35,11 +35,9 @@ const employeeModel = new EmployeeModel();
 const prescriptionModel = new PrescriptionModel();
 
 const scheduleHourlyMedicationReminders = async () => {
-  cron.schedule("30 * * * *", async () => {
-    const currentTime = moment().subtract(30, "minutes");
-    const prescriptionsDueNextHour = await getPrescriptionsDue(
-      currentTime.add(1, "hours")
-    );
+  cron.schedule("0 * * * *", async () => {
+    const nextHour = moment().add(30, "minutes").startOf("hour");
+    const prescriptionsDueNextHour = await getPrescriptionsDue(nextHour);
 
     const notificationsByEmployee = groupPrescriptionsByEmployee(
       prescriptionsDueNextHour
@@ -65,7 +63,7 @@ const scheduleHourlyMedicationReminders = async () => {
 };
 
 const getPrescriptionsDue = async (targetTime: moment.Moment) => {
-  const startOfHour = targetTime.startOf("hour");
+  const startOfHour = targetTime;
   const endOfHour = moment(startOfHour).add(1, "hour");
 
   const prescriptions = await prescriptionModel.getAll();
@@ -73,8 +71,8 @@ const getPrescriptionsDue = async (targetTime: moment.Moment) => {
   return prescriptions.filter((prescription) => {
     const prescriptionTime = moment(prescription.firstTime, "HH:mm");
     return (
-      prescriptionTime.isSameOrAfter(startOfHour) &&
-      prescriptionTime.isBefore(endOfHour)
+      prescriptionTime.isSameOrAfter(startOfHour.subtract(3, "hours")) &&
+      prescriptionTime.isBefore(endOfHour.subtract(3, "hours"))
     );
   });
 };
