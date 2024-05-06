@@ -35,21 +35,23 @@ const employeeModel = new EmployeeModel();
 const prescriptionModel = new PrescriptionModel();
 
 const scheduleHourlyMedicationReminders = async () => {
-  cron.schedule("0 * * * *", async () => {
-    const currentTime = moment().subtract(3, "hours");
-    const prescriptionsDueThisHour = await getPrescriptionsDue(currentTime);
+  cron.schedule("30 * * * *", async () => {
+    const currentTime = moment().subtract(30, "minutes");
+    const prescriptionsDueNextHour = await getPrescriptionsDue(
+      currentTime.add(1, "hours")
+    );
 
     const notificationsByEmployee = groupPrescriptionsByEmployee(
-      prescriptionsDueThisHour
+      prescriptionsDueNextHour
     );
 
     for (const [employeeId, details] of Object.entries(
       notificationsByEmployee
     )) {
       const employee = await employeeModel.getById(Number(employeeId));
-      const message = buildMessageForEmployee(details);
       assert(employee, `Employee not found for id ${employeeId}`);
 
+      const message = buildMessageForEmployee(details);
       const emailMessage = buildEmailMessageForEmployee(details, employee.name);
 
       await smsService.sendSMS(`+55${employee.phone}`, message);
@@ -62,15 +64,18 @@ const scheduleHourlyMedicationReminders = async () => {
   });
 };
 
-const getPrescriptionsDue = async (currentTime: moment.Moment) => {
-  const startOfHour = currentTime.startOf("hour").get("hour");
-  const endOfHour = currentTime.startOf("hour").add(1, "hour").get("hour");
+const getPrescriptionsDue = async (targetTime: moment.Moment) => {
+  const startOfHour = targetTime.startOf("hour");
+  const endOfHour = moment(startOfHour).add(1, "hour");
 
   const prescriptions = await prescriptionModel.getAll();
 
   return prescriptions.filter((prescription) => {
-    const firstTime = moment(prescription.firstTime, "HH:mm").get("hour");
-    return firstTime >= startOfHour && firstTime < endOfHour;
+    const prescriptionTime = moment(prescription.firstTime, "HH:mm");
+    return (
+      prescriptionTime.isSameOrAfter(startOfHour) &&
+      prescriptionTime.isBefore(endOfHour)
+    );
   });
 };
 
@@ -101,7 +106,7 @@ const buildMessageForEmployee = (details: PrescriptionDetail[]) => {
       : "Bora preparar o medicamento:\n";
 
   details.forEach((detail) => {
-    message += `Morador: ${detail.residentName} | Medicamento: ${detail.medicineName} (${detail.dosage}) | hora: ${detail.time}\n\n`;
+    message += `Morador: ${detail.residentName}\nMedicamento: ${detail.medicineName} (${detail.dosage})\nhora: ${detail.time}\n\n`;
   });
   return message;
 };
