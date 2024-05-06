@@ -25,7 +25,7 @@ export class MedicationSheetController {
     try {
       const medicationSheet = await this.prismaClient.$transaction(
         async (prisma) => {
-          let sheet = await this.medicationSheetModel.getById(
+          let sheet = await this.medicationSheetModel.getByResidentId(
             residentId,
             prisma
           );

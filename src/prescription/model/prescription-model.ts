@@ -71,7 +71,27 @@ export class PrescriptionModel {
     });
   };
 
-  getAllByMedicationSheetId = (medicationSheetId: number, prisma: Prisma.TransactionClient) => {
+  getAll = () => {
+    return this.prismaClient.prescription.findMany({
+      select: {
+        id: true,
+        medicineId: true,
+        medicationSheetId: true,
+        dosage: true,
+        firstTime: true,
+        frequency: true,
+        Medicine: true,
+        startDate: true,
+        endDate: true,
+        createdAt: true,
+      },
+    });
+  };
+
+  getAllByMedicationSheetId = (
+    medicationSheetId: number,
+    prisma: Prisma.TransactionClient
+  ) => {
     return prisma.prescription.findMany({
       where: { medicationSheetId },
       select: {

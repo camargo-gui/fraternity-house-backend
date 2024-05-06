@@ -91,9 +91,9 @@ export class MedicationSheetModel {
     });
   };
 
-  getById = async (residentId: number, prisma: Prisma.TransactionClient) => {
+  getById = async (id: number, prisma: Prisma.TransactionClient) => {
     return prisma.medicationSheet.findFirst({
-      where: { residentId },
+      where: { id },
       orderBy: { createdAt: "desc" },
       include: {
         Resident: true,
