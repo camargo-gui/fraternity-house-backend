@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ScreeningDTO } from "screening/DTO/screening-dto";
+import { DefaultScreeningResponse } from "screening/controller/response/default-screening-response";
 import { ScreeningModel } from "screening/model/screening-model";
 
 export class ScreeningController {
@@ -21,7 +22,7 @@ export class ScreeningController {
       const id_resident = Number(req.params.id_resident);
       if(!id_resident) return res.status(400).json({ message: ["Resident ID is required"] });
       const screening = await this.screeningModel.getByResident(id_resident);
-      if(!screening) return res.status(404).json({ message: ["Screening not found"] });
+      if(!screening) return res.status(200).json({ screening: DefaultScreeningResponse });
       res.status(200).json(screening);
     } catch (error) {
       res.status(500).json({ message: [error] });

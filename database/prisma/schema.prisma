@@ -171,16 +171,14 @@ model Illnesses {
   id          Int        @id @default(autoincrement())
   name        String
   description String
-  screeningId Int 
-  Screening  Screening @relation(fields: [screeningId], references: [id])
+  Screening  Screening[] 
 }
 
 model SpecialNeeds {
   id          Int        @id @default(autoincrement())
   name        String
   description String
-  screeningId Int
-  Screening   Screening @relation(fields: [screeningId], references: [id])  
+  Screening   Screening[] 
 }
 
 enum MovimentationType {
