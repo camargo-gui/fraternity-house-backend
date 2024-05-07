@@ -3,13 +3,16 @@ import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middle
 import { ValidateEmployeeDataMiddleware } from "employee/middleware/validate-employee-data-middleware";
 import { Router } from "express";
 
-
 const routes = Router();
 const controller = new EmployeeController();
 const authMiddleware = new EmployeeAuthMiddleware();
 const valiidateEmployeeMiddleware = new ValidateEmployeeDataMiddleware();
 
-routes.post("/", authMiddleware.execute, valiidateEmployeeMiddleware.execute, controller.create);
+routes.post(
+  "/",
+  /*authMiddleware.execute,*/ valiidateEmployeeMiddleware.execute,
+  controller.create
+);
 routes.get("/", authMiddleware.execute, controller.getAll);
 routes.delete("/:document", authMiddleware.execute, controller.delete);
 routes.put("/", authMiddleware.execute, controller.update);
