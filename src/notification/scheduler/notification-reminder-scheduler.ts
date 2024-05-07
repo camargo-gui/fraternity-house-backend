@@ -2,7 +2,7 @@ import assert from "assert";
 import EmailService from "common/services/send-email-service";
 import SMSService from "common/services/sms-service";
 import { EmployeeModel } from "employee/model/employee-model";
-import moment from "moment";
+import moment from "moment-timezone";
 import cron from "node-cron";
 import { buildEmailMessageForEmployee } from "notification/email-template/notification-email-template";
 import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
@@ -25,6 +25,20 @@ export interface PrescriptionDetail {
   endDate: string;
 }
 
+interface PrescriptionTimeCalculationInput {
+  firstTime: string;
+  frequency: number;
+  duration: moment.Moment;
+}
+
+interface ExtendedPrescription extends PrescriptionWithRelations {
+  scheduledTime: string;
+}
+
+const getTimeInSaoPaulo = (time: string): moment.Moment => {
+  return moment.tz(time, "HH:mm", "America/Sao_Paulo");
+};
+
 interface GroupedPrescriptions {
   [employeeId: string]: PrescriptionDetail[];
 }
@@ -35,8 +49,11 @@ const employeeModel = new EmployeeModel();
 const prescriptionModel = new PrescriptionModel();
 
 const scheduleHourlyMedicationReminders = async () => {
-  cron.schedule("0 * * * *", async () => {
-    const nextHour = moment().add(30, "minutes").startOf("hour");
+  cron.schedule("30 * * * *", async () => {
+    const nextHour = moment()
+      .tz("America/Sao_Paulo")
+      .add(30, "minutes")
+      .startOf("hour");
     const prescriptionsDueNextHour = await getPrescriptionsDue(nextHour);
 
     const notificationsByEmployee = groupPrescriptionsByEmployee(
@@ -62,18 +79,46 @@ const scheduleHourlyMedicationReminders = async () => {
   });
 };
 
-const getPrescriptionsDue = async (targetTime: moment.Moment) => {
-  const startOfHour = targetTime;
-  const endOfHour = moment(startOfHour).add(1, "hour");
+const calculateScheduledTimes = ({
+  firstTime,
+  frequency,
+  duration,
+}: PrescriptionTimeCalculationInput): moment.Moment[] => {
+  const times = [];
+  const currentTime = getTimeInSaoPaulo(firstTime);
 
+  while (currentTime.isBefore(duration)) {
+    times.push(currentTime.clone());
+    currentTime.add(frequency, "hours");
+  }
+
+  return times;
+};
+
+const getPrescriptionsDue = async (
+  targetTime: moment.Moment
+): Promise<ExtendedPrescription[]> => {
+  const startOfHour = getTimeInSaoPaulo(targetTime.format("HH:mm")).startOf(
+    "hour"
+  );
+  const endOfHour = startOfHour.clone().add(1, "hour");
   const prescriptions = await prescriptionModel.getAll();
 
-  return prescriptions.filter((prescription) => {
-    const prescriptionTime = moment(prescription.firstTime, "HH:mm");
-    return (
-      prescriptionTime.isSameOrAfter(startOfHour.subtract(3, "hours")) &&
-      prescriptionTime.isBefore(endOfHour.subtract(3, "hours"))
-    );
+  return prescriptions.flatMap((prescription) => {
+    const times = calculateScheduledTimes({
+      firstTime: prescription.firstTime,
+      frequency: Number(prescription.frequency),
+      duration: endOfHour,
+    });
+
+    return times
+      .filter(
+        (time) => time.isSameOrAfter(startOfHour) && time.isBefore(endOfHour)
+      )
+      .map((time) => ({
+        ...prescription,
+        scheduledTime: time.format("HH:mm"),
+      }));
   });
 };
 
