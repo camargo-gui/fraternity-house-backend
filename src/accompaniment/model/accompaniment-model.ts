@@ -18,7 +18,10 @@ export class AccompanimentModel {
     return await accompanimentDAO.create(accompaniment);
   }
 
-  async get() {}
+  async get() {
+    const accompanimentDAO = new AccompaninmentDAO();
+    return await accompanimentDAO.get();
+  }
 
   async getAccompanimentByResId() {
     const accompanimentDAO = new AccompaninmentDAO();

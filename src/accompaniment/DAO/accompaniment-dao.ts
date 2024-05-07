@@ -19,10 +19,8 @@ export class AccompaninmentDAO {
 
   async create(accompaniment: AccompanimentDTO) {
     try {
-      console.log("Acompanhamento: ", accompaniment);
-      console.log("Conexão: ", this.client);
       await this.client.query(
-        "INSERT INTO Accompaniment (description, employeeId, residentId, type) VALUES ($1, $2, $3, $4)",
+        "INSERT INTO \"Accompaniment\" (description, employeeId, residentId, type) VALUES ($1, $2, $3, $4)",
         [
           accompaniment.description,
           accompaniment.employeeId,
@@ -39,7 +37,8 @@ export class AccompaninmentDAO {
   }
 
   async get() {
-    // Implementação para obter acompanhamentos
+    const result = await this.client.query("SELECT * FROM \"Accompaniment\"");
+    return result.rows;
   }
 
   async getAccompanimentByResId() {
