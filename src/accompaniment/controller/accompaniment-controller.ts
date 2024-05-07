@@ -36,9 +36,15 @@ export class AccompanimentController {
     }
   };
 
-  async get() {
-    // get accompaniment
-  }
+  get = async (req: Request, res: Response) => {
+    try {
+      const accompaniments = await this.model.get();
+      res.status(200).json(accompaniments);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: ["Erro ao recuperar acompanhamentos!", err] });
+    }
+  };
 
   async getAccompanimentByResId() {
     // get accompaniment by resident id
