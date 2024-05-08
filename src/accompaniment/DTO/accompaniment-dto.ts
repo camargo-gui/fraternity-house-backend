@@ -5,4 +5,5 @@ export interface AccompanimentDTO {
   employeeId: number;
   residentId: number;
   type: "PSYCHOLOGIST" | "PHYSIOTHERAPIST" | "NUTRITIONIST";
+  updated_at?: Date;
 }

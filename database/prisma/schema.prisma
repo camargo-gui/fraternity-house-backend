@@ -194,6 +194,7 @@ model Accompaniment {
   type        AccompanimentType
   Employee    Employee   @relation(fields: [employeeId], references: [id])
   Resident    Resident   @relation(fields: [residentId], references: [id])
+  updated_at       DateTime?     @updatedAt
 }
 
 enum MovimentationType {

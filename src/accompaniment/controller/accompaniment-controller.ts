@@ -1,4 +1,6 @@
 import { AccompanimentModel } from "accompaniment/model/accompaniment-model";
+import { poolConexao } from "client/postgres-client";
+import { AuthRequest } from "common/entities/auth-request";
 import { Request, Response } from "express";
 
 export class AccompanimentController {
@@ -19,8 +21,9 @@ export class AccompanimentController {
   create = async (req: Request, res: Response) => {
     try {
       const { description, employeeId, residentId, type } = req.body;
-
-      await this.model.create({
+      const client = await poolConexao.getInstance().connect();
+      await client.query("BEGIN");
+      await this.model.create(client, {
         description,
         employeeId,
         residentId,
@@ -36,21 +39,64 @@ export class AccompanimentController {
     }
   };
 
-  get = async (req: Request, res: Response) => {
+  get = async (req: AuthRequest, res: Response) => {
     try {
-      const accompaniments = await this.model.get();
-      res.status(200).json(accompaniments);
+      const { type, residentId } = req.query;
+      const client = await poolConexao.getInstance().connect();
+      let accompaniments = [];
+
+      if(!type && !residentId) {
+        return res.status(400).send({ message: ["Tipo de acompanhamento não informado!"] });
+      }
+      else if(type && residentId){
+        accompaniments = await this.model.getAccompanimentsByTypeAndId(
+          client,
+          type as string,
+          parseInt(residentId as string)
+        );
+      }
+
+      return res.status(200).json(accompaniments);
     } catch (err) {
       console.error(err);
-      res.status(500).send({ message: ["Erro ao recuperar acompanhamentos!", err] });
+      res
+        .status(500)
+        .send({ message: ["Erro ao recuperar acompanhamentos!"] });
     }
   };
 
-  async getAccompanimentByResId() {
-    // get accompaniment by resident id
-  }
+  getAllResidentsHasAccompaniments = async (req: AuthRequest, res: Response) => {
+    try {
+      const { type } = req.query;
+      const client = await poolConexao.getInstance().connect();
+      const accompaniments = await this.model.getAllResidentsHasAccompaniments(
+        client,
+        type as string
+      );
 
-  async delete() {
-    // delete accompaniment
-  }
+      return res.status(200).json(accompaniments);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .send({ message: ["Erro ao recuperar acompanhamentos!"] });
+    }
+  };
+
+  updateAccompaniments = async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      const { description } = req.body;
+      const client = await poolConexao.getInstance().connect();
+      await client.query("BEGIN");
+      await this.model.updateAccompaniments(client, description, Number(id));
+
+      return res
+        .status(200)
+        .send({ message: ["Acompanhamento atualizado com sucesso!"] });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({ message: ["Erro do servidor!"] });
+    }
+  };
 }
