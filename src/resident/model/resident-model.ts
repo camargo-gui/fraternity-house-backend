@@ -1,16 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-import { ResidentDTO } from "resident/DTO/resident-dto";
+import { Resident } from "resident/DTO/resident-dto";
 
 export class ResidentModel {
   private client = new PrismaClient();
   
-  create = async (resident: ResidentDTO) => {
+  create = async (resident: Resident) => {
     return this.client.resident.create({
       data: { ...resident },
     });
   };
 
-  update = async (resident: ResidentDTO) => {
+  update = async (resident: Resident) => {
     return this.client.resident.update({
       where: {
         cpf: resident.cpf,
@@ -30,7 +30,7 @@ export class ResidentModel {
     });
   };
 
-  getByCpf = async (cpf: string): Promise<ResidentDTO | null> => {
+  getByCpf = async (cpf: string): Promise<Resident | null> => {
     return this.client.resident.findFirst({
       where: {
         cpf,
@@ -38,7 +38,7 @@ export class ResidentModel {
     });
   };
 
-  getById = async (id: number): Promise<ResidentDTO | null> => {
+  getById = async (id: number): Promise<Resident | null> => {
     return this.client.resident.findFirst({
       where: {
         id,
@@ -46,7 +46,7 @@ export class ResidentModel {
     });
   };
 
-  getAll = async (): Promise<ResidentDTO[]> => {
+  getAll = async (): Promise<Resident[]> => {
     return this.client.resident.findMany();
   };
 }
