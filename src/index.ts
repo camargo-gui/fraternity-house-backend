@@ -5,7 +5,7 @@ import employeeRoutes from "employee/routes/employee-routes";
 import express from "express";
 import { DateTime } from "luxon";
 import medicineRoutes from "medicine/routes/medicine-routes";
-import { scheduleAllMedicationReminders } from "notification/scheduler/notification-reminder-scheduler";
+import { scheduleHourlyMedicationReminders } from "notification/scheduler/notification-reminder-scheduler";
 import residentRoutes from "resident/routes/resident-routes";
 import roleRoutes from "role/routes/role-routes";
 import pharmacologicalFormRoutes from "pharmacological-form/routes/pharmacological-form-routes";
@@ -17,6 +17,7 @@ import prescriptionRoutes from "prescription/routes/prescription-routes";
 import resetPasswordRoutes from "employee/routes/employee-reset-password-routes";
 import screeningRoutes from "screening/routes/screening-routes";
 import accompanimentRoutes from "accompaniment/routes/accompaniment-routes";
+import illnessesRoutes from "screening/routes/illnesses-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -48,7 +49,8 @@ app.use("/prescription", prescriptionRoutes);
 app.use("/reset-password", resetPasswordRoutes);
 app.use("/screening", screeningRoutes);
 app.use("/accompaniment", accompanimentRoutes);
+app.use("/illnesses", illnessesRoutes);
 
-scheduleAllMedicationReminders();
+scheduleHourlyMedicationReminders();
 
 app.listen(process.env.PORT || 3344);
