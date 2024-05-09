@@ -1,18 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { Movimentation } from "movimentation-singleton/entities/movimentation";
 
-export class MovimentationModelSing {
-  private static instance: MovimentationModelSing | null = null;
-
-  private constructor() {}
-
-  public static getInstance(): MovimentationModelSing {
-    if (!MovimentationModelSing.instance) {
-      MovimentationModelSing.instance = new MovimentationModelSing();
-    }
-    return MovimentationModelSing.instance;
-  }
-
+export class MovimentationModel {
   async create(
     movimentation: Movimentation,
     prisma: Prisma.TransactionClient
@@ -22,7 +11,7 @@ export class MovimentationModelSing {
         type: movimentation.type,
         id_employee: movimentation.employee.id,
         ProductMovimentations: {
-          create: movimentation.getProductList().map((product) => ({
+          create: movimentation.getProductMovimentations().map((product) => ({
             quantity: product.quantity,
             id_product: product.product.id,
           })),

@@ -1,18 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { MovimentationType } from "movimentation/DTO/movimentation-dto";
 
-export class ProductModelSing {
-  private static instance: ProductModelSing | null = null;
-
-  private constructor() {}
-
-  public static getInstance(): ProductModelSing {
-    if (!ProductModelSing.instance) {
-      ProductModelSing.instance = new ProductModelSing();
-    }
-    return ProductModelSing.instance;
-  }
-
+export class ProductModel {
   getById = async (id: number, prisma: Prisma.TransactionClient) => {
     return prisma.product.findUnique({
       where: {

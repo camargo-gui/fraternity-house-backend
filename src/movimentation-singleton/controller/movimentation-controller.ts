@@ -1,10 +1,10 @@
 import { prismaClient } from "client/prisma-client";
-import { EmployeeModelSing } from "employee/model/employee-model-singleton";
+import { EmployeeModel } from "employee/model/employee-model-singleton";
 import { Response } from "express";
-import { ProductModelSing } from "product/model/product-model-singleton";
+import { ProductModel } from "product/model/product-model-singleton";
 import { Employee } from "../../employee/DTO/employee";
 import { Movimentation } from "../entities/movimentation";
-import { MovimentationModelSing } from "../model/movimentation-model";
+import { MovimentationModel } from "../model/movimentation-model";
 import { ProductMovimentation } from "movimentation-singleton/entities/product-movimentation";
 import { Product } from "product/DTO/product";
 import { AuthRequest } from "common/entities/auth-request";
@@ -13,18 +13,18 @@ import { MovimentationType } from "movimentation/DTO/movimentation-dto";
 import { Prisma } from "@prisma/client";
 
 export class MovimentationController {
-  private movimentationModel: MovimentationModelSing;
-  private employeeModel: EmployeeModelSing;
-  private productModel: ProductModelSing;
+  private movimentationModel: MovimentationModel = new MovimentationModel();
+  private employeeModel: EmployeeModel = new EmployeeModel();
+  private productModel: ProductModel = new ProductModel();
+  private static instance: MovimentationController;
 
-  constructor(
-    movimentationModel: MovimentationModelSing,
-    employeeModel: EmployeeModelSing,
-    productModel: ProductModelSing
-  ) {
-    this.movimentationModel = movimentationModel;
-    this.employeeModel = employeeModel;
-    this.productModel = productModel;
+  private constructor() {}
+
+  public static getInstance(): MovimentationController {
+    if (!MovimentationController.instance) {
+      MovimentationController.instance = new MovimentationController();
+    }
+    return MovimentationController.instance;
   }
 
   public createMovimentation = async (
@@ -94,18 +94,15 @@ export class MovimentationController {
         throw new Error("Insufficient stock");
       }
 
-      await this.productModel.updateStock(
-        id,
+      await this.productModel.updateStock(id, quantity, type, prisma);
+
+      const productMov = ProductMovimentation.createOrUpdate(
+        productData,
         quantity,
-        type,
-        prisma
+        movimentation
       );
 
-      const productMovimentation = new ProductMovimentation(
-        new Product(id, productData.name, quantity, productData.measurement),
-        quantity
-      );
-      movimentation.addProduct(productMovimentation);
+      movimentation.addProductMovimentation(productMov);
     }
   };
 }

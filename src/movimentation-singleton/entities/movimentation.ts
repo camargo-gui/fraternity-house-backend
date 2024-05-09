@@ -1,12 +1,12 @@
+import { Employee } from "employee/DTO/employee";
 import { MovimentationType } from "movimentation/DTO/movimentation-dto";
 import { ProductMovimentation } from "./product-movimentation";
-import { Employee } from "employee/DTO/employee";
 
 export class Movimentation {
   id: number;
   type: MovimentationType;
   employee: Employee;
-  private products: Map<number, ProductMovimentation>;
+  private products: ProductMovimentation[];
   created_at: Date;
 
   constructor(
@@ -19,21 +19,21 @@ export class Movimentation {
     this.id = id;
     this.type = type;
     this.employee = employee;
-    this.products = new Map();
+    this.products = products;
     this.created_at = created_at;
-    products.forEach((prod) => this.addProduct(prod));
   }
 
-  addProduct(product: ProductMovimentation) {
-    const existingProduct = this.products.get(product.product.id);
-    if (existingProduct) {
-      existingProduct.quantity += product.quantity;
-    } else {
-      this.products.set(product.product.id, product);
-    }
+  addProductMovimentation(productMov: ProductMovimentation) {
+    this.products.push(productMov);
   }
 
-  getProductList(): ProductMovimentation[] {
-    return Array.from(this.products.values());
+  findProductMovimentation(
+    productId: number
+  ): ProductMovimentation | undefined {
+    return this.products.find((p) => p.product.id === productId);
+  }
+
+  getProductMovimentations(): ProductMovimentation[] {
+    return this.products;
   }
 }
