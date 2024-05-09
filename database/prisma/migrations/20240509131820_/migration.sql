@@ -184,7 +184,6 @@ CREATE TABLE "Illnesses" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "screeningId" INTEGER NOT NULL,
 
     CONSTRAINT "Illnesses_pkey" PRIMARY KEY ("id")
 );
@@ -194,7 +193,6 @@ CREATE TABLE "SpecialNeeds" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "screeningId" INTEGER NOT NULL,
 
     CONSTRAINT "SpecialNeeds_pkey" PRIMARY KEY ("id")
 );
@@ -207,8 +205,21 @@ CREATE TABLE "Accompaniment" (
     "employeeId" INTEGER NOT NULL,
     "residentId" INTEGER NOT NULL,
     "type" "AccompanimentType" NOT NULL,
+    "updated_at" TIMESTAMP(3),
 
     CONSTRAINT "Accompaniment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_ScreeningToSpecialNeeds" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_IllnessesToScreening" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -231,6 +242,18 @@ CREATE UNIQUE INDEX "Screening_id_resident_key" ON "Screening"("id_resident");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Responsible_id_screening_key" ON "Responsible"("id_screening");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_ScreeningToSpecialNeeds_AB_unique" ON "_ScreeningToSpecialNeeds"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_ScreeningToSpecialNeeds_B_index" ON "_ScreeningToSpecialNeeds"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_IllnessesToScreening_AB_unique" ON "_IllnessesToScreening"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_IllnessesToScreening_B_index" ON "_IllnessesToScreening"("B");
 
 -- AddForeignKey
 ALTER TABLE "Employee" ADD CONSTRAINT "Employee_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -269,13 +292,19 @@ ALTER TABLE "Screening" ADD CONSTRAINT "Screening_id_resident_fkey" FOREIGN KEY 
 ALTER TABLE "Responsible" ADD CONSTRAINT "Responsible_id_screening_fkey" FOREIGN KEY ("id_screening") REFERENCES "Screening"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Illnesses" ADD CONSTRAINT "Illnesses_screeningId_fkey" FOREIGN KEY ("screeningId") REFERENCES "Screening"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "SpecialNeeds" ADD CONSTRAINT "SpecialNeeds_screeningId_fkey" FOREIGN KEY ("screeningId") REFERENCES "Screening"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Accompaniment" ADD CONSTRAINT "Accompaniment_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Accompaniment" ADD CONSTRAINT "Accompaniment_residentId_fkey" FOREIGN KEY ("residentId") REFERENCES "Resident"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ScreeningToSpecialNeeds" ADD CONSTRAINT "_ScreeningToSpecialNeeds_A_fkey" FOREIGN KEY ("A") REFERENCES "Screening"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ScreeningToSpecialNeeds" ADD CONSTRAINT "_ScreeningToSpecialNeeds_B_fkey" FOREIGN KEY ("B") REFERENCES "SpecialNeeds"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_IllnessesToScreening" ADD CONSTRAINT "_IllnessesToScreening_A_fkey" FOREIGN KEY ("A") REFERENCES "Illnesses"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_IllnessesToScreening" ADD CONSTRAINT "_IllnessesToScreening_B_fkey" FOREIGN KEY ("B") REFERENCES "Screening"("id") ON DELETE CASCADE ON UPDATE CASCADE;
