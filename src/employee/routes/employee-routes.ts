@@ -15,7 +15,6 @@ routes.post(
   "/",
   validateEmployeeMiddleware.execute,
   authMiddleware.execute,
-  validateEmployeeMiddleware.execute,
   adminAuth.execute,
   controller.create
 );
