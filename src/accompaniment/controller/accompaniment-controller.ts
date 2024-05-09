@@ -60,7 +60,9 @@ export class AccompanimentController {
       return res.status(200).json(accompaniments);
     } catch (err) {
       console.error(err);
-      res.status(500).send({ message: ["Erro ao recuperar acompanhamentos!"] });
+      return res
+        .status(500)
+        .send({ message: ["Erro ao recuperar acompanhamentos!"] });
     }
   };
 
@@ -79,7 +81,9 @@ export class AccompanimentController {
       return res.status(200).json(accompaniments);
     } catch (err) {
       console.error(err);
-      res.status(500).send({ message: ["Erro ao recuperar acompanhamentos!"] });
+      return res
+        .status(500)
+        .send({ message: ["Erro ao recuperar acompanhamentos!"] });
     }
   };
 
