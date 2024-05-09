@@ -16,6 +16,8 @@ import productRoutes from "product/routes/product-routes";
 import prescriptionRoutes from "prescription/routes/prescription-routes";
 import resetPasswordRoutes from "employee/routes/employee-reset-password-routes";
 import screeningRoutes from "screening/routes/screening-routes";
+import accompanimentRoutes from "accompaniment/routes/accompaniment-routes";
+import illnessesRoutes from "screening/routes/illnesses-routes";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -46,6 +48,8 @@ app.use("/product", productRoutes);
 app.use("/prescription", prescriptionRoutes);
 app.use("/reset-password", resetPasswordRoutes);
 app.use("/screening", screeningRoutes);
+app.use("/accompaniment", accompanimentRoutes);
+app.use("/illnesses", illnessesRoutes);
 
 scheduleHourlyMedicationReminders();
 

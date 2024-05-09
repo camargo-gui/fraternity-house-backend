@@ -1,4 +1,4 @@
-export interface ResidentDTO {
+export interface Resident {
   cpf: string;
   rg: string;
   name: string;
