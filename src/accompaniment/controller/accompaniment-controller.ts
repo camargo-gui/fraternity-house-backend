@@ -18,14 +18,14 @@ export class AccompanimentController {
     return this.instance;
   }
 
-  create = async (req: Request, res: Response) => {
+  create = async (req: AuthRequest, res: Response) => {
     try {
-      const { description, employeeId, residentId, type } = req.body;
+      const { description, residentId, type } = req.body;
       const client = await poolConexao.getInstance().connect();
       await client.query("BEGIN");
       await this.model.create(client, {
         description,
-        employeeId,
+        employeeId: req.id ?? 0,
         residentId,
         type,
       });
@@ -45,10 +45,11 @@ export class AccompanimentController {
       const client = await poolConexao.getInstance().connect();
       let accompaniments = [];
 
-      if(!type && !residentId) {
-        return res.status(400).send({ message: ["Tipo de acompanhamento não informado!"] });
-      }
-      else if(type && residentId){
+      if (!type && !residentId) {
+        return res
+          .status(400)
+          .send({ message: ["Tipo de acompanhamento não informado!"] });
+      } else if (type && residentId) {
         accompaniments = await this.model.getAccompanimentsByTypeAndId(
           client,
           type as string,
@@ -59,13 +60,14 @@ export class AccompanimentController {
       return res.status(200).json(accompaniments);
     } catch (err) {
       console.error(err);
-      res
-        .status(500)
-        .send({ message: ["Erro ao recuperar acompanhamentos!"] });
+      res.status(500).send({ message: ["Erro ao recuperar acompanhamentos!"] });
     }
   };
 
-  getAllResidentsHasAccompaniments = async (req: AuthRequest, res: Response) => {
+  getAllResidentsHasAccompaniments = async (
+    req: AuthRequest,
+    res: Response
+  ) => {
     try {
       const { type } = req.query;
       const client = await poolConexao.getInstance().connect();
@@ -77,9 +79,7 @@ export class AccompanimentController {
       return res.status(200).json(accompaniments);
     } catch (err) {
       console.error(err);
-      res
-        .status(500)
-        .send({ message: ["Erro ao recuperar acompanhamentos!"] });
+      res.status(500).send({ message: ["Erro ao recuperar acompanhamentos!"] });
     }
   };
 
