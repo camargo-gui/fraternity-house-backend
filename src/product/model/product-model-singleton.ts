@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { MovimentationType } from "movimentation/DTO/movimentation-dto";
+import { MovimentationType } from "movimentation-singleton/entities/movimentation";
 
 export class ProductModel {
   getById = async (id: number, prisma: Prisma.TransactionClient) => {
@@ -14,7 +14,7 @@ export class ProductModel {
     id: number,
     quantity: number,
     type: MovimentationType,
-    prismaClient: Prisma.TransactionClient,
+    prismaClient: Prisma.TransactionClient
   ) => {
     return prismaClient.product.update({
       where: {
