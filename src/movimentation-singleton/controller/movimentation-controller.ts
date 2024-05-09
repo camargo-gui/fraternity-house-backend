@@ -1,15 +1,14 @@
 import { prismaClient } from "client/prisma-client";
 import { EmployeeModel } from "employee/model/employee-model-singleton";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { ProductModel } from "product/model/product-model-singleton";
 import { Employee } from "../../employee/DTO/employee";
-import { Movimentation } from "../entities/movimentation";
+import { Movimentation, MovimentationType } from "../entities/movimentation";
 import { MovimentationModel } from "../model/movimentation-model";
 import { ProductMovimentation } from "movimentation-singleton/entities/product-movimentation";
 import { Product } from "product/DTO/product";
 import { AuthRequest } from "common/entities/auth-request";
 import assert from "assert";
-import { MovimentationType } from "movimentation/DTO/movimentation-dto";
 import { Prisma } from "@prisma/client";
 
 export class MovimentationController {
@@ -48,6 +47,27 @@ export class MovimentationController {
       res
         .status(500)
         .json({ message: ["Failed to create movimentation", error] });
+    }
+  };
+
+  public getMovimentations = async (req: Request, res: Response) => {
+    try {
+      const movimentations = await this.movimentationModel.getMovimentations();
+      const movimentationsWithDetails = movimentations.map((mov) => ({
+        ...mov,
+        products: mov.ProductMovimentations.map((pm) => ({
+          ...pm,
+          name: pm.Product.name,
+          measurement: pm.Product.measurement,
+        })),
+        employee_name: mov.Employee.name,
+      }));
+
+      return res.status(200).send(movimentationsWithDetails);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: ["Failed to get movimentations", error] });
     }
   };
 

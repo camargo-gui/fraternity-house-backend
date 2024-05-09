@@ -12,5 +12,10 @@ router.post(
   authMiddleware.execute,
   movimentationController.createMovimentation
 );
+router.get(
+  "/",
+  authMiddleware.execute,
+  movimentationController.getMovimentations
+);
 
 export default router;

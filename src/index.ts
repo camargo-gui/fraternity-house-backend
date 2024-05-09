@@ -10,7 +10,6 @@ import roleRoutes from "role/routes/role-routes";
 import pharmacologicalFormRoutes from "pharmacological-form/routes/pharmacological-form-routes";
 import pharmacologicalNameRoutes from "pharmacological-name/routes/pharmacological-name-routes";
 import medicationSheetRoutes from "medication-sheet/routes/medication-sheet-routes";
-import movimentationRoutes from "movimentation/routes/movimentation-routes";
 import productRoutes from "product/routes/product-routes";
 import prescriptionRoutes from "prescription/routes/prescription-routes";
 import resetPasswordRoutes from "employee/routes/employee-reset-password-routes";
@@ -42,12 +41,11 @@ app.use("/login", loginRoutes);
 app.use("/pharmacological-name", pharmacologicalNameRoutes);
 app.use("/pharmacological-form", pharmacologicalFormRoutes);
 app.use("/medication-sheet", medicationSheetRoutes);
-app.use("/movimentation", movimentationRoutes);
 app.use("/product", productRoutes);
 app.use("/prescription", prescriptionRoutes);
 app.use("/reset-password", resetPasswordRoutes);
 app.use("/screening", screeningRoutes);
-app.use("/movimentacoes", movimentationSingRoutes);
+app.use("/movimentation", movimentationSingRoutes);
 
 scheduleHourlyMedicationReminders();
 

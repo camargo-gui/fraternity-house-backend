@@ -1,6 +1,10 @@
 import { Employee } from "employee/DTO/employee";
-import { MovimentationType } from "movimentation/DTO/movimentation-dto";
 import { ProductMovimentation } from "./product-movimentation";
+
+export enum MovimentationType {
+  INPUT = "INPUT",
+  OUTPUT = "OUTPUT",
+}
 
 export class Movimentation {
   id: number;

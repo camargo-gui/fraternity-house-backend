@@ -1,7 +1,9 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { Movimentation } from "movimentation-singleton/entities/movimentation";
 
 export class MovimentationModel {
+  private prismaClient = new PrismaClient();
+
   async create(
     movimentation: Movimentation,
     prisma: Prisma.TransactionClient
@@ -19,4 +21,26 @@ export class MovimentationModel {
       },
     });
   }
+
+  getMovimentations = async () => {
+    return await this.prismaClient.movimentation.findMany({
+      include: {
+        ProductMovimentations: {
+          include: {
+            Product: {
+              select: {
+                name: true,
+                measurement: true,
+              },
+            },
+          },
+        },
+        Employee: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  };
 }
