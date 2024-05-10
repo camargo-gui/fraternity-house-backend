@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:18-slim
+FROM --platform=linux/amd64 node:16
 
 RUN apt-get update -y && apt-get install -y openssl && apt-get install libssl-dev
 
