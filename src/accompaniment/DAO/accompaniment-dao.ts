@@ -14,6 +14,7 @@ export class AccompaninmentDAO {
         ]
       );
       await client.query("COMMIT");
+      client.release();
       console.log("query executada com sucesso");
     } catch (error) {
       console.error("Erro ao inserir acompanhamento:", error);
@@ -23,24 +24,29 @@ export class AccompaninmentDAO {
 
   async get(client: PoolClient) {
     const result = await client.query("SELECT * FROM \"Accompaniment\"");
+    client.release();
     return result.rows;
   }
 
   async getAccompanimentByResId(client: PoolClient, residentId: number) {
     const result = await client.query("SELECT * FROM \"Accompaniment\" WHERE \"residentId\" = $1", [residentId]);
+    client.release();
     return result.rows;
   }
 
   async getAccompanimentsByTypeAndId(client: PoolClient, type: string, id: number) {
     const result = await client.query(
-      `SELECT a."date", e."name", a."description", a."updated_at", a."id"
+      `SELECT a."date", e."name", a."description", a."updated_at", a."id", r."name" as "residentName"
       FROM "Accompaniment" a
       INNER JOIN "Employee" e ON a."employeeId" = e."id"
-      WHERE a."type" = $1 AND a."residentId" = $2 AND e."id" = $3`,
-      [type, id, id]
+      INNER JOIN "Resident" r ON a."residentId" = r."id"
+      WHERE a."type" = $1 AND a."residentId" = $2`,
+      [type, id]
     );
+    client.release();
     return result.rows;
   }
+
 
   async getAllResidentsHasAccompaniments(client: PoolClient, type: string) {
     console.log("Entrou aqui", type);
@@ -51,6 +57,7 @@ export class AccompaninmentDAO {
       GROUP BY r."id"`,
       [type]
     );
+    client.release();
     return result.rows;
   }
 
@@ -66,6 +73,7 @@ export class AccompaninmentDAO {
         ]
       );
       await client.query("COMMIT");
+      client.release();
       console.log("query executada com sucesso");
     } catch (error) {
       console.error("Erro ao atualizar acompanhamento:", error);
