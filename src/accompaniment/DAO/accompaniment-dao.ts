@@ -51,7 +51,7 @@ export class AccompaninmentDAO {
   async getAllResidentsHasAccompaniments(client: PoolClient, type: string) {
     console.log("Entrou aqui", type);
     const result = await client.query(
-      `SELECT r."id", r."name" FROM "Resident" r
+      `SELECT r."id", r."name" as "residentName" FROM "Resident" r
       INNER JOIN "Accompaniment" a ON r."id" = a."residentId"
       WHERE a."type" = $1
       GROUP BY r."id"`,
