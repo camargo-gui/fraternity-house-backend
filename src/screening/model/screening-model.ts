@@ -50,8 +50,18 @@ export class ScreeningModel {
       },
       include: {
         Responsible: true,
-        Illnesses: true,
-        SpecialNeeds: true,
+        Illnesses: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
+        SpecialNeeds: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
       },
     });
   };
