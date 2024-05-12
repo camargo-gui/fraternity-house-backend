@@ -1,6 +1,6 @@
 export interface IllnessesDTO {
   id?: number;
   name: string;
-  description: string;
+  description?: string;
   screeningId?: number;
 }
