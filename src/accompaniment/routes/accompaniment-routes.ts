@@ -29,7 +29,6 @@ route.post(
 route.put(
   "/:id",
   middleware.execute,
-  roleMiddleware.execute,
   accompanimentController.updateAccompaniments
 );
 
