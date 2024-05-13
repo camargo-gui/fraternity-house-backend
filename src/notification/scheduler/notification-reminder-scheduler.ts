@@ -39,6 +39,10 @@ const getTimeInSaoPaulo = (time: string): moment.Moment => {
   return moment.tz(time, "HH:mm", "America/Sao_Paulo");
 };
 
+const dateNowOnSaoPaulo = () => {
+  return moment().tz("America/Sao_Paulo");
+};
+
 interface GroupedPrescriptions {
   [employeeId: string]: PrescriptionDetail[];
 }
@@ -135,7 +139,7 @@ const groupPrescriptionsByEmployee = (
       residentName: prescription.MedicationSheet.Resident.name,
       medicineName: prescription.Medicine.name,
       dosage: prescription.dosage,
-      time: prescription.firstTime,
+      time: dateNowOnSaoPaulo().add(30, "minutes").format("HH:mm"),
       endDate: moment(prescription.endDate).format("DD/MM/YYYY"),
     });
   });
