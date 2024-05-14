@@ -80,7 +80,7 @@ export class AccompanimentController {
 
       return res.status(200).json(accompaniments);
     } catch (err) {
-      console.error(err);
+      console.log(err);
       return res
         .status(500)
         .send({ message: ["Erro ao recuperar acompanhamentos!"] });

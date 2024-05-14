@@ -28,6 +28,28 @@ class EmailService {
       throw error;
     }
   }
+
+  async sendEmailWithAttachment(to: string, subject: string, text: string, attachment: Buffer, filename: string): Promise<void> {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: to,
+      subject: subject,
+      text: text,
+      attachments: [
+        {
+          filename: filename,
+          content: attachment
+        }
+      ]
+    };
+
+    try {
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      throw error;
+    }
+  }
 }
 
 export default EmailService;
