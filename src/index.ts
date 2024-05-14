@@ -17,6 +17,7 @@ import screeningRoutes from "screening/routes/screening-routes";
 import accompanimentRoutes from "accompaniment/routes/accompaniment-routes";
 import illnessesRoutes from "screening/routes/illnesses-routes";
 import movimentationSingRoutes from "movimentation-singleton/routes/movimentation-singleton-routes";
+import specialNeedsRoutes from "screening/routes/special-needs-routes";
 import { scheduleHourlyMedicationReminders } from "notification/scheduler/notification-reminder-scheduler";
 
 DateTime.local().setZone("America/Sao_Paulo");
@@ -50,6 +51,7 @@ app.use("/screening", screeningRoutes);
 app.use("/accompaniment", accompanimentRoutes);
 app.use("/illnesses", illnessesRoutes);
 app.use("/movimentation", movimentationSingRoutes);
+app.use("/specialNeeds", specialNeedsRoutes);
 
 scheduleHourlyMedicationReminders();
 

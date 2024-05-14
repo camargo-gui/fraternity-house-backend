@@ -12,10 +12,32 @@ export class ScreeningModel {
           create: screening.Responsible,
         },
         Illnesses: {
-          create: screening.Illnesses,
+          connect: screening.Illnesses.map(illness => ({ id: illness.id })),
         },
         SpecialNeeds: {
-          create: screening.SpecialNeeds,
+          connect: screening.SpecialNeeds.map(specialNeed => ({ id: specialNeed.id })),
+        },
+      },
+    });
+  };
+
+  update = async (screening: ScreeningDTO) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {id, id_screening, ...responsible} = screening.Responsible;
+    return await this.prisma. screening.update({
+      where: {
+        id: screening.id,
+      },
+      data: {
+        ...screening,
+        Responsible: {
+          update: responsible,
+        },
+        Illnesses: {
+          set: screening.Illnesses.map(illness => ({ id: illness.id })),
+        },
+        SpecialNeeds: {
+          set: screening.SpecialNeeds.map(specialNeed => ({ id: specialNeed.id })),
         },
       },
     });
@@ -28,8 +50,18 @@ export class ScreeningModel {
       },
       include: {
         Responsible: true,
-        Illnesses: true,
-        SpecialNeeds: true,
+        Illnesses: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
+        SpecialNeeds: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
       },
     });
   };

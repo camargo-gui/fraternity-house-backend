@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
-export class IllnessesModel {
+export class SpecialNeedsModel {
   private prisma = new PrismaClient();
 
   getAll = async () => {
-    return await this.prisma.illnesses.findMany({
+    return await this.prisma.specialNeeds.findMany({
       select: {
         id: true,
         name: true,

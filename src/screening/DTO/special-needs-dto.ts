@@ -1,6 +1,6 @@
 export interface SpecialNeedsDTO {
   id?: number;
   name: string;
-  description: string;
+  description?: string;
   screeningId?: number;
 }

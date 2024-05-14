@@ -172,14 +172,14 @@ model Responsible {
 model Illnesses {
   id          Int        @id @default(autoincrement())
   name        String
-  description String
+  description String?
   Screening  Screening[] 
 }
 
 model SpecialNeeds {
   id          Int        @id @default(autoincrement())
   name        String
-  description String
+  description String?
   Screening   Screening[] 
 }
 

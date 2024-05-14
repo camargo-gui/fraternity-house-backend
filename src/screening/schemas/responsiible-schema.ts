@@ -15,5 +15,3 @@ export const responsibleSchema = Joi.object({
   zip_code: Joi.string().required(),
   id_screening: Joi.number().optional()
 });
-
-// make a json object example

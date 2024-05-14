@@ -9,6 +9,7 @@ const authMiddleware = new EmployeeAuthMiddleware();
 const screeningMiddleware = new ScreeningMiddleware();
 
 routes.post("/", authMiddleware.execute, screeningMiddleware.execute, controller.create);
+routes.put("/", authMiddleware.execute, screeningMiddleware.execute, controller.update);
 routes.get("/:id_resident", authMiddleware.execute, controller.getByResident);
 
 export default routes;
