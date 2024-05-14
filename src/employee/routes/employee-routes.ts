@@ -13,6 +13,8 @@ const adminAuth = new RoleAuthorizationMiddleware(RoleEnum.Administrador);
 
 routes.post(
   "/",
+  authMiddleware.execute,
+  adminAuth.execute,
   validateEmployeeMiddleware.execute,
   controller.create
 );
