@@ -3,16 +3,19 @@ import { ResidentReportDTO } from "resident/DTO/residents-report-dto";
 export default function ResidentReport(
   report: ResidentReportDTO[]
 ): string {
+  const divError = "<p style=\"color: red;\"><strong>Necessário realizar triagem </strong></p>";
+
   const residentCards = report.map((report) => `
             <div style="border: 1px solid #ccc; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-              <img src="${report.url_image}" alt="Foto do morador" style="width: 100px; height: 100px; border-radius: 50%; margin-right: 20px; float: left; object-fit: cover">
+              <img src="${report.url_image === "" ? "https://bucket-fraternity.s3.amazonaws.com/profile.jpg" : report.url_image}" alt="Foto do morador" style="width: 100px; height: 100px; border-radius: 50%; margin-right: 20px; float: left; object-fit: cover">
               <h3 style="color: #0056b3">${report.name}</h3>
               <p><strong>CPF: </strong> ${report.cpf}</p>
-              <p><strong>Nome do pai: </strong> ${report.Screening?.father_name}</p>
-              <p><strong>Nome da mãe: </strong> ${report.Screening?.mother_name}</p>
-              <p><strong>Plano de Saúde: </strong> ${report.Screening?.health_insurance}</p>
-              <p><strong>Renda: </strong> ${report.Screening?.income}</p>
-              <p><strong>Data de Entrada: </strong> ${report.Screening?.entry_date.toLocaleDateString()}</p>
+              ${report.Screening === null ? divError : `
+              <p><strong>Nome do pai: </strong> ${report.Screening.father_name}</p>
+              <p><strong>Nome da mãe: </strong> ${report.Screening.mother_name}</p>
+              <p><strong>Plano de Saúde: </strong> ${report.Screening.health_insurance}</p>
+              <p><strong>Renda: </strong> R$${report.Screening.income},00</p>
+              <p><strong>Data de Entrada: </strong> ${new Date(report.Screening.entry_date).toLocaleDateString()}</p>`}
             </div>`).join("");
 
   const html = `

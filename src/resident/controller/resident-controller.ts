@@ -42,9 +42,7 @@ export class ResidentController {
 
       return res.status(201).json({ message: ["Morador cadastrado!"] });
     } catch (e) {
-      return res
-        .status(500)
-        .json({ message: ["Erro ao cadastrar morador! "]});
+      return res.status(500).json({ message: ["Erro ao cadastrar morador! "] });
     }
   };
 
