@@ -39,10 +39,6 @@ const getTimeInSaoPaulo = (time: string): moment.Moment => {
   return moment.tz(time, "HH:mm", "America/Sao_Paulo");
 };
 
-const dateNowOnSaoPaulo = () => {
-  return moment().tz("America/Sao_Paulo");
-};
-
 interface GroupedPrescriptions {
   [employeeId: string]: PrescriptionDetail[];
 }
@@ -56,8 +52,8 @@ const scheduleHourlyMedicationReminders = async () => {
   cron.schedule("30 * * * *", async () => {
     const nextHour = moment()
       .tz("America/Sao_Paulo")
-      .add(30, "minutes")
-      .startOf("hour");
+      .startOf("hour")
+      .add(1, "hour");
     const prescriptionsDueNextHour = await getPrescriptionsDue(nextHour);
 
     const notificationsByEmployee = groupPrescriptionsByEmployee(
@@ -102,9 +98,7 @@ const calculateScheduledTimes = ({
 const getPrescriptionsDue = async (
   targetTime: moment.Moment
 ): Promise<ExtendedPrescription[]> => {
-  const startOfHour = getTimeInSaoPaulo(targetTime.format("HH:mm")).startOf(
-    "hour"
-  );
+  const startOfHour = targetTime.clone().startOf("hour");
   const endOfHour = startOfHour.clone().add(1, "hour");
   const prescriptions = await prescriptionModel.getAll();
 
@@ -127,7 +121,7 @@ const getPrescriptionsDue = async (
 };
 
 const groupPrescriptionsByEmployee = (
-  prescriptions: PrescriptionWithRelations[]
+  prescriptions: ExtendedPrescription[]
 ): GroupedPrescriptions => {
   const grouped: GroupedPrescriptions = {};
   prescriptions.forEach((prescription) => {
@@ -139,7 +133,7 @@ const groupPrescriptionsByEmployee = (
       residentName: prescription.MedicationSheet.Resident.name,
       medicineName: prescription.Medicine.name,
       dosage: prescription.dosage,
-      time: dateNowOnSaoPaulo().add(30, "minutes").format("HH:mm"),
+      time: prescription.scheduledTime,
       endDate: moment(prescription.endDate).format("DD/MM/YYYY"),
     });
   });
