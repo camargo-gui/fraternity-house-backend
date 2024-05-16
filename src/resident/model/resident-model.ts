@@ -49,4 +49,12 @@ export class ResidentModel {
   getAll = async (): Promise<Resident[]> => {
     return this.client.resident.findMany();
   };
+
+  getResidentsWithScreening = async () => {
+    return this.client.resident.findMany({
+      include: {
+        Screening: true,
+      },
+    });
+  };
 }
