@@ -1,11 +1,9 @@
 import assert from "assert";
 import { AuthRequest } from "common/entities/auth-request";
-import { EmployeeModel } from "employee/model/employee-model";
 import { Response, NextFunction } from "express";
 
 export class RoleAuthorizationMiddleware {
   private allowedRoles: number[];
-  private employeeModel = new EmployeeModel();
 
   constructor(...allowedRoles: number[]) {
     this.allowedRoles = allowedRoles;
@@ -14,13 +12,14 @@ export class RoleAuthorizationMiddleware {
   execute = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const employeeId = req.id;
+      const roleId = req.role;
       assert(employeeId, "Id do funcionário não encontrado na requisição");
+      assert(roleId, "Role do funcionário não encontrado na requisição");
 
-      const employee = await this.employeeModel.getById(employeeId);
-      if (!this.allowedRoles.includes(Number(employee?.Role.id))) {
+      if (!this.allowedRoles.includes(roleId)) {
         return res.status(403).json({
           message:
-            "Acesso negado: você não tem permissão para realizar esta ação.",
+            ["Acesso negado: você não tem permissão para realizar esta ação."],
         });
       }
 

@@ -21,7 +21,7 @@ export class JWT {
     try {
       const payload = verify(token, this.secret) as JwtPayload;
       return payload;
-    } catch {
+    } catch(e) {
       return undefined;
     }
   }
