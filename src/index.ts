@@ -19,6 +19,8 @@ import illnessesRoutes from "screening/routes/illnesses-routes";
 import movimentationSingRoutes from "movimentation-singleton/routes/movimentation-singleton-routes";
 import specialNeedsRoutes from "screening/routes/special-needs-routes";
 import { scheduleHourlyMedicationReminders } from "notification/scheduler/notification-reminder-scheduler";
+import notificationsRoutes from "notification/routes/notification-routes";
+import { scheduleCleanupReadNotifications } from "notification/scheduler/notification-clean-up";
 
 DateTime.local().setZone("America/Sao_Paulo");
 
@@ -52,7 +54,9 @@ app.use("/accompaniment", accompanimentRoutes);
 app.use("/illnesses", illnessesRoutes);
 app.use("/movimentation", movimentationSingRoutes);
 app.use("/specialNeeds", specialNeedsRoutes);
+app.use("/notifications", notificationsRoutes);
 
 scheduleHourlyMedicationReminders();
+scheduleCleanupReadNotifications();
 
 app.listen(process.env.PORT || 3344);
