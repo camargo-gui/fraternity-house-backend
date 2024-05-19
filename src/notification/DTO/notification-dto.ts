@@ -5,6 +5,7 @@ export interface NotificationDTO {
   dosage: string;
   time: string;
   endDate: Date;
+  wasRead: boolean;
   employeeId: number;
   createdAt?: Date;
   updatedAt?: Date;
