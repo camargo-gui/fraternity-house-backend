@@ -75,6 +75,9 @@ export class ResidentModel {
     return this.client.resident.findMany({
       where: {
         status: ResidentStatus.ACTIVE,
+      },
+      orderBy: {
+        name: "asc",
       }
     });
   };
