@@ -115,6 +115,14 @@ const getPrescriptionsDue = async (
   const prescriptions = await prescriptionModel.getAll();
 
   return prescriptions.flatMap((prescription) => {
+    const startDate = moment(prescription.startDate).tz("America/Sao_Paulo");
+    const endDate = moment(prescription.endDate).tz("America/Sao_Paulo");
+    const now = moment().tz("America/Sao_Paulo");
+
+    if (now.isBefore(startDate) || now.isAfter(endDate)) {
+      return [];
+    }
+
     const times = calculateScheduledTimes({
       firstTime: prescription.firstTime,
       frequency: Number(prescription.frequency),
