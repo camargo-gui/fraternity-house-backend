@@ -48,8 +48,31 @@ export class ResidentController {
 
   update = async (req: Request, res: Response) => {
     try {
-      const resident = req.body;
-      await this.model.update(resident);
+      const { cpf, rg, name, contact_phone, birthday } = req.body;
+      const image = req.file;
+
+      console.log("Body: ", req.body);
+      console.log("Image: ", image);
+
+      let resultadoUpload = { Location: "" };
+      if (image) {
+        const awsService = new AwsService();
+        resultadoUpload = await awsService.uploadFile(
+          process.env.BUCKET_NAME ?? "",
+          image?.originalname ?? "",
+          image?.buffer ?? ""
+        );
+      }
+
+      await this.model.update({
+        cpf,
+        rg,
+        name,
+        contact_phone,
+        birthday: new Date(birthday),
+        url_image: resultadoUpload.Location,
+      });
+
       return res.status(201).send();
     } catch (e) {
       return res.status(500).json({ message: ["Erro ao atualizar morador"] });

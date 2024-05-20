@@ -30,6 +30,7 @@ routes.post(
 routes.put(
   "/",
   authMiddleware.execute,
+  upload.single("image"),
   middlewareNotFound.execute,
   middlewareRequiredFields.execute,
   controller.update
