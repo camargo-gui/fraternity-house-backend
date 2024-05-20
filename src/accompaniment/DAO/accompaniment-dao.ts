@@ -53,7 +53,7 @@ export class AccompaninmentDAO {
     const result = await client.query(
       `SELECT r."id", r."name" as "residentName" FROM "Resident" r
       INNER JOIN "Accompaniment" a ON r."id" = a."residentId"
-      WHERE a."type" = $1
+      WHERE a."type" = $1 r."status" = 'ACTIVE'
       GROUP BY r."id"`,
       [type]
     );

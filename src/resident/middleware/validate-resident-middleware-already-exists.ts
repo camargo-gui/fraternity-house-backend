@@ -6,20 +6,16 @@ export class ValidateResidentMiddlewareAlreadyExists{
 
   private errors: string[] = [];
 
-  alreadyExists = async (cpf: string) => {
-    const resident = await this.model.getByCpf(cpf);
-    if (resident) {
-      this.errors.push("Morador já existe!");
-    }
-  };
-
   execute = async (req: Request, res: Response, next: NextFunction) => {
     try{
-      this.errors = [];
       const cpf = req.body.cpf;
-      await this.alreadyExists(cpf);
-      if(this.errors.length > 0){
-        return res.status(400).json({message: this.errors});
+      const resident = await this.model.getByCpf(cpf);
+      if(resident) {
+        if (resident.status === "INACTIVE") {
+          return res.status(409).send({resident: resident});
+        }
+
+        return res.status(400).send({message: ["Morador já cadastrado!"]});
       }
       next();
     } catch (error) {

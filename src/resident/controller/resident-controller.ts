@@ -16,11 +16,6 @@ export class ResidentController {
       const { cpf, rg, name, contact_phone, birthday } = req.body;
       const image = req.file;
 
-      const residentExists = await this.model.getByCpf(cpf);
-      if (residentExists) {
-        return res.status(400).json({ message: "Morador já existe!" });
-      }
-
       let resultadoUpload = { Location: "" };
       if (image) {
         const awsService = new AwsService();
@@ -86,6 +81,16 @@ export class ResidentController {
       return res.status(201).send();
     } catch (e) {
       return res.status(500).json({ message: ["Erro ao excluir morador"] });
+    }
+  };
+
+  undelete = async (req: Request, res: Response) => {
+    try {
+      const cpf = req.body.cpf;
+      await this.model.undeleteByCpf(cpf);
+      return res.status(201).send();
+    } catch (e) {
+      return res.status(500).json({ message: ["Erro ao reativar morador"] });
     }
   };
 

@@ -88,6 +88,11 @@ export class MedicationSheetModel {
         observations: true,
         createdAt: true,
       },
+      where: {
+        Resident: {
+          status: "ACTIVE",
+        }
+      }
     });
   };
 

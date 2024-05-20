@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, ResidentStatus } from "@prisma/client";
 import { Resident } from "resident/DTO/resident-dto";
 
 export class ResidentModel {
@@ -23,10 +23,24 @@ export class ResidentModel {
   };
 
   deleteByCpf = async (cpf: string) => {
-    return this.client.resident.delete({
+    return this.client.resident.update({
       where: {
         cpf,
       },
+      data: {
+        status: ResidentStatus.INACTIVE,
+      }
+    });
+  };
+
+  undeleteByCpf = async (cpf: string) => {
+    return this.client.resident.update({
+      where: {
+        cpf,
+      },
+      data: {
+        status: ResidentStatus.ACTIVE,
+      }
     });
   };
 
@@ -47,7 +61,11 @@ export class ResidentModel {
   };
 
   getAll = async (): Promise<Resident[]> => {
-    return this.client.resident.findMany();
+    return this.client.resident.findMany({
+      where: {
+        status: ResidentStatus.ACTIVE,
+      }
+    });
   };
 
   getResidentsWithScreening = async () => {
@@ -55,6 +73,9 @@ export class ResidentModel {
       include: {
         Screening: true,
       },
+      where: {
+        status: ResidentStatus.ACTIVE,
+      }
     });
   };
 }

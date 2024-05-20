@@ -16,6 +16,7 @@ model Resident {
   contact_phone   String            @unique
   birthday        DateTime
   url_image       String?
+  status          ResidentStatus    @default(ACTIVE)
   created_at      DateTime          @default(now())
   updated_at      DateTime?         @updatedAt
   MedicationSheet MedicationSheet[]
@@ -133,7 +134,7 @@ model ProductMovimentation {
 }
 
 model Screening {
-  id                      Int          @id @default(autoincrement())
+  id                      Int            @id @default(autoincrement())
   religion                String
   smoking                 Boolean
   entry_date              DateTime
@@ -146,8 +147,8 @@ model Screening {
   number_of_sibling       Int
   number_of_children      Int
   number_of_grandchildren Int
-  id_resident             Int          @unique
-  Resident                Resident     @relation(fields: [id_resident], references: [id])
+  id_resident             Int            @unique
+  Resident                Resident       @relation(fields: [id_resident], references: [id])
   Responsible             Responsible?
   Illnesses               Illnesses[]
   SpecialNeeds            SpecialNeeds[]
@@ -171,43 +172,43 @@ model Responsible {
 }
 
 model Illnesses {
-  id          Int        @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   description String?
-  Screening  Screening[] 
+  Screening   Screening[]
 }
 
 model SpecialNeeds {
-  id          Int        @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   description String?
-  Screening   Screening[] 
+  Screening   Screening[]
 }
 
 model Accompaniment {
-  id          Int        @id @default(autoincrement())
-  date        DateTime   @default(now())
+  id          Int               @id @default(autoincrement())
+  date        DateTime          @default(now())
   description String
-  employeeId  Int        
+  employeeId  Int
   residentId  Int
   type        AccompanimentType
-  Employee    Employee   @relation(fields: [employeeId], references: [id])
-  Resident    Resident   @relation(fields: [residentId], references: [id])
-  updated_at       DateTime?     @updatedAt
+  Employee    Employee          @relation(fields: [employeeId], references: [id])
+  Resident    Resident          @relation(fields: [residentId], references: [id])
+  updated_at  DateTime?         @updatedAt
 }
 
 model Notification {
-  id            Int      @id @default(autoincrement())
-  residentName  String
-  medicineName  String
-  dosage        String
-  time          String
-  endDate       DateTime
-  employeeId    Int
-  wasRead       Boolean  @default(false)
-  Employee      Employee @relation(fields: [employeeId], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime? @updatedAt
+  id           Int       @id @default(autoincrement())
+  residentName String
+  medicineName String
+  dosage       String
+  time         String
+  endDate      DateTime
+  employeeId   Int
+  wasRead      Boolean   @default(false)
+  Employee     Employee  @relation(fields: [employeeId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
 }
 
 enum MovimentationType {
@@ -225,4 +226,9 @@ enum AccompanimentType {
   PSYCHOLOGIST
   PHYSIOTHERAPIST
   NUTRITIONIST
+}
+
+enum ResidentStatus {
+  ACTIVE
+  INACTIVE
 }
