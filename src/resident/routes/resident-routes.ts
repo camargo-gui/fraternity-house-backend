@@ -46,5 +46,5 @@ routes.get("/:cpf", authMiddleware.execute, controller.getByCpf);
 routes.get("/", authMiddleware.execute, controller.getAll);
 routes.post("/report", authMiddleware.execute, controller.sendReport);
 routes.put("/restore", authMiddleware.execute, controller.undelete);
-
+routes.put("/update-screening-status", controller.updateResidentsWithDeprecatedScreeningStatus);
 export default routes;

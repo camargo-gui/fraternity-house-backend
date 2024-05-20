@@ -1,14 +1,17 @@
 import { Request, Response } from "express";
+import { ResidentModel } from "resident/model/resident-model";
 import { ScreeningDTO } from "screening/DTO/screening-dto";
 import { ScreeningModel } from "screening/model/screening-model";
 
 export class ScreeningController {
   private screeningModel = new ScreeningModel(); 
+  private residentModel = new ResidentModel();
 
   create = async (req: Request, res: Response) => {
     try {
       const screening: ScreeningDTO = req.body.screening;
       await this.screeningModel.create(screening);
+      await this.residentModel.registerScreening(screening.id_resident);
       res.status(201).send();
     } catch (error) {
       console.log("error ", error);

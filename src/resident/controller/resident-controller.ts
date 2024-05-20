@@ -5,9 +5,11 @@ import { EmployeeModel } from "employee/model/employee-model";
 import { Request, Response } from "express";
 import ResidentReport from "resident/email-templates/residents-report-email-template";
 import { ResidentModel } from "resident/model/resident-model";
+import { ScreeningModel } from "screening/model/screening-model";
 
 export class ResidentController {
   private model = new ResidentModel();
+  private screeningModel = new ScreeningModel();
   private employeeModel = new EmployeeModel();
   private emailService = new EmailService();
 
@@ -71,6 +73,18 @@ export class ResidentController {
       return res.status(201).send();
     } catch (e) {
       return res.status(500).json({ message: ["Erro ao atualizar morador"] });
+    }
+  };
+
+  updateResidentsWithDeprecatedScreeningStatus = async (req: Request, res: Response) => {
+    try {
+      const screenings = await this.screeningModel.getScreeningWhereResidentsAreWithDeprecatedStatus();
+      screenings.map(async (screening) => {
+        await this.model.registerScreening(screening.id_resident);
+      });
+      return res.status(201).send();
+    } catch (e) {
+      return res.status(500).json({ message: ["Erro ao atualizar status"] });
     }
   };
 

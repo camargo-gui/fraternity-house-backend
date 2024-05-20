@@ -66,4 +66,14 @@ export class ScreeningModel {
     });
   };
 
+  getScreeningWhereResidentsAreWithDeprecatedStatus = async () => {
+    return await this.prisma.screening.findMany({
+      where: {
+        Resident: {
+          has_screening: false,
+        }
+      }
+    });
+  };
+
 }

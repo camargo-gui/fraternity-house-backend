@@ -22,6 +22,17 @@ export class ResidentModel {
     });
   };
 
+  registerScreening = async (id: number) => {
+    return this.client.resident.update({
+      where: {
+        id: id,
+      },
+      data: {
+        has_screening: true,
+      }
+    });
+  };
+
   deleteByCpf = async (cpf: string) => {
     return this.client.resident.update({
       where: {
