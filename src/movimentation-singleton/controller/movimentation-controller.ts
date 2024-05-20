@@ -29,11 +29,15 @@ export class MovimentationController {
   public createMovimentation = async (
     req: AuthRequest,
     res: Response
-  ): Promise<void> => {
+  ) => {
     try {
       const { type, products } = req.body;
       const employeeId = req.id;
       assert(employeeId);
+
+      if(!products || products.length === 0) {
+        return res.status(400).json({ message: ["Necessário incluir pelo menos produto para a movimentação"] });
+      }
 
       await prismaClient.$transaction(async (prisma) => {
         const employee = await this.retrieveEmployee(employeeId, prisma);
@@ -42,9 +46,9 @@ export class MovimentationController {
         await this.movimentationModel.create(movimentation, prisma);
       });
 
-      res.status(201).json({ message: ["Movimentation created successfully"] });
+      return res.status(201).json({ message: ["Movimentation created successfully"] });
     } catch (error) {
-      res
+      return res
         .status(500)
         .json({ message: ["Failed to create movimentation", error] });
     }
