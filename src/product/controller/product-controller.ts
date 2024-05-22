@@ -15,7 +15,6 @@ export class ProductController {
       res.status(201).json(createdProduct);
     }
     catch (error) {
-      console.log("error ", error);
       res.status(500).send({message: ["Erro ao criar produto"]});
     }
   };

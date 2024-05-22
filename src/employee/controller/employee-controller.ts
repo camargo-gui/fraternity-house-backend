@@ -12,7 +12,6 @@ export class EmployeeController {
       const createdEmployee = await this.model.create(employee);
       return res.status(201).send(createdEmployee);
     } catch (error) {
-      console.log(error);
       return res.status(500).send();
     }
   };

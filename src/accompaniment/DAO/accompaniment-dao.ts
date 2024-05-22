@@ -15,7 +15,6 @@ export class AccompaninmentDAO {
       );
       await client.query("COMMIT");
       client.release();
-      console.log("query executada com sucesso");
     } catch (error) {
       console.error("Erro ao inserir acompanhamento:", error);
       throw error;
@@ -49,7 +48,6 @@ export class AccompaninmentDAO {
 
 
   async getAllResidentsHasAccompaniments(client: PoolClient, type: string) {
-    console.log("Entrou aqui", type);
     const result = await client.query(
       `SELECT r."id", r."name" as "residentName" FROM "Resident" r
       INNER JOIN "Accompaniment" a ON r."id" = a."residentId"
@@ -74,7 +72,6 @@ export class AccompaninmentDAO {
       );
       await client.query("COMMIT");
       client.release();
-      console.log("query executada com sucesso");
     } catch (error) {
       console.error("Erro ao atualizar acompanhamento:", error);
       throw error;

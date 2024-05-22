@@ -37,7 +37,6 @@ export default class AwsService {
     try {
       return this.s3.upload(params).promise();
     } catch (error) {
-      console.log(error);
       throw new Error("Erro ao fazer upload do arquivo");
     }
   }

@@ -14,7 +14,6 @@ export class ScreeningController {
       await this.residentModel.registerScreening(screening.id_resident);
       res.status(201).send();
     } catch (error) {
-      console.log("error ", error);
       res.status(500).json({ message: [error] });
     }
   };
@@ -25,7 +24,6 @@ export class ScreeningController {
       await this.screeningModel.update(screening);
       res.status(200).send();
     } catch (error) {
-      console.log("error ", error);
       res.status(500).json({ message: [error] });
     }
   };

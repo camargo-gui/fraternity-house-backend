@@ -34,7 +34,6 @@ export class EmployeeLoginController {
           .json({ token, name: employee.name, role: employee.Role.name });
       }
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ mesage: ["Erro interno"] });
     }
   };

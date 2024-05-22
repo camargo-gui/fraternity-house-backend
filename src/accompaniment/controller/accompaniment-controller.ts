@@ -34,7 +34,6 @@ export class AccompanimentController {
         .status(201)
         .send({ message: ["Acompanhamento criado com sucesso!"] });
     } catch (err) {
-      console.log(err);
       return res.status(500).send({ message: ["Erro do servidor!", err] });
     }
   };
@@ -80,7 +79,6 @@ export class AccompanimentController {
 
       return res.status(200).json(accompaniments);
     } catch (err) {
-      console.log(err);
       return res
         .status(500)
         .send({ message: ["Erro ao recuperar acompanhamentos!"] });
@@ -99,7 +97,6 @@ export class AccompanimentController {
         .status(200)
         .send({ message: ["Acompanhamento atualizado com sucesso!"] });
     } catch (err) {
-      console.log(err);
       return res.status(500).send({ message: ["Erro do servidor!"] });
     }
   };

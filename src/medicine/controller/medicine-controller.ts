@@ -23,7 +23,9 @@ export class MedicineController {
         pharmacologicalName,
         pharmacologicalForm,
       };
-      const medicines = await this.model.getAll(filters as MedicineRequestParams);
+      const medicines = await this.model.getAll(
+        filters as MedicineRequestParams
+      );
       return res.status(200).json({ medicines: medicines });
     } catch (error) {
       return res.status(500).send();
@@ -46,6 +48,13 @@ export class MedicineController {
       await this.model.delete(id);
       return res.status(204).send();
     } catch (error) {
+      const err = error as Error;
+      if (
+        err.message ===
+        "Medicamento está vinculado a uma prescrição e não pode ser deletado."
+      ) {
+        return res.status(400).send({ message: [err.message] });
+      }
       return res.status(500).send();
     }
   };

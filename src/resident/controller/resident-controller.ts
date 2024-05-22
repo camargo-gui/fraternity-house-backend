@@ -48,9 +48,6 @@ export class ResidentController {
       const { cpf, rg, name, contact_phone, birthday } = req.body;
       const image = req.file;
 
-      console.log("Body: ", req.body);
-      console.log("Image: ", image);
-
       let resultadoUpload = { Location: "" };
       if (image) {
         const awsService = new AwsService();
@@ -150,7 +147,6 @@ export class ResidentController {
         .status(201)
         .send({ message: ["Relatório enviado com sucesso!"] });
     } catch (e) {
-      console.log("Erro ao enviar relatório", e);
       return res.status(500).send({ message: ["Erro ao enviar relatório"] });
     }
   };

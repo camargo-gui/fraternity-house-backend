@@ -9,7 +9,6 @@ export class SpecialNeedsController {
       const specialNeeds = await this.model.getAll();
       return res.status(200).json(specialNeeds);
     } catch (e) {
-      console.log(e);
       return res.status(500).json({ message: ["Erro ao buscar necessidades especiais"] });
     }
   };

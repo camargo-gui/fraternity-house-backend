@@ -85,11 +85,29 @@ export class MedicineModel {
     });
   };
 
-  delete = (id: number) => {
+  delete = async (id: number) => {
+    const isLinked = await this.isMedicineLinkedToPrescription(id);
+    if (isLinked) {
+      throw new Error(
+        "Medicamento está vinculado a uma prescrição e não pode ser deletado."
+      );
+    }
+
     return this.prismaClient.medicine.delete({
       where: {
         id: id,
       },
     });
   };
+
+  private async isMedicineLinkedToPrescription(
+    medicineId: number
+  ): Promise<boolean> {
+    const prescriptionCount = await this.prismaClient.prescription.count({
+      where: {
+        medicineId: medicineId,
+      },
+    });
+    return prescriptionCount > 0;
+  }
 }

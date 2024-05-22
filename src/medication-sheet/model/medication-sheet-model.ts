@@ -35,11 +35,18 @@ export class MedicationSheetModel {
     });
   };
 
-  update = (medicationSheet: MedicationSheetDTO) => {
+  update = (
+    medicationSheet: MedicationSheetDTO & { responsibleId: number }
+  ) => {
     return this.prismaClient.medicationSheet.update({
       where: { id: medicationSheet.id },
       data: {
         observations: medicationSheet.observations,
+        Employee: {
+          connect: {
+            id: medicationSheet.responsibleId,
+          }
+        }
       },
     });
   };
@@ -91,8 +98,8 @@ export class MedicationSheetModel {
       where: {
         Resident: {
           status: "ACTIVE",
-        }
-      }
+        },
+      },
     });
   };
 
