@@ -15,7 +15,8 @@ routes.post(
   "/",
   authMiddleware.execute,
   adminAuth.execute,
-  validateEmployeeMiddleware.execute,
+  validateEmployeeMiddleware.validateRequiredFields,
+  validateEmployeeMiddleware.validateEmployeeExists,
   controller.create
 );
 routes.get("/", authMiddleware.execute, controller.getAll);
@@ -23,8 +24,9 @@ routes.delete(
   "/:document",
   authMiddleware.execute,
   adminAuth.execute,
-  controller.delete
+  controller.deleteByCpf
 );
+routes.put("/restore", authMiddleware.execute, adminAuth.execute, controller.undeleteByCpf);
 routes.put("/", authMiddleware.execute, adminAuth.execute, controller.update);
 
 export default routes;

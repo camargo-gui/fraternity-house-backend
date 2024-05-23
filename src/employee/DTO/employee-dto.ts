@@ -1,3 +1,5 @@
+import { AccountStatus } from "@prisma/client";
+
 export interface EmployeeDTO {
   id?: number;
   role_id: number;
@@ -6,6 +8,7 @@ export interface EmployeeDTO {
   email: string;
   password: string;
   phone: string;
+  status: AccountStatus;
   created_a?: Date | null;
   updated_at?: Date | null;
 }

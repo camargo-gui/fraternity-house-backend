@@ -1,4 +1,4 @@
-import { PrismaClient, ResidentStatus } from "@prisma/client";
+import { AccountStatus, PrismaClient } from "@prisma/client";
 import { Resident } from "resident/DTO/resident-dto";
 
 export class ResidentModel {
@@ -39,7 +39,7 @@ export class ResidentModel {
         cpf,
       },
       data: {
-        status: ResidentStatus.INACTIVE,
+        status: AccountStatus.INACTIVE,
       }
     });
   };
@@ -50,7 +50,7 @@ export class ResidentModel {
         cpf,
       },
       data: {
-        status: ResidentStatus.ACTIVE,
+        status: AccountStatus.ACTIVE,
       }
     });
   };
@@ -74,7 +74,7 @@ export class ResidentModel {
   getAll = async (): Promise<Resident[]> => {
     return this.client.resident.findMany({
       where: {
-        status: ResidentStatus.ACTIVE,
+        status: AccountStatus.ACTIVE,
       },
       orderBy: {
         name: "asc",
@@ -88,7 +88,7 @@ export class ResidentModel {
         Screening: true,
       },
       where: {
-        status: ResidentStatus.ACTIVE,
+        status: AccountStatus.ACTIVE,
       }
     });
   };

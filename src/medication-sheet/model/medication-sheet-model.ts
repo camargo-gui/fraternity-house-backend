@@ -157,6 +157,16 @@ export class MedicationSheetModel {
     });
   };
 
+  getByResponsibleCpf = (cpf: string, prisma: Prisma.TransactionClient) => {
+    return prisma.medicationSheet.findFirst({
+      where: {
+        Employee: {
+          document: cpf,
+        },
+      },
+    });
+  };
+
   delete = (id: number, prisma: Prisma.TransactionClient) => {
     return prisma.medicationSheet.delete({
       where: { id },

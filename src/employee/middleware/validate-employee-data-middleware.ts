@@ -7,15 +7,8 @@ export class ValidateEmployeeDataMiddleware {
 
   private errors: string[] = [];
 
-  alreadyExists = async (document: string) => {
-    const employee = await this.model.getByDocument(document);
-    if (employee) {
-      this.errors.push("Usuário já existe");
-    }
-  };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  requiredFields = (employee: any) => {
+  private requiredFields = (employee: any) => {
     if (!employee.document) {
       this.errors.push("Documento é obrigatório,");
     }
@@ -33,14 +26,30 @@ export class ValidateEmployeeDataMiddleware {
     }
   };
 
-  execute = async (req: Request, res: Response, next: NextFunction) => {
+  public validateRequiredFields = (req: Request, res: Response, next: NextFunction) => {
     try {
       this.errors = [];
-      const employee = req.body;
-      this.requiredFields(employee);
-      await this.alreadyExists(employee.document);
+      this.requiredFields(req.body);
       if (this.errors.length > 0) {
         return res.status(400).json({ message: this.errors });
+      }
+      next();
+    } catch (error) {
+      console.log(error); 
+      return res.status(500).send({ message: ["Falha"]});
+    }
+  };
+
+
+  public validateEmployeeExists = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const employee = req.body;
+      const employeeExists = await this.model.getByDocument(employee.document);
+      if (employeeExists) {
+        if (employeeExists.status === "INACTIVE") {
+          return res.status(409).send({employee: employeeExists});
+        }
+        return res.status(400).send({message: "Funcionário já está ativo"});
       }
       next();
     } catch (error) {

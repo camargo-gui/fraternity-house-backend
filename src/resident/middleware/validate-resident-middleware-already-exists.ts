@@ -4,8 +4,6 @@ import {Request, Response, NextFunction } from "express";
 export class ValidateResidentMiddlewareAlreadyExists{
   private model = new ResidentModel();
 
-  private errors: string[] = [];
-
   execute = async (req: Request, res: Response, next: NextFunction) => {
     try{
       const cpf = req.body.cpf;

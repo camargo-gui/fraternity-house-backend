@@ -1,10 +1,13 @@
+import { PrismaClient } from "@prisma/client";
 import { EmployeeModel } from "employee/model/employee-model";
 import { Request, Response } from "express";
+import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
 
 export class EmployeeController {
 
   private model = new EmployeeModel();
-
+  private medicationSheetModel = new MedicationSheetModel();
+  private client = new PrismaClient();
 
   create = async (req: Request, res:Response) => {
     try {
@@ -35,10 +38,24 @@ export class EmployeeController {
     }
   };
 
-  delete = async (req: Request, res: Response) => {
+  deleteByCpf = async (req: Request, res: Response) => {
     try {
       const document = req.params.document;
-      await this.model.delete(document);
+      const employee = await this.medicationSheetModel.getByResponsibleCpf(document, this.client);
+      if (employee) {
+        return res.status(400).send({message: ["Não é possível excluir um funcionário que está associado a uma ficha de medicação"]});
+      }
+      await this.model.deleteByCpf(document);
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(500).send();
+    }
+  };
+
+  undeleteByCpf = async (req: Request, res: Response) => {
+    try {
+      const cpf = req.body.document;
+      await this.model.undeleteByCpf(cpf);
       return res.status(204).send();
     } catch (error) {
       return res.status(500).send();

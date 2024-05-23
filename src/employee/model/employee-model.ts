@@ -1,3 +1,4 @@
+import { AccountStatus } from "@prisma/client";
 import { prismaClient } from "client/prisma-client";
 import { Password } from "common/entities/password";
 import { EmployeeDTO } from "employee/DTO/employee-dto";
@@ -24,6 +25,9 @@ export class EmployeeModel {
 
   getAll = () => {
     return prismaClient.employee.findMany({
+      where: {
+        status: AccountStatus.ACTIVE,
+      },
       select: {
         id: true,
         document: true,
@@ -68,6 +72,7 @@ export class EmployeeModel {
         name: true,
         email: true,
         phone: true,
+        status: true,
         created_at: true,
         updated_at: true,
         Role: true,
@@ -105,11 +110,25 @@ export class EmployeeModel {
     });
   };
 
-  delete = (document: string) => {
-    return prismaClient.employee.delete({
+  deleteByCpf = (cpf: string) => {
+    return prismaClient.employee.update({
       where: {
-        document: document,
+        document: cpf,
       },
+      data: {
+        status: AccountStatus.INACTIVE,
+      }
+    });
+  };
+
+  undeleteByCpf = (cpf: string) => {
+    return prismaClient.employee.update({
+      where: {
+        document: cpf,
+      },
+      data: {
+        status: AccountStatus.ACTIVE,
+      }
     });
   };
 }
