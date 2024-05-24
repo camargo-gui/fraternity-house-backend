@@ -85,7 +85,13 @@ export class ResidentModel {
   getResidentsWithScreening = async () => {
     return this.client.resident.findMany({
       include: {
-        Screening: true,
+        Screening: {
+          include: {
+            Responsible: true,
+            Illnesses: true,
+            SpecialNeeds: true,
+          },
+        },
       },
       where: {
         status: AccountStatus.ACTIVE,

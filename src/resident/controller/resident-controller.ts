@@ -3,6 +3,8 @@ import AwsService from "common/services/aws-service";
 import EmailService from "common/services/send-email-service";
 import { EmployeeModel } from "employee/model/employee-model";
 import { Request, Response } from "express";
+import { DataToSend } from "resident/DTO/data-to-send";
+import { ResidentReportDTO } from "resident/DTO/residents-report-dto";
 import ResidentReport from "resident/email-templates/residents-report-email-template";
 import { ResidentModel } from "resident/model/resident-model";
 import { ScreeningModel } from "screening/model/screening-model";
@@ -136,8 +138,9 @@ export class ResidentController {
   sendReport = async (req: AuthRequest, res: Response) => {
     try {
       const employee = await this.employeeModel.getById(req.id ?? 0);
-      const residents = await this.model.getResidentsWithScreening();
-      const template = ResidentReport(residents);
+      const options: DataToSend = req.body.options;
+      const resident: ResidentReportDTO[] = await this.model.getResidentsWithScreening() as ResidentReportDTO[];
+      const template = ResidentReport(resident, options);
       await this.emailService.sendEmail(
         employee?.email ?? "",
         "Relatório de Moradores",

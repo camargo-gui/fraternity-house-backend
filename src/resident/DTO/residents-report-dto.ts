@@ -1,5 +1,6 @@
-import { Resident, Screening } from "@prisma/client";
+import { Resident } from "@prisma/client";
+import { ScreeningDTO } from "screening/DTO/screening-dto";
 
 export interface ResidentReportDTO extends Resident{
-  Screening: Screening | null;
+  Screening?: ScreeningDTO | null;
 }
