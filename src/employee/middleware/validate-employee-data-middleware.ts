@@ -30,6 +30,7 @@ export class ValidateEmployeeDataMiddleware {
     try {
       this.errors = [];
       this.requiredFields(req.body);
+      console.log("Corpo: ", req.body);
       if (this.errors.length > 0) {
         return res.status(400).json({ message: this.errors });
       }

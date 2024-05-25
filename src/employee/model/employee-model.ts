@@ -8,6 +8,7 @@ export class EmployeeModel {
     return prismaClient.employee.create({
       data: {
         ...employee,
+        role_id: Number(employee.role_id),
         password: new Password(employee.password).createHash(),
       },
       select: {
@@ -16,6 +17,7 @@ export class EmployeeModel {
         name: true,
         email: true,
         phone: true,
+        url_image: true,
         created_at: true,
         updated_at: true,
         role_id: true,
@@ -34,6 +36,7 @@ export class EmployeeModel {
         name: true,
         email: true,
         phone: true,
+        url_image: true,
         created_at: true,
         updated_at: true,
         Role: true,
@@ -52,6 +55,7 @@ export class EmployeeModel {
         name: true,
         email: true,
         phone: true,
+        url_image: true,
         created_at: true,
         updated_at: true,
         Role: true,
@@ -73,6 +77,7 @@ export class EmployeeModel {
         email: true,
         phone: true,
         status: true,
+        url_image: true,
         created_at: true,
         updated_at: true,
         Role: true,
@@ -94,8 +99,13 @@ export class EmployeeModel {
         created_at: true,
         updated_at: true,
         Role: true,
+        url_image: true,
       },
-      data: employee,
+      data: {
+        ...employee,
+        id: Number(employee.id),
+        role_id: Number(employee.role_id),
+      },
     });
   };
 

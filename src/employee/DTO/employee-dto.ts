@@ -11,4 +11,5 @@ export interface EmployeeDTO {
   status: AccountStatus;
   created_a?: Date | null;
   updated_at?: Date | null;
+  url_image?: string | null;
 }
