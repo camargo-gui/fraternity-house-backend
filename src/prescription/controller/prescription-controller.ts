@@ -121,10 +121,9 @@ export class PrescriptionController {
   private isValidDates(prescription: PrescriptionDTO): boolean {
     const startDate = moment(prescription.startDate, "YYYY-MM-DD");
     const endDate = moment(prescription.endDate, "YYYY-MM-DD");
-    const today = moment().startOf("day");
+
     if (
-      moment(startDate).isAfter(moment(endDate)) ||
-      moment(startDate).isBefore(today)
+      moment(startDate).isAfter(moment(endDate))
     ) {
       return false;
     }
