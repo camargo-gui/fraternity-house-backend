@@ -16,6 +16,8 @@ const adminAuth = new RoleAuthorizationMiddleware(RoleEnum.Administrador);
 routes.post(
   "/",
   upload.single("image"),
+  authMiddleware.execute,
+  adminAuth.execute,
   validateEmployeeMiddleware.validateRequiredFields,
   validateEmployeeMiddleware.validateEmployeeExists,
   controller.create
