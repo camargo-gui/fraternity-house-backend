@@ -1,16 +1,16 @@
 import { AccountStatus, PrismaClient } from "@prisma/client";
 import { Resident } from "resident/DTO/resident-dto";
-
+import { ResidentToUpdate } from "resident/DTO/update-resident-dto";
 export class ResidentModel {
   private client = new PrismaClient();
-  
+
   create = async (resident: Resident) => {
     return this.client.resident.create({
       data: { ...resident },
     });
   };
 
-  update = async (resident: Resident) => {
+  update = async (resident: ResidentToUpdate) => {
     return this.client.resident.update({
       where: {
         cpf: resident.cpf,
@@ -29,7 +29,7 @@ export class ResidentModel {
       },
       data: {
         has_screening: true,
-      }
+      },
     });
   };
 
@@ -40,7 +40,7 @@ export class ResidentModel {
       },
       data: {
         status: AccountStatus.INACTIVE,
-      }
+      },
     });
   };
 
@@ -51,7 +51,7 @@ export class ResidentModel {
       },
       data: {
         status: AccountStatus.ACTIVE,
-      }
+      },
     });
   };
 
@@ -78,7 +78,7 @@ export class ResidentModel {
       },
       orderBy: {
         name: "asc",
-      }
+      },
     });
   };
 
@@ -95,7 +95,7 @@ export class ResidentModel {
       },
       where: {
         status: AccountStatus.ACTIVE,
-      }
+      },
     });
   };
 }

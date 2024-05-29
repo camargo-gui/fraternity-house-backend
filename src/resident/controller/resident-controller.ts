@@ -5,6 +5,7 @@ import { EmployeeModel } from "employee/model/employee-model";
 import { Request, Response } from "express";
 import { DataToSend } from "resident/DTO/data-to-send";
 import { ResidentReportDTO } from "resident/DTO/residents-report-dto";
+import { ResidentToUpdate } from "resident/DTO/update-resident-dto";
 import ResidentReport from "resident/email-templates/residents-report-email-template";
 import { ResidentModel } from "resident/model/resident-model";
 import { ScreeningModel } from "screening/model/screening-model";
@@ -60,14 +61,19 @@ export class ResidentController {
         );
       }
 
-      await this.model.update({
+      const updateData: ResidentToUpdate = {
         cpf,
         rg,
         name,
         contact_phone,
         birthday: new Date(birthday),
-        url_image: resultadoUpload.Location,
-      });
+      };
+
+      if (resultadoUpload.Location) {
+        updateData.url_image = resultadoUpload.Location;
+      }
+
+      await this.model.update(updateData);
 
       return res.status(201).send();
     } catch (e) {
@@ -75,9 +81,13 @@ export class ResidentController {
     }
   };
 
-  updateResidentsWithDeprecatedScreeningStatus = async (req: Request, res: Response) => {
+  updateResidentsWithDeprecatedScreeningStatus = async (
+    req: Request,
+    res: Response
+  ) => {
     try {
-      const screenings = await this.screeningModel.getScreeningWhereResidentsAreWithDeprecatedStatus();
+      const screenings =
+        await this.screeningModel.getScreeningWhereResidentsAreWithDeprecatedStatus();
       screenings.map(async (screening) => {
         await this.model.registerScreening(screening.id_resident);
       });
@@ -139,7 +149,8 @@ export class ResidentController {
     try {
       const employee = await this.employeeModel.getById(req.id ?? 0);
       const options: DataToSend = req.body.options;
-      const resident: ResidentReportDTO[] = await this.model.getResidentsWithScreening() as ResidentReportDTO[];
+      const resident: ResidentReportDTO[] =
+        (await this.model.getResidentsWithScreening()) as ResidentReportDTO[];
       const template = ResidentReport(resident, options);
       await this.emailService.sendEmail(
         employee?.email ?? "",
