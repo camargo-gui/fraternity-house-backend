@@ -17,7 +17,7 @@ jobs:
         SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
         ARGS: "-rltgoDzvO --delete"
         SOURCE: "./"
-        REMOTE_HOST: "https://ec2-54-90-189-96.compute-1.amazonaws.com/"
+        REMOTE_HOST: "ec2-3-94-193-252.compute-1.amazonaws.com"
         REMOTE_USER: "ec2-user"
         TARGET: "/home/ec2-user"
         EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh"
