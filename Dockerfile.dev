@@ -17,4 +17,6 @@ RUN npm i -g prisma
 
 EXPOSE 3344
 
-CMD [ "yarn", "dev" ]
+RUN yarn migrate
+RUN yarn build
+RUN yarn start

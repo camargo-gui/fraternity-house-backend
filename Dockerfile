@@ -16,4 +16,6 @@ RUN yarn install
 
 EXPOSE 3344
 
-CMD [ "yarn", "start" ]
+RUN yarn migrate
+RUN yarn build
+RUN yarn start
