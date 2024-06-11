@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "npx prisma migrate deploy && ts-node-dev --poll -r tsconfig-paths/register --respawn src/index.ts",
-    "dev": "npx prisma migrate deploy && ts-node-dev --poll -r tsconfig-paths/register --exit-child --respawn --transpile-only src/index.ts",
+    "start": "npx prisma migrate deploy && ts-node --poll -r tsconfig-paths/register --respawn src/index.ts",
+    "dev": "npx prisma migrate deploy && ts-node --poll -r tsconfig-paths/register --exit-child --respawn --transpile-only src/index.ts",
     "lint": "eslint 'src/**/*.{ts,tsx}'"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "pg": "^8.11.5",
     "prisma": "^5.13.0",
     "swagger-ui-express": "^4.5.0",
+    "ts-node": "^10.9.2",
     "twilio": "^5.0.4"
   },
   "prisma": {
