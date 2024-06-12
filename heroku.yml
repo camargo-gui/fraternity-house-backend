@@ -1,3 +1,9 @@
 build:
   docker:
     web: Dockerfile
+run:
+  web: yarn start
+  env:
+    PORT: 3344
+    HOST: 0.0.0.0
+  memory: 512MB

@@ -16,4 +16,5 @@ RUN yarn install
 
 EXPOSE 3344
 
+CMD ["docker", "run", "--memory=512m", "web"]
 CMD [ "yarn", "start" ]
