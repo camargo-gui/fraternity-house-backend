@@ -1,10 +1,10 @@
+import { AuthRequest } from "#/common/entities/auth-request";
+import { MedicationSheetModel } from "#/medication-sheet/model/medication-sheet-model";
+import { PrescriptionDTO } from "#/prescription/DTO/prescription-dto";
+import { PrescriptionModel } from "#/prescription/model/prescription-model";
 import { PrismaClient } from "@prisma/client";
-import { AuthRequest } from "common/entities/auth-request";
 import { Request, Response } from "express";
-import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
 import moment from "moment";
-import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
-import { PrescriptionModel } from "prescription/model/prescription-model";
 
 export class MedicationSheetController {
   private medicationSheetModel = new MedicationSheetModel();

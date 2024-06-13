@@ -1,12 +1,12 @@
-import { EmployeeController } from "employee/controller/employee-controller";
-import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
-import { RoleAuthorizationMiddleware } from "employee/middleware/role-authorization-middleware";
-import { ValidateEmployeeDataMiddleware } from "employee/middleware/validate-employee-data-middleware";
+import { EmployeeController } from "#/employee/controller/employee-controller";
+import { EmployeeAuthMiddleware } from "#/employee/middleware/employee-auth-middleware";
+import { RoleAuthorizationMiddleware } from "#/employee/middleware/role-authorization-middleware";
+import { ValidateEmployeeDataMiddleware } from "#/employee/middleware/validate-employee-data-middleware";
+import { RoleEnum } from "#/role/DTO/role-dto";
 import { Router } from "express";
 import multer from "multer";
-import { RoleEnum } from "role/DTO/role-dto";
 
-const routes = Router();
+const routes: Router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 const controller = new EmployeeController();
 const authMiddleware = new EmployeeAuthMiddleware();

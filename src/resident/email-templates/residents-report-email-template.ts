@@ -1,5 +1,5 @@
+import { ResidentReportDTO } from "#/resident/DTO/residents-report-dto";
 import { DataToSend } from "./../DTO/data-to-send";
-import { ResidentReportDTO } from "resident/DTO/residents-report-dto";
 
 export default function ResidentReport(
   report: ResidentReportDTO[],

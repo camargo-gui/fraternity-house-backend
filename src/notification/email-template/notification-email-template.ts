@@ -1,4 +1,4 @@
-import { PrescriptionDetail } from "notification/scheduler/notification-reminder-scheduler";
+import { PrescriptionDetail } from "#/notification/scheduler/notification-reminder-scheduler";
 
 export const buildEmailMessageForEmployee = (
   details: PrescriptionDetail[],

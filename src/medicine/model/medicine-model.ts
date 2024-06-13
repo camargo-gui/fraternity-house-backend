@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import {
-  MedicineDTO,
-  MedicineRequestParams,
-  MedicineWhereConditions,
-} from "medicine/DTO/medicine-dto";
+    MedicineDTO,
+    MedicineRequestParams,
+    MedicineWhereConditions,
+} from "#/medicine/DTO/medicine-dto";
+import { PrismaClient } from "@prisma/client";
 
 export class MedicineModel {
   private prismaClient = new PrismaClient();

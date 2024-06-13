@@ -1,9 +1,9 @@
+import { MedicationSheetModel } from "#/medication-sheet/model/medication-sheet-model";
+import { PrescriptionDTO } from "#/prescription/DTO/prescription-dto";
+import { PrescriptionModel } from "#/prescription/model/prescription-model";
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { MedicationSheetModel } from "medication-sheet/model/medication-sheet-model";
 import moment from "moment";
-import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
-import { PrescriptionModel } from "prescription/model/prescription-model";
 
 export class PrescriptionController {
   private prescriptionModel = new PrescriptionModel();

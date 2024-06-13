@@ -1,9 +1,9 @@
-import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
+import { EmployeeAuthMiddleware } from "#/employee/middleware/employee-auth-middleware";
+import { ScreeningController } from "#/screening/controller/screening-controller";
+import { ScreeningMiddleware } from "#/screening/middleware/screening-middleware";
 import { Router } from "express";
-import { ScreeningController } from "screening/controller/screening-controller";
-import { ScreeningMiddleware } from "screening/middleware/screening-middleware";
 
-const routes = Router();
+const routes: Router = Router();
 const controller = new ScreeningController();
 const authMiddleware = new EmployeeAuthMiddleware();
 const screeningMiddleware = new ScreeningMiddleware();

@@ -1,7 +1,7 @@
+import { ResidentModel } from "#/resident/model/resident-model";
+import { ScreeningDTO } from "#/screening/DTO/screening-dto";
+import { ScreeningModel } from "#/screening/model/screening-model";
 import { Request, Response } from "express";
-import { ResidentModel } from "resident/model/resident-model";
-import { ScreeningDTO } from "screening/DTO/screening-dto";
-import { ScreeningModel } from "screening/model/screening-model";
 
 export class ScreeningController {
   private screeningModel = new ScreeningModel(); 

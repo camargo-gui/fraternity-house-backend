@@ -1,14 +1,14 @@
-import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
-import { RoleAuthorizationMiddleware } from "employee/middleware/role-authorization-middleware";
+import { EmployeeAuthMiddleware } from "#/employee/middleware/employee-auth-middleware";
+import { RoleAuthorizationMiddleware } from "#/employee/middleware/role-authorization-middleware";
+import { ResidentController } from "#/resident/controller/resident-controller";
+import { ValidateResidentMiddlewareAlreadyExists } from "#/resident/middleware/validate-resident-middleware-already-exists";
+import { ValidateResidentMiddlewareNotFound } from "#/resident/middleware/validate-resident-middleware-not-found";
+import { ValidateResidentMiddlewareRequiredFields } from "#/resident/middleware/validate-resident-middleware-required-fields";
+import { RoleEnum } from "#/role/DTO/role-dto";
 import { Router } from "express";
 import multer from "multer";
-import { ResidentController } from "resident/controller/resident-controller";
-import { ValidateResidentMiddlewareAlreadyExists } from "resident/middleware/validate-resident-middleware-already-exists";
-import { ValidateResidentMiddlewareNotFound } from "resident/middleware/validate-resident-middleware-not-found";
-import { ValidateResidentMiddlewareRequiredFields } from "resident/middleware/validate-resident-middleware-required-fields";
-import { RoleEnum } from "role/DTO/role-dto";
 
-const routes = Router();
+const routes: Router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 const controller = new ResidentController();

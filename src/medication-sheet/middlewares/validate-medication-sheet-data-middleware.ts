@@ -1,5 +1,5 @@
+import { MedicationSheetRequestBody } from "#/medication-sheet/DTO/medication-sheet-dto";
 import { NextFunction, Request, Response } from "express";
-import { MedicationSheetRequestBody } from "medication-sheet/DTO/medication-sheet-dto";
 
 export class ValidateMedicationSheetDataMiddleware {
   private errors: string[] = [];

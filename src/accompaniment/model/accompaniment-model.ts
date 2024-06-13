@@ -1,6 +1,6 @@
+import { AccompaninmentDAO } from "#/accompaniment/DAO/accompaniment-dao";
 import { PoolClient } from "pg";
 import { AccompanimentDTO } from "./../DTO/accompaniment-dto";
-import { AccompaninmentDAO } from "accompaniment/DAO/accompaniment-dao";
 
 export class AccompanimentModel {
   private static instance: AccompanimentModel;

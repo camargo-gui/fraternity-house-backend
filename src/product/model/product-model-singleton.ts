@@ -1,5 +1,5 @@
+import { MovimentationType } from "#/movimentation-singleton/entities/movimentation";
 import { Prisma } from "@prisma/client";
-import { MovimentationType } from "movimentation-singleton/entities/movimentation";
 
 export class ProductModel {
   getById = async (id: number, prisma: Prisma.TransactionClient) => {

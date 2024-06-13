@@ -1,5 +1,5 @@
-import { ResidentModel } from "resident/model/resident-model";
-import {Request, Response, NextFunction } from "express";
+import { ResidentModel } from "#/resident/model/resident-model";
+import { NextFunction, Request, Response } from "express";
 
 export class ValidateResidentMiddlewareAlreadyExists{
   private model = new ResidentModel();

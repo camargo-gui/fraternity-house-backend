@@ -1,5 +1,5 @@
+import type { MedicineDTO } from "#/medicine/DTO/medicine-dto";
 import { NextFunction, Request, Response } from "express";
-import type { MedicineDTO } from "medicine/DTO/medicine-dto";
 
 export class ValidateMedicineDataMiddleware {
   private errors: string[] = [];

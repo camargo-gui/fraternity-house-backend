@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { AuthRequest } from "#/common/entities/auth-request";
 import assert from "assert";
-import { AuthRequest } from "common/entities/auth-request";
-import { Response, NextFunction } from "express";
+import { NextFunction, Response } from "express";
 
 export class RoleAuthorizationMiddleware {
   private allowedRoles: number[];

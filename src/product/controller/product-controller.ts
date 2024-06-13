@@ -1,5 +1,5 @@
+import { ProductModel } from "#/product/model/product-model";
 import { Request, Response } from "express";
-import { ProductModel } from "product/model/product-model";
 
 export class ProductController {
 

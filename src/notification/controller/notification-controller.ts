@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { NotificationModel } from "../model/notification-model";
-import { NotificationDTO } from "../DTO/notification-dto";
-import { AuthRequest } from "common/entities/auth-request";
+import { AuthRequest } from "#/common/entities/auth-request";
 import assert from "assert";
+import { Request, Response } from "express";
+import { NotificationDTO } from "../DTO/notification-dto";
+import { NotificationModel } from "../model/notification-model";
 
 export class NotificationController {
   private model: NotificationModel;

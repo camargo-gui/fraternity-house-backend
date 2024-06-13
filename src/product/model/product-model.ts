@@ -1,6 +1,6 @@
+import { MovimentationType } from "#/movimentation-singleton/entities/movimentation";
+import { ProductDTO } from "#/product/DTO/product-dto";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { MovimentationType } from "movimentation-singleton/entities/movimentation";
-import { ProductDTO } from "product/DTO/product-dto";
 
 export class ProductModel {
 

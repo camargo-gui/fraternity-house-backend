@@ -1,5 +1,5 @@
+import type { PharmalogicalNameDTO } from "#/pharmacological-name/DTO/pharmacological-name-dto";
 import { NextFunction, Request, Response } from "express";
-import type { PharmalogicalNameDTO } from "pharmacological-name/DTO/pharmacological-name-dto";
 
 export class ValidatePharmacologicalNameDataMiddleware {
   private errors: string[] = [];

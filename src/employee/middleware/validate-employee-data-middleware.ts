@@ -1,4 +1,4 @@
-import { EmployeeModel } from "employee/model/employee-model";
+import { EmployeeModel } from "#/employee/model/employee-model";
 import { NextFunction, Request, Response } from "express";
 
 export class ValidateEmployeeDataMiddleware {

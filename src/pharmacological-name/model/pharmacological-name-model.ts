@@ -1,5 +1,5 @@
+import { PharmalogicalNameDTO } from "#/pharmacological-name/DTO/pharmacological-name-dto";
 import { PrismaClient } from "@prisma/client";
-import { PharmalogicalNameDTO } from "pharmacological-name/DTO/pharmacological-name-dto";
 
 export class PharmacologicalNameModel {
   private prismaClient = new PrismaClient();

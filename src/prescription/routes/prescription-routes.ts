@@ -1,9 +1,9 @@
-import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
+import { EmployeeAuthMiddleware } from "#/employee/middleware/employee-auth-middleware";
+import { PrescriptionController } from "#/prescription/controller/prescription-controller";
+import { ValidatePrescriptionDataMiddleware } from "#/prescription/middlewares/validate-prescription-data-middleware";
 import { Router } from "express";
-import { PrescriptionController } from "prescription/controller/prescription-controller";
-import { ValidatePrescriptionDataMiddleware } from "prescription/middlewares/validate-prescription-data-middleware";
 
-const routes = Router();
+const routes: Router = Router();
 const control = new PrescriptionController();
 const middleware = new ValidatePrescriptionDataMiddleware();
 const authMiddleware = new EmployeeAuthMiddleware();

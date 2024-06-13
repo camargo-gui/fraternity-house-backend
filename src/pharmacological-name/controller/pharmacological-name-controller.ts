@@ -1,5 +1,5 @@
+import { PharmacologicalNameModel } from "#/pharmacological-name/model/pharmacological-name-model";
 import { Request, Response } from "express";
-import { PharmacologicalNameModel } from "pharmacological-name/model/pharmacological-name-model";
 
 export class PharmacologicalNameController {
   private model = new PharmacologicalNameModel();

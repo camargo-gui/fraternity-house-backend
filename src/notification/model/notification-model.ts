@@ -1,5 +1,5 @@
+import { prismaClient } from "#/client/prisma-client";
 import { NotificationDTO } from "../DTO/notification-dto";
-import { prismaClient } from "client/prisma-client";
 
 export class NotificationModel {
   create = async (notification: NotificationDTO) => {

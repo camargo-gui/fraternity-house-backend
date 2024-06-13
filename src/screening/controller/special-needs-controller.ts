@@ -1,5 +1,5 @@
+import { SpecialNeedsModel } from "#/screening/model/special-needs-model";
 import { Request, Response } from "express";
-import { SpecialNeedsModel } from "screening/model/special-needs-model";
 
 export class SpecialNeedsController {
   private model = new SpecialNeedsModel();

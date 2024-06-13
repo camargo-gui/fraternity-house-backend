@@ -1,6 +1,6 @@
-import { IllnessesDTO } from "screening/DTO/illnesses-dto";
-import { ResponsibleDTO } from "screening/DTO/responsible-dto";
-import { SpecialNeedsDTO } from "screening/DTO/special-needs-dto";
+import { IllnessesDTO } from "#/screening/DTO/illnesses-dto";
+import { ResponsibleDTO } from "#/screening/DTO/responsible-dto";
+import { SpecialNeedsDTO } from "#/screening/DTO/special-needs-dto";
 
 export interface ScreeningDTO {
   id?: number;

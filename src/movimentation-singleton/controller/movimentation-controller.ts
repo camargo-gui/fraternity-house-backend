@@ -1,15 +1,15 @@
-import { prismaClient } from "client/prisma-client";
-import { EmployeeModel } from "employee/model/employee-model-singleton";
+import { prismaClient } from "#/client/prisma-client";
+import { AuthRequest } from "#/common/entities/auth-request";
+import { EmployeeModel } from "#/employee/model/employee-model-singleton";
+import { ProductMovimentation } from "#/movimentation-singleton/entities/product-movimentation";
+import { Product } from "#/product/DTO/product";
+import { ProductModel } from "#/product/model/product-model-singleton";
+import { Prisma } from "@prisma/client";
+import assert from "assert";
 import { Request, Response } from "express";
-import { ProductModel } from "product/model/product-model-singleton";
 import { Employee } from "../../employee/DTO/employee";
 import { Movimentation, MovimentationType } from "../entities/movimentation";
 import { MovimentationModel } from "../model/movimentation-model";
-import { ProductMovimentation } from "movimentation-singleton/entities/product-movimentation";
-import { Product } from "product/DTO/product";
-import { AuthRequest } from "common/entities/auth-request";
-import assert from "assert";
-import { Prisma } from "@prisma/client";
 
 export class MovimentationController {
   private movimentationModel: MovimentationModel = new MovimentationModel();

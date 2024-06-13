@@ -1,5 +1,5 @@
+import { RoleModel } from "#/role/model/role-model";
 import { NextFunction, Request, Response } from "express";
-import { RoleModel } from "role/model/role-model";
 
 export class RoleExistsMiddleware {
 

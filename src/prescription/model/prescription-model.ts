@@ -1,5 +1,5 @@
+import { PrescriptionDTO } from "#/prescription/DTO/prescription-dto";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
 
 export class PrescriptionModel {
   private prismaClient = new PrismaClient();

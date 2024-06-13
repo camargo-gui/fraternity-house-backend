@@ -1,5 +1,5 @@
-import { AuthRequest } from "common/entities/auth-request";
-import { JWT } from "common/entities/jwt";
+import { AuthRequest } from "#/common/entities/auth-request";
+import { JWT } from "#/common/entities/jwt";
 import { NextFunction, Response } from "express";
 
 export class EmployeeAuthMiddleware {

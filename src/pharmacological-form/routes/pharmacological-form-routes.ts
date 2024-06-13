@@ -1,9 +1,9 @@
-import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
+import { EmployeeAuthMiddleware } from "#/employee/middleware/employee-auth-middleware";
+import { PharmacologicalFormController } from "#/pharmacological-form/controller/pharmacological-form-controller";
+import { ValidatePharmacologicalFormDataMiddleware } from "#/pharmacological-form/middlewares/validate-pharmacological-form-data-middleware";
 import { Router } from "express";
-import { PharmacologicalFormController } from "pharmacological-form/controller/pharmacological-form-controller";
-import { ValidatePharmacologicalFormDataMiddleware } from "pharmacological-form/middlewares/validate-pharmacological-form-data-middleware";
 
-const routes = Router();
+const routes: Router = Router();
 const controller = new PharmacologicalFormController();
 const middleware = new ValidatePharmacologicalFormDataMiddleware();
 const authMiddleware = new EmployeeAuthMiddleware();

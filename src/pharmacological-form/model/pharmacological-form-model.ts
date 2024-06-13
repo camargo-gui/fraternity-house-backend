@@ -1,5 +1,5 @@
+import { PharmacologicalFormDTO } from "#/pharmacological-form/DTO/pharmacological-form-dto";
 import { PrismaClient } from "@prisma/client";
-import { PharmacologicalFormDTO } from "pharmacological-form/DTO/pharmacological-form-dto";
 
 export class PharmacologicalFormModel {
   private prismaClient = new PrismaClient();

@@ -1,14 +1,18 @@
-FROM --platform=linux/amd64 node:16
+FROM node:lts-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
+WORKDIR /app
 
-RUN apt-get update -y && apt-get install -y openssl && apt-get install libssl-dev
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run generate
+RUN pnpm run build
+RUN pnpm prune --prod
 
-WORKDIR /usr/src/app
-
-COPY . .
-
-RUN yarn install
-
+FROM base
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
 EXPOSE 3344
-
-CMD ["docker", "run", "--memory=512m", "web"]
-CMD [ "yarn", "start" ]
+CMD [ "pnpm", "start" ]

@@ -1,8 +1,8 @@
-import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
+import { EmployeeAuthMiddleware } from "#/employee/middleware/employee-auth-middleware";
+import { SpecialNeedsController } from "#/screening/controller/special-needs-controller";
 import { Router } from "express";
-import { SpecialNeedsController } from "screening/controller/special-needs-controller";
 
-const routes = Router();
+const routes: Router = Router();
 const controller = new SpecialNeedsController();
 const middleware = new EmployeeAuthMiddleware();
 

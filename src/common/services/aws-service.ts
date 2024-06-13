@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AWS from "aws-sdk";
+import type { ReadableStream } from "stream/web";
 
 AWS.config.update({
   accessKeyId: process.env.ACCESS_KEY_ID,

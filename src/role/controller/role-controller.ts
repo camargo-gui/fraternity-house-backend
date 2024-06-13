@@ -1,5 +1,5 @@
+import { RoleModel } from "#/role/model/role-model";
 import { Request, Response } from "express";
-import { RoleModel } from "role/model/role-model";
 
 export class RoleController {
   private model = new RoleModel();

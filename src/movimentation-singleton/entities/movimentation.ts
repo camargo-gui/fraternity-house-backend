@@ -1,4 +1,4 @@
-import { Employee } from "employee/DTO/employee";
+import { Employee } from "#/employee/DTO/employee";
 import { ProductMovimentation } from "./product-movimentation";
 
 export enum MovimentationType {

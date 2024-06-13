@@ -1,6 +1,6 @@
-import { JWT } from "common/entities/jwt";
-import { Password } from "common/entities/password";
-import { EmployeeModel } from "employee/model/employee-model";
+import { JWT } from "#/common/entities/jwt";
+import { Password } from "#/common/entities/password";
+import { EmployeeModel } from "#/employee/model/employee-model";
 import { Request, Response } from "express";
 
 export class EmployeeLoginController {

@@ -1,14 +1,14 @@
-import { AuthRequest } from "common/entities/auth-request";
-import AwsService from "common/services/aws-service";
-import EmailService from "common/services/send-email-service";
-import { EmployeeModel } from "employee/model/employee-model";
+import { AuthRequest } from "#/common/entities/auth-request";
+import AwsService from "#/common/services/aws-service";
+import EmailService from "#/common/services/send-email-service";
+import { EmployeeModel } from "#/employee/model/employee-model";
+import { DataToSend } from "#/resident/DTO/data-to-send";
+import { ResidentReportDTO } from "#/resident/DTO/residents-report-dto";
+import { ResidentToUpdate } from "#/resident/DTO/update-resident-dto";
+import ResidentReport from "#/resident/email-templates/residents-report-email-template";
+import { ResidentModel } from "#/resident/model/resident-model";
+import { ScreeningModel } from "#/screening/model/screening-model";
 import { Request, Response } from "express";
-import { DataToSend } from "resident/DTO/data-to-send";
-import { ResidentReportDTO } from "resident/DTO/residents-report-dto";
-import { ResidentToUpdate } from "resident/DTO/update-resident-dto";
-import ResidentReport from "resident/email-templates/residents-report-email-template";
-import { ResidentModel } from "resident/model/resident-model";
-import { ScreeningModel } from "screening/model/screening-model";
 
 export class ResidentController {
   private model = new ResidentModel();

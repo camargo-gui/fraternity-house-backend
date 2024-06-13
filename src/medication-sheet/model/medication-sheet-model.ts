@@ -1,5 +1,5 @@
+import { MedicationSheetDTO } from "#/medication-sheet/DTO/medication-sheet-dto";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { MedicationSheetDTO } from "medication-sheet/DTO/medication-sheet-dto";
 
 export class MedicationSheetModel {
   private prismaClient = new PrismaClient();

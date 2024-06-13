@@ -1,7 +1,7 @@
-import { JWT } from "common/entities/jwt";
-import EmailService from "common/services/send-email-service";
-import { htmlPasswordReset } from "employee/email-templates/reset-password-email-template";
-import { EmployeeModel } from "employee/model/employee-model";
+import { JWT } from "#/common/entities/jwt";
+import EmailService from "#/common/services/send-email-service";
+import { htmlPasswordReset } from "#/employee/email-templates/reset-password-email-template";
+import { EmployeeModel } from "#/employee/model/employee-model";
 import { Request, Response } from "express";
 
 export class EmployeeResetPasswordController {

@@ -1,4 +1,4 @@
-import { prismaClient } from "client/prisma-client";
+import { prismaClient } from "#/client/prisma-client";
 
 export class RoleModel {
   create = async (name: string) => {

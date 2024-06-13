@@ -1,5 +1,5 @@
+import { Movimentation } from "#/movimentation-singleton/entities/movimentation";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { Movimentation } from "movimentation-singleton/entities/movimentation";
 
 export class MovimentationModel {
   private prismaClient = new PrismaClient();

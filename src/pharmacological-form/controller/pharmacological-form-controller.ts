@@ -1,5 +1,5 @@
+import { PharmacologicalFormModel } from "#/pharmacological-form/model/pharmacological-form-model";
 import { Request, Response } from "express";
-import { PharmacologicalFormModel } from "pharmacological-form/model/pharmacological-form-model";
 
 export class PharmacologicalFormController {
   private model = new PharmacologicalFormModel();

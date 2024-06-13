@@ -1,5 +1,5 @@
+import { AccompanimentDTO } from "#/accompaniment/DTO/accompaniment-dto";
 import { PoolClient } from "pg";
-import { AccompanimentDTO } from "accompaniment/DTO/accompaniment-dto";
 
 export class AccompaninmentDAO {
   async create(client: PoolClient, accompaniment: AccompanimentDTO) {

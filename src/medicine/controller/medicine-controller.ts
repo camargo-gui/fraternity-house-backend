@@ -1,6 +1,6 @@
+import { MedicineRequestParams } from "#/medicine/DTO/medicine-dto";
+import { MedicineModel } from "#/medicine/model/medicine-model";
 import { Request, Response } from "express";
-import { MedicineRequestParams } from "medicine/DTO/medicine-dto";
-import { MedicineModel } from "medicine/model/medicine-model";
 
 export class MedicineController {
   private model = new MedicineModel();

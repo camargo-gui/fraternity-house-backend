@@ -1,7 +1,7 @@
+import { illnessesSchema } from "#/screening/schemas/illnesses-schema";
+import { responsibleSchema } from "#/screening/schemas/responsiible-schema";
+import { specialNeedsSchema } from "#/screening/schemas/special-needs-schema";
 import Joi from "joi";
-import { illnessesSchema } from "screening/schemas/illnesses-schema";
-import { responsibleSchema } from "screening/schemas/responsiible-schema";
-import { specialNeedsSchema } from "screening/schemas/special-needs-schema";
 
 export const screeningSchema = Joi.object({
   id: Joi.number().optional(),

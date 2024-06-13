@@ -1,5 +1,5 @@
+import { PharmacologicalFormDTO } from "#/pharmacological-form/DTO/pharmacological-form-dto";
 import { NextFunction, Request, Response } from "express";
-import { PharmacologicalFormDTO } from "pharmacological-form/DTO/pharmacological-form-dto";
 
 export class ValidatePharmacologicalFormDataMiddleware {
   private errors: string[] = [];

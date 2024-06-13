@@ -1,5 +1,5 @@
+import { IllnessesModel } from "#/screening/model/illnesses-model";
 import { Request, Response } from "express";
-import { IllnessesModel } from "screening/model/illnesses-model";
 
 export class IllnessesController {
 

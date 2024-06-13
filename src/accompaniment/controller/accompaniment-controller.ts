@@ -1,6 +1,6 @@
-import { AccompanimentModel } from "accompaniment/model/accompaniment-model";
-import { poolConexao } from "client/postgres-client";
-import { AuthRequest } from "common/entities/auth-request";
+import { AccompanimentModel } from "#/accompaniment/model/accompaniment-model";
+import { poolConexao } from "#/client/postgres-client";
+import { AuthRequest } from "#/common/entities/auth-request";
 import { Request, Response } from "express";
 
 export class AccompanimentController {

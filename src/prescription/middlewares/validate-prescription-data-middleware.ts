@@ -1,5 +1,5 @@
+import { PrescriptionDTO } from "#/prescription/DTO/prescription-dto";
 import { NextFunction, Request, Response } from "express";
-import { PrescriptionDTO } from "prescription/DTO/prescription-dto";
 
 export class ValidatePrescriptionDataMiddleware {
   private errors: string[] = [];

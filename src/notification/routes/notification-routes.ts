@@ -1,8 +1,8 @@
+import { EmployeeAuthMiddleware } from "#/employee/middleware/employee-auth-middleware";
 import { Router } from "express";
 import { NotificationController } from "../controller/notification-controller";
-import { EmployeeAuthMiddleware } from "employee/middleware/employee-auth-middleware";
 
-const routes = Router();
+const routes: Router = Router();
 const controller = new NotificationController();
 const authMiddleware = new EmployeeAuthMiddleware();
 

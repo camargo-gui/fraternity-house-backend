@@ -1,8 +1,8 @@
+import { RoleController } from "#/role/controller/role-controller";
+import { RoleExistsMiddleware } from "#/role/middleware/role-exists-middleware";
 import { Router } from "express";
-import { RoleController } from "role/controller/role-controller";
-import { RoleExistsMiddleware } from "role/middleware/role-exists-middleware";
 
-const routes = Router();
+const routes: Router = Router();
 const controller = new RoleController();
 const middleware = new RoleExistsMiddleware();
 

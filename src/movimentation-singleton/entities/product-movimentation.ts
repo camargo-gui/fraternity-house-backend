@@ -1,5 +1,5 @@
-import { Movimentation } from "movimentation-singleton/entities/movimentation";
-import { Product } from "product/DTO/product";
+import { Movimentation } from "#/movimentation-singleton/entities/movimentation";
+import { Product } from "#/product/DTO/product";
 
 export class ProductMovimentation {
   id?: number;

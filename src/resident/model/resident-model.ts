@@ -1,6 +1,6 @@
+import { Resident } from "#/resident/DTO/resident-dto";
+import { ResidentToUpdate } from "#/resident/DTO/update-resident-dto";
 import { AccountStatus, PrismaClient } from "@prisma/client";
-import { Resident } from "resident/DTO/resident-dto";
-import { ResidentToUpdate } from "resident/DTO/update-resident-dto";
 export class ResidentModel {
   private client = new PrismaClient();
 

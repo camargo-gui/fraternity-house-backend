@@ -1,5 +1,5 @@
+import { ScreeningDTO } from "#/screening/DTO/screening-dto";
 import { PrismaClient } from "@prisma/client";
-import { ScreeningDTO } from "screening/DTO/screening-dto";
 
 export class ScreeningModel {
   private prisma = new PrismaClient();
