@@ -9,9 +9,17 @@ WORKDIR /app
 # Fase de build
 FROM base AS build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run generate && echo "Prisma client generated successfully"
+
+# Adicionando um passo para gerar o Prisma client e verificar se foi gerado com sucesso
+RUN pnpm run generate && echo "Prisma client generated successfully" && ls -la node_modules/.prisma/client || { echo 'Prisma client generation failed' ; exit 1; }
+
+# Rodando as migrações
 RUN pnpm run migrate
+
+# Construindo o projeto
 RUN pnpm run build
+
+# Limpeza para produção
 RUN pnpm prune --prod
 
 # Fase final
