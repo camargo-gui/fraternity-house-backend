@@ -69,9 +69,10 @@ export class MovimentationController {
 
       return res.status(200).send(movimentationsWithDetails);
     } catch (error) {
+      const err = error as Error;
       return res
         .status(500)
-        .json({ message: ["Failed to get movimentations", error] });
+        .json({ message: ["Erro ao criar movimentação: ", err.message] });
     }
   };
 
@@ -115,18 +116,16 @@ export class MovimentationController {
         type === MovimentationType.OUTPUT &&
         productData.quantity < quantity
       ) {
-        throw new Error("Insufficient stock");
+        throw new Error("Estoque insuficiente para saída de produto");
       }
 
       await this.productModel.updateStock(id, quantity, type, prisma);
 
-      const productMov = ProductMovimentation.createOrUpdate(
+      ProductMovimentation.createOrUpdate(
         productData,
         quantity,
         movimentation
       );
-
-      movimentation.addProductMovimentation(productMov);
     }
   };
 }
