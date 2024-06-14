@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:18
+FROM --platform=linux/amd64 node:20
 
 RUN apt-get update -y && apt-get install -y openssl && apt-get install libssl-dev
 RUN npm install -g ts-node-dev
