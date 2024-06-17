@@ -1,4 +1,5 @@
 export interface DataToSend {
+  residentId: string;
   religion: boolean;
   smoking: boolean;
   entry_date: Date;

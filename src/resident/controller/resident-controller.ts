@@ -9,7 +9,6 @@ import ResidentReport from "#/resident/email-templates/residents-report-email-te
 import { ResidentModel } from "#/resident/model/resident-model";
 import { ScreeningModel } from "#/screening/model/screening-model";
 import { Request, Response } from "express";
-
 export class ResidentController {
   private model = new ResidentModel();
   private screeningModel = new ScreeningModel();
@@ -88,7 +87,7 @@ export class ResidentController {
     try {
       const screenings =
         await this.screeningModel.getScreeningWhereResidentsAreWithDeprecatedStatus();
-      screenings.map(async (screening) => {
+      screenings.map(async (screening: { id_resident: number; }) => {
         await this.model.registerScreening(screening.id_resident);
       });
       return res.status(201).send();
@@ -149,8 +148,10 @@ export class ResidentController {
     try {
       const employee = await this.employeeModel.getById(req.id ?? 0);
       const options: DataToSend = req.body.options;
-      const resident: ResidentReportDTO[] =
-        (await this.model.getResidentsWithScreening()) as ResidentReportDTO[];
+      const resident = (await this.model.getResidentWithScreening(options.residentId)) as ResidentReportDTO;
+      if(!resident) {
+        return res.status(404).send({ message: ["Morador não encontrado!"] });
+      }
       const template = ResidentReport(resident, options);
       await this.emailService.sendEmail(
         employee?.email ?? "",

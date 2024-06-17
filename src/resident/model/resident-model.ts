@@ -82,8 +82,8 @@ export class ResidentModel {
     });
   };
 
-  getResidentsWithScreening = async () => {
-    return this.client.resident.findMany({
+  getResidentWithScreening = async (id: string) => {
+    return this.client.resident.findUnique({
       include: {
         Screening: {
           include: {
@@ -94,7 +94,7 @@ export class ResidentModel {
         },
       },
       where: {
-        status: AccountStatus.ACTIVE,
+        id: parseInt(id),
       },
     });
   };

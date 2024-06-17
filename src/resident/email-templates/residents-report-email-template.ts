@@ -2,12 +2,12 @@ import { ResidentReportDTO } from "#/resident/DTO/residents-report-dto";
 import { DataToSend } from "./../DTO/data-to-send";
 
 export default function ResidentReport(
-  report: ResidentReportDTO[],
+  report: ResidentReportDTO,
   dataToSend: DataToSend
 ): string {
   const divError = "<p style=\"color: red;\"><strong>Necessário realizar triagem </strong></p>";
 
-  const residentCards = report.map((report) => `
+  const residentCard = `
     <div style="border: 1px solid #ccc; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
       <img src="${report.url_image === "" ? "https://bucket-fraternity.s3.amazonaws.com/profile.jpg" : report.url_image}" alt="Foto do morador" style="width: 100px; height: 100px; border-radius: 50%; margin-right: 20px; float: left; object-fit: cover">
       <h3 style="color: #0056b3">${report.name}</h3>
@@ -41,7 +41,7 @@ export default function ResidentReport(
         </tr>
       </table>
       `}
-    </div>`).join("");
+    </div>`;
 
   const html = `
     <!DOCTYPE html>
@@ -62,8 +62,7 @@ export default function ResidentReport(
               color: #333;
             "
           >
-            <h2 style="color: #0056b3">Lista de Moradores</h2>
-            ${residentCards}
+            ${residentCard}
           </div>
         </div>
       </body>
