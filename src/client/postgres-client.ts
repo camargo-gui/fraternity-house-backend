@@ -11,6 +11,9 @@ export class poolConexao {
   private constructor() {
     poolConexao.instance = new Pool({
       connectionString: postgresUrl,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     });
   }
 

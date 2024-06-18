@@ -123,6 +123,7 @@ export class ResidentController {
         residents,
       });
     } catch (e) {
+      console.log("Erro ao buscar moradores", e);
       return res.status(500).send({ message: ["Erro ao buscar morador"] });
     }
   };
