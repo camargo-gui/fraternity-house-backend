@@ -98,4 +98,37 @@ export class ResidentModel {
       },
     });
   };
+
+  updatePhysicalStatus = async (id: number, status: string) => {
+    return this.client.resident.update({
+      where: {
+        id,
+      },
+      data: {
+        physicalStatus: status,
+      },
+    });
+  };
+
+  updatePhysicologicalStatus = async (id: number, status: string) => {
+    return this.client.resident.update({
+      where: {
+        id,
+      },
+      data: {
+        psychologicalStatus: status,
+      },
+    });
+  };
+
+  updateNutritionistStatus = async (id: number, status: string) => {
+    return this.client.resident.update({
+      where: {
+        id,
+      },
+      data: {
+        nutritionistStatus: status,
+      },
+    });
+  };
 }

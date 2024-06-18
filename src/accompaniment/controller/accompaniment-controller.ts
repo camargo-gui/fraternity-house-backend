@@ -1,6 +1,7 @@
 import { AccompanimentModel } from "#/accompaniment/model/accompaniment-model";
 import { poolConexao } from "#/client/postgres-client";
 import { AuthRequest } from "#/common/entities/auth-request";
+import { ResidentModel } from "#/resident/model/resident-model";
 import { Request, Response } from "express";
 
 export class AccompanimentController {
@@ -20,9 +21,22 @@ export class AccompanimentController {
 
   create = async (req: AuthRequest, res: Response) => {
     try {
-      const { description, residentId, type } = req.body;
+      const { description, residentId, type, accompanimentStatus } = req.body;
       const client = await poolConexao.getInstance().connect();
+
+      console.log("Status: ", accompanimentStatus);
+
       await client.query("BEGIN");
+
+      if(type === "PHYSIOTHERAPIST") {
+        await new ResidentModel().updatePhysicalStatus(residentId, accompanimentStatus);
+      } else if(type === "PSYCHOLOGIST") {
+        await new ResidentModel().updatePhysicologicalStatus(residentId, accompanimentStatus);
+      }
+      else{
+        await new ResidentModel().updateNutritionistStatus(residentId, accompanimentStatus);
+      }
+
       await this.model.create(client, {
         description,
         employeeId: req.id ?? 0,

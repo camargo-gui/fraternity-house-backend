@@ -20,6 +20,9 @@ model Resident {
   has_screening   Boolean?           @default(false)
   created_at      DateTime          @default(now())
   updated_at      DateTime?         @updatedAt
+  psychologicalStatus String?       @default("Undefined")
+  nutritionistStatus String?        @default("Undefined")
+  physicalStatus String?            @default("Undefined")
   MedicationSheet MedicationSheet[]
   Accompaniments  Accompaniment[]
   Screening       Screening?
